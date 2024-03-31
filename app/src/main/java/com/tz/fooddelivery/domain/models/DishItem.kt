@@ -1,5 +1,7 @@
 package com.tz.fooddelivery.domain.models
 
+import com.tz.fooddelivery.data.local.DishEntity
+
 data class DishItem(
     val id: String,
     val image: String,
@@ -7,3 +9,12 @@ data class DishItem(
     val category: String,
     val description: String
 )
+
+internal fun DishItem.toEntity(): DishEntity =
+    DishEntity(
+        dishId = id,
+        dishImage = image,
+        dishTitle = title,
+        dishCategory = category,
+        description = description
+    )

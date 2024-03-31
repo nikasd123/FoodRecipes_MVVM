@@ -1,6 +1,6 @@
 package com.tz.fooddelivery.di.base
 
-import com.tz.fooddelivery.data.api.MealsApi
+import com.tz.fooddelivery.data.remote.api.MealsApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

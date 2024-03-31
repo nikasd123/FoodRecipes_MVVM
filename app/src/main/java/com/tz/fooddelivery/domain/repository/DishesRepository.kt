@@ -1,10 +1,10 @@
 package com.tz.fooddelivery.domain.repository
 
-import com.tz.fooddelivery.domain.models.CategoriesResponse
-import com.tz.fooddelivery.domain.models.DishesResponse
+import com.tz.fooddelivery.domain.models.Category
+import com.tz.fooddelivery.domain.models.DishItem
 
 interface DishesRepository {
-    suspend fun getDishes(): DishesResponse
-    suspend fun getCategories(): CategoriesResponse
-    suspend fun getDishesByCategory(category: String): DishesResponse
+    suspend fun getDishes(): List<DishItem>?
+    suspend fun getCategories(): List<Category>?
+    suspend fun getDishesByCategory(category: String): List<DishItem>?
 }

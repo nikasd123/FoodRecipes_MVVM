@@ -40,11 +40,11 @@ class CatalogFragment : Fragment(R.layout.fragment_catalog) {
 
     private fun setupObservers(){
         viewModel.dishesList.observe(viewLifecycleOwner){ dishes ->
-            dishesAdapter.submitList(dishes.meals)
+            dishesAdapter.submitList(dishes)
         }
 
         viewModel.categoriesList.observe(viewLifecycleOwner){ categories ->
-            filtersAdapter.submitList(categories.categories)
+            filtersAdapter.submitList(categories)
         }
     }
 

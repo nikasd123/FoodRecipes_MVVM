@@ -1,7 +1,7 @@
-package com.tz.fooddelivery.data.api
+package com.tz.fooddelivery.data.remote.api
 
-import com.tz.fooddelivery.data.dto.CategoriesResponseDto
-import com.tz.fooddelivery.data.dto.MealsResponseDto
+import com.tz.fooddelivery.data.remote.dto.CategoriesResponseDto
+import com.tz.fooddelivery.data.remote.dto.MealsResponseDto
 import retrofit2.http.GET
 import retrofit2.http.Query
 

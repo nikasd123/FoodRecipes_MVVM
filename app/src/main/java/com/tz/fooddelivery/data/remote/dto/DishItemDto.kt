@@ -1,4 +1,4 @@
-package com.tz.fooddelivery.data.dto
+package com.tz.fooddelivery.data.remote.dto
 
 import com.google.gson.annotations.SerializedName
 import com.tz.fooddelivery.domain.models.DishItem
