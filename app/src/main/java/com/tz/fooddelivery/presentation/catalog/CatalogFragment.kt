@@ -10,6 +10,7 @@ import com.tz.fooddelivery.R
 import com.tz.fooddelivery.databinding.FragmentCatalogBinding
 import com.tz.fooddelivery.domain.models.BannerItem
 import com.tz.fooddelivery.domain.models.Category
+import com.tz.fooddelivery.presentation.MainActivity
 import com.tz.fooddelivery.presentation.catalog.adapters.BannerAdapter
 import com.tz.fooddelivery.presentation.catalog.adapters.DishesAdapter
 import com.tz.fooddelivery.presentation.catalog.adapters.FiltersAdapter
@@ -27,6 +28,7 @@ class CatalogFragment : Fragment(R.layout.fragment_catalog) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentCatalogBinding.bind(view)
+        (activity as MainActivity).showProgressBar()
 
         initFun()
     }
@@ -41,6 +43,7 @@ class CatalogFragment : Fragment(R.layout.fragment_catalog) {
     private fun setupObservers(){
         viewModel.dishesList.observe(viewLifecycleOwner){ dishes ->
             dishesAdapter.submitList(dishes)
+            (activity as MainActivity).hideProgressBar()
         }
 
         viewModel.categoriesList.observe(viewLifecycleOwner){ categories ->
