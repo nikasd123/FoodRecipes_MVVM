@@ -48,10 +48,10 @@ dependencies {
     kapt ("androidx.room:room-compiler:2.5.2")
 
     //Hilt
-    implementation ("com.google.dagger:hilt-android:2.46.1")
+    implementation ("com.google.dagger:hilt-android:2.51.1")
     implementation ("androidx.legacy:legacy-support-v4:1.0.0")
     implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.6.1")
-    kapt ("com.google.dagger:hilt-compiler:2.46.1")
+    kapt ("com.google.dagger:hilt-compiler:2.51.1")
 
     //Retrofit
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
@@ -85,6 +85,7 @@ dependencies {
     testImplementation ("org.mockito:mockito-core:3.12.4")
     testImplementation ("org.assertj:assertj-core:3.20.2")
 
+    kapt ("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.4.2")
     implementation ("androidx.recyclerview:recyclerview:1.3.1")
     implementation ("com.github.javafaker:javafaker:1.0.2")
     implementation ("androidx.core:core-ktx:1.10.1")

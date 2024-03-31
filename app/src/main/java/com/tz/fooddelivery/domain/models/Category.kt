@@ -1,6 +1,6 @@
 package com.tz.fooddelivery.domain.models
 
-data class FilterItem(
-    val text: String,
+data class Category(
+    val category: String,
     var isActive: Boolean
 )

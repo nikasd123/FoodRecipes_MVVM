@@ -8,18 +8,24 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.tz.fooddelivery.R
 import com.tz.fooddelivery.databinding.FiltersItemBinding
-import com.tz.fooddelivery.domain.models.FilterItem
+import com.tz.fooddelivery.domain.models.Category
 
 class FiltersAdapter(
-    private val clickListener: (FilterItem) -> Unit
-) : ListAdapter<FilterItem, FiltersAdapter.ViewHolder>(ItemDiffCallback()) {
+    private val clickListener: (Category) -> Unit
+) : ListAdapter<Category, FiltersAdapter.ViewHolder>(ItemDiffCallback()) {
+
+    private var activeItem: Category? = null
 
     inner class ViewHolder(private val binding: FiltersItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: FilterItem, clickListener: (FilterItem) -> Unit) {
+        fun bind(item: Category, clickListener: (Category) -> Unit) {
             binding.rootCard.setOnClickListener {
+                activeItem?.isActive = false
+                item.isActive = true
+                activeItem = item
                 clickListener(item)
+                notifyDataSetChanged()
             }
-            binding.textView.text = item.text
+            binding.textView.text = item.category
             val context = binding.root.context
             if (item.isActive) {
                 binding.rootCard.setCardBackgroundColor(ContextCompat.getColor(context, R.color.background_pink))
@@ -42,12 +48,12 @@ class FiltersAdapter(
         holder.bind(getItem(position), clickListener)
     }
 
-    class ItemDiffCallback : DiffUtil.ItemCallback<FilterItem>() {
-        override fun areItemsTheSame(oldItem: FilterItem, newItem: FilterItem): Boolean {
-            return oldItem.text == newItem.text
+    class ItemDiffCallback : DiffUtil.ItemCallback<Category>() {
+        override fun areItemsTheSame(oldItem: Category, newItem: Category): Boolean {
+            return oldItem.category == newItem.category
         }
 
-        override fun areContentsTheSame(oldItem: FilterItem, newItem: FilterItem): Boolean {
+        override fun areContentsTheSame(oldItem: Category, newItem: Category): Boolean {
             return oldItem == newItem
         }
     }

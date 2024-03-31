@@ -11,7 +11,6 @@
         android:id="@+id/city_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         />
@@ -29,6 +28,8 @@
         android:id="@+id/rv_banners"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        tools:listitem="@layout/banner_item"
+        tools:itemCount="1"
         android:layout_marginTop="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -40,6 +41,9 @@
         android:id="@+id/rv_filters"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        tools:listitem="@layout/filters_item"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:orientation="horizontal"
         android:layout_marginTop="18dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -48,8 +52,10 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_catalog"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        tools:listitem="@layout/dishes_item"
+        tools:itemCount="2"
         android:layout_marginTop="12dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

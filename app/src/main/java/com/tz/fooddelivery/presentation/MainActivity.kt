@@ -3,7 +3,9 @@ package com.tz.fooddelivery.presentation
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.tz.fooddelivery.R
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
