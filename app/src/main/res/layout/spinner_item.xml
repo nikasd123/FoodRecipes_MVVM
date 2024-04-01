@@ -1,0 +1,11 @@
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/text1"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textColor="@color/black"
+    android:textSize="16sp"
+    android:textStyle="bold"
+    android:text="@string/city_name"
+    android:drawablePadding="10dp"
+    android:drawableEnd="@drawable/arrow_down_icon"
+    />

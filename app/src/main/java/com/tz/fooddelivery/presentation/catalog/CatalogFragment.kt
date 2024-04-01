@@ -2,7 +2,6 @@ package com.tz.fooddelivery.presentation.catalog
 
 import android.os.Bundle
 import android.view.View
-import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -36,7 +35,6 @@ class CatalogFragment : Fragment(R.layout.fragment_catalog) {
     private fun initFun(){
         setupObservers()
         initRecyclerViews()
-        initCitiesDropDownMenu()
         initRecyclerItemList()
     }
 
@@ -49,14 +47,6 @@ class CatalogFragment : Fragment(R.layout.fragment_catalog) {
         viewModel.categoriesList.observe(viewLifecycleOwner){ categories ->
             filtersAdapter.submitList(categories)
         }
-    }
-
-    private fun initCitiesDropDownMenu(){
-        val sortTypes = resources.getStringArray(R.array.cities)
-        val arrayAdapter = context?.let {
-            ArrayAdapter(it, R.layout.dropdown_item, sortTypes)
-        }
-        binding.cityName.adapter = arrayAdapter
     }
 
     private fun initRecyclerViews(){

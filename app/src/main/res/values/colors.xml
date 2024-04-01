@@ -8,6 +8,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+    <color name="transparent">#00FFFFFF</color>
     <color name="background">#FBFBFB</color>
     <color name="elements_pink">#FD3A69</color>
     <color name="background_pink">#33FD3A69</color>
