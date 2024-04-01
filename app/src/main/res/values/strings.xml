@@ -5,6 +5,9 @@
     <string name="city_name">Москва</string>
     <string name="filter_pizza">Пицца</string>
     <string name="price">от 345 р</string>
+    <string name="menu">Меню</string>
+    <string name="profile">Профиль</string>
+    <string name="cart">Корзина</string>
     <string-array name="cities">
         <item>Москва</item>
         <item>Санкт-Питербург</item>
