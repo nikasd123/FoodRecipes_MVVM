@@ -30,18 +30,18 @@ internal fun DishItemDto.toDomain(): DishItem =
         title = dishTitle ?: "",
         category = dishCategory ?: "",
         description = listOfNotNull(
-            strIngredient1,
-            strIngredient2,
-            strIngredient3,
-            strIngredient4,
-            strIngredient5,
-            strIngredient6,
-            strIngredient7,
-            strIngredient8,
-            strIngredient9,
-            strIngredient10,
-            strIngredient11,
-            strIngredient12,
-            strIngredient13
+            strIngredient1.takeIf { it?.isNotEmpty() == true },
+            strIngredient2.takeIf { it?.isNotEmpty() == true },
+            strIngredient3.takeIf { it?.isNotEmpty() == true },
+            strIngredient4.takeIf { it?.isNotEmpty() == true },
+            strIngredient5.takeIf { it?.isNotEmpty() == true },
+            strIngredient6.takeIf { it?.isNotEmpty() == true },
+            strIngredient7.takeIf { it?.isNotEmpty() == true },
+            strIngredient8.takeIf { it?.isNotEmpty() == true },
+            strIngredient9.takeIf { it?.isNotEmpty() == true },
+            strIngredient10.takeIf { it?.isNotEmpty() == true },
+            strIngredient11.takeIf { it?.isNotEmpty() == true },
+            strIngredient12.takeIf { it?.isNotEmpty() == true },
+            strIngredient13.takeIf { it?.isNotEmpty() == true }
         ).joinToString(", ")
     )
