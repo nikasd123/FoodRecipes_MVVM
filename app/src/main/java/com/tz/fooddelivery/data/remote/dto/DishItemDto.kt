@@ -20,7 +20,14 @@ data class DishItemDto(
     @SerializedName("strIngredient10") val strIngredient10: String?,
     @SerializedName("strIngredient11") val strIngredient11: String?,
     @SerializedName("strIngredient12") val strIngredient12: String?,
-    @SerializedName("strIngredient13") val strIngredient13: String?
+    @SerializedName("strIngredient13") val strIngredient13: String?,
+    @SerializedName("strIngredient14") val strIngredient14: String?,
+    @SerializedName("strIngredient15") val strIngredient15: String?,
+    @SerializedName("strIngredient16") val strIngredient16: String?,
+    @SerializedName("strIngredient17") val strIngredient17: String?,
+    @SerializedName("strIngredient18") val strIngredient18: String?,
+    @SerializedName("strIngredient19") val strIngredient19: String?,
+    @SerializedName("strIngredient20") val strIngredient20: String?
 )
 
 internal fun DishItemDto.toDomain(): DishItem =
@@ -42,6 +49,13 @@ internal fun DishItemDto.toDomain(): DishItem =
             strIngredient10.takeIf { it?.isNotEmpty() == true },
             strIngredient11.takeIf { it?.isNotEmpty() == true },
             strIngredient12.takeIf { it?.isNotEmpty() == true },
-            strIngredient13.takeIf { it?.isNotEmpty() == true }
+            strIngredient13.takeIf { it?.isNotEmpty() == true },
+            strIngredient14.takeIf { it?.isNotEmpty() == true },
+            strIngredient15.takeIf { it?.isNotEmpty() == true },
+            strIngredient16.takeIf { it?.isNotEmpty() == true },
+            strIngredient17.takeIf { it?.isNotEmpty() == true },
+            strIngredient18.takeIf { it?.isNotEmpty() == true },
+            strIngredient19.takeIf { it?.isNotEmpty() == true },
+            strIngredient20.takeIf { it?.isNotEmpty() == true },
         ).joinToString(", ")
     )
