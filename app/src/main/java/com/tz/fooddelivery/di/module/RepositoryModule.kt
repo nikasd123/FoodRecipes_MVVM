@@ -3,8 +3,8 @@ package com.tz.fooddelivery.di.module
 import com.tz.fooddelivery.data.local.dao.CategoriesDao
 import com.tz.fooddelivery.data.local.dao.DishesDao
 import com.tz.fooddelivery.data.remote.api.MealsApi
-import com.tz.fooddelivery.data.repository.DishesRepositoryImpl
-import com.tz.fooddelivery.domain.repository.DishesRepository
+import com.tz.fooddelivery.data.repository.MealsRepositoryImpl
+import com.tz.fooddelivery.domain.repository.MealsRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,6 +15,6 @@ import dagger.hilt.components.SingletonComponent
 class RepositoryModule {
 
     @Provides
-    fun provideDishesRepository(mealsApi: MealsApi, dishesDao: DishesDao, categoriesDao: CategoriesDao): DishesRepository =
-        DishesRepositoryImpl(mealsApi = mealsApi, dishesDao = dishesDao, categoriesDao = categoriesDao)
+    fun provideDishesRepository(mealsApi: MealsApi, dishesDao: DishesDao, categoriesDao: CategoriesDao): MealsRepository =
+        MealsRepositoryImpl(mealsApi = mealsApi, dishesDao = dishesDao, categoriesDao = categoriesDao)
 }

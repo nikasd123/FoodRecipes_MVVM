@@ -8,16 +8,16 @@ import com.tz.fooddelivery.data.remote.dto.toDomain
 import com.tz.fooddelivery.domain.models.Category
 import com.tz.fooddelivery.domain.models.DishItem
 import com.tz.fooddelivery.domain.models.toEntity
-import com.tz.fooddelivery.domain.repository.DishesRepository
+import com.tz.fooddelivery.domain.repository.MealsRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class DishesRepositoryImpl @Inject constructor(
+class MealsRepositoryImpl @Inject constructor(
     private val mealsApi: MealsApi,
     private val dishesDao: DishesDao,
     private val categoriesDao: CategoriesDao
-): DishesRepository {
+): MealsRepository {
     override suspend fun getDishes(): List<DishItem>? = withContext(Dispatchers.IO){
         return@withContext try {
             val dishesFromApi = mealsApi.getMeals().meals?.map { it.toDomain() }

@@ -1,8 +1,8 @@
 package com.tz.fooddelivery.di.module
 
-import com.tz.fooddelivery.domain.repository.DishesRepository
+import com.tz.fooddelivery.domain.repository.MealsRepository
 import com.tz.fooddelivery.domain.use_cases.GetCategoriesUseCase
-import com.tz.fooddelivery.domain.use_cases.GetDishesUseCase
+import com.tz.fooddelivery.domain.use_cases.GetMealsUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,10 +13,10 @@ import dagger.hilt.components.SingletonComponent
 class UseCaseModule {
 
     @Provides
-    fun provideGetDishesUseCase(dishesRepository: DishesRepository) =
-        GetDishesUseCase(dishesRepository = dishesRepository)
+    fun provideGetDishesUseCase(mealsRepository: MealsRepository) =
+        GetMealsUseCase(mealsRepository = mealsRepository)
 
     @Provides
-    fun provideGetCategoriesUseCase(dishesRepository: DishesRepository) =
-        GetCategoriesUseCase(dishesRepository = dishesRepository)
+    fun provideGetCategoriesUseCase(mealsRepository: MealsRepository) =
+        GetCategoriesUseCase(mealsRepository = mealsRepository)
 }

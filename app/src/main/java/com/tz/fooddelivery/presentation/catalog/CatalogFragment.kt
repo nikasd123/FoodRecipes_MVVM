@@ -11,7 +11,7 @@ import com.tz.fooddelivery.domain.models.BannerItem
 import com.tz.fooddelivery.domain.models.Category
 import com.tz.fooddelivery.presentation.MainActivity
 import com.tz.fooddelivery.presentation.catalog.adapters.BannerAdapter
-import com.tz.fooddelivery.presentation.catalog.adapters.DishesAdapter
+import com.tz.fooddelivery.presentation.catalog.adapters.MealsAdapter
 import com.tz.fooddelivery.presentation.catalog.adapters.FiltersAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -20,7 +20,7 @@ class CatalogFragment : Fragment(R.layout.fragment_catalog) {
 
     private lateinit var binding: FragmentCatalogBinding
     private val filtersAdapter: FiltersAdapter by lazy { FiltersAdapter(::onItemClick) }
-    private val dishesAdapter: DishesAdapter by lazy { DishesAdapter() }
+    private val mealsAdapter: MealsAdapter by lazy { MealsAdapter() }
     private val bannersAdapter: BannerAdapter by lazy { BannerAdapter() }
     private val viewModel: CatalogViewModel by viewModels()
 
@@ -40,7 +40,7 @@ class CatalogFragment : Fragment(R.layout.fragment_catalog) {
 
     private fun setupObservers(){
         viewModel.dishesList.observe(viewLifecycleOwner){ dishes ->
-            dishesAdapter.submitList(dishes)
+            mealsAdapter.submitList(dishes)
             (activity as MainActivity).hideProgressBar()
         }
 
@@ -57,7 +57,7 @@ class CatalogFragment : Fragment(R.layout.fragment_catalog) {
 
         binding.rvCatalog.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            adapter = dishesAdapter
+            adapter = mealsAdapter
         }
 
         binding.rvBanners.apply {

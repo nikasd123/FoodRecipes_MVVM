@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.tz.fooddelivery.domain.models.Category
 import com.tz.fooddelivery.domain.models.DishItem
 import com.tz.fooddelivery.domain.use_cases.GetCategoriesUseCase
-import com.tz.fooddelivery.domain.use_cases.GetDishesUseCase
+import com.tz.fooddelivery.domain.use_cases.GetMealsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -15,7 +15,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CatalogViewModel @Inject constructor(
     private val getCategoriesUseCase: GetCategoriesUseCase,
-    private val getDishesUseCase: GetDishesUseCase
+    private val getMealsUseCase: GetMealsUseCase
 ): ViewModel() {
     private val _dishesList = MutableLiveData<List<DishItem>?>()
     val dishesList: LiveData<List<DishItem>?> = _dishesList
@@ -25,7 +25,7 @@ class CatalogViewModel @Inject constructor(
 
     private fun getDishes(){
         viewModelScope.launch {
-            val response = getDishesUseCase.getDishes()
+            val response = getMealsUseCase.getDishes()
             _dishesList.value = response
         }
     }
@@ -39,7 +39,7 @@ class CatalogViewModel @Inject constructor(
 
     fun getDishesByCategory(category: String) {
         viewModelScope.launch {
-            val dishes = getDishesUseCase.getDishesByCategory(category)
+            val dishes = getMealsUseCase.getDishesByCategory(category)
             _dishesList.value = dishes
         }
     }

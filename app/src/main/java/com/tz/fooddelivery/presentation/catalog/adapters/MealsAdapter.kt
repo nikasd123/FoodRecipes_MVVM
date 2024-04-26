@@ -1,9 +1,7 @@
 package com.tz.fooddelivery.presentation.catalog.adapters
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -12,7 +10,7 @@ import com.tz.fooddelivery.R
 import com.tz.fooddelivery.databinding.DishesItemBinding
 import com.tz.fooddelivery.domain.models.DishItem
 
-class DishesAdapter : ListAdapter<DishItem, DishesAdapter.DishesViewHolder>(DishesDiffCallback()) {
+class MealsAdapter : ListAdapter<DishItem, MealsAdapter.DishesViewHolder>(DishesDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DishesViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
