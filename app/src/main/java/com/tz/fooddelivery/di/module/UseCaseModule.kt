@@ -15,8 +15,8 @@ import dagger.hilt.components.SingletonComponent
 class UseCaseModule {
 
     @Provides
-    fun provideGetDishesUseCase(mealsRepository: MealsRepository) =
-        GetMealsUseCase(mealsRepository = mealsRepository)
+    fun provideGetDishesUseCase(mealsRepository: MealsRepository, getTranslatedTextUseCase: GetTranslatedTextUseCase) =
+        GetMealsUseCase(mealsRepository = mealsRepository, getTranslatedTextUseCase = getTranslatedTextUseCase)
 
     @Provides
     fun provideGetCategoriesUseCase(mealsRepository: MealsRepository) =

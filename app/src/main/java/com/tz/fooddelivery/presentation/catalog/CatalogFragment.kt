@@ -72,6 +72,7 @@ class CatalogFragment : Fragment(R.layout.fragment_catalog) {
 
     private fun onItemClick(category: Category){
         viewModel.getDishesByCategory(category.category)
+        (activity as MainActivity).showProgressBar()
     }
 
     private fun getBannerItems(): List<BannerItem> =
