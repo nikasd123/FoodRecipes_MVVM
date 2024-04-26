@@ -23,10 +23,15 @@ class GetMealsUseCase @Inject constructor(
     }
 
     suspend fun getDishesByCategory(category: String): List<DishItem>? {
-        val dishes = mealsRepository.getDishesByCategory(category)
+        val dishes = mealsRepository.getDishesByCategory(convertRussianToEnglishText(category))
+
         return dishes?.map { dishItem ->
             val translatedTitle = getTranslatedTextUseCase(dishItem.title)
             dishItem.copy(title = translatedTitle)
         }
     }
+
+    private suspend fun convertRussianToEnglishText(text: String): String =
+        getTranslatedTextUseCase.getEnglishText(text)
+
 }

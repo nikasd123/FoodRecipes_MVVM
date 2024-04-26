@@ -7,7 +7,14 @@ import javax.inject.Singleton
 
 @Singleton
 class GetCategoriesUseCase @Inject constructor(
-    private val mealsRepository: MealsRepository
+    private val mealsRepository: MealsRepository,
+    private val getTranslatedTextUseCase: GetTranslatedTextUseCase
 ){
-    suspend fun getCategories(): List<Category>? = mealsRepository.getCategories()
+    suspend fun getCategories(): List<Category>? {
+        val categories = mealsRepository.getCategories()
+        return categories?.map { category ->
+            val translatedCategoryName = getTranslatedTextUseCase(category.category)
+            category.copy(category = translatedCategoryName)
+        }
+    }
 }

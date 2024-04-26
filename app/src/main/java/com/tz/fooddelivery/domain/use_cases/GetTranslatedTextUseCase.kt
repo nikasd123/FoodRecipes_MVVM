@@ -10,7 +10,15 @@ class GetTranslatedTextUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(textToTranslate: String): String =
         try {
-            val translatedText = translationRepository.getTranslatedText(textToTranslate)
+            val translatedText = translationRepository.getRussianText(textToTranslate)
+            translatedText
+        } catch (e: Exception) {
+            textToTranslate
+        }
+
+    suspend fun getEnglishText(textToTranslate: String): String =
+        try {
+            val translatedText = translationRepository.getEnglishText(textToTranslate)
             translatedText
         } catch (e: Exception) {
             textToTranslate

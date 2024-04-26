@@ -38,7 +38,6 @@ class MealsRepositoryImpl @Inject constructor(
         }
     }
 
-
     override suspend fun getDishesByCategory(category: String): List<DishItem>? = withContext(Dispatchers.IO){
         try {
             val dishesFromApi = mealsApi.getMealsByCategory(category).meals?.map { it.toDomain() }
