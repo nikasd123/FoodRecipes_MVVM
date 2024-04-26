@@ -1,6 +1,6 @@
 package com.tz.fooddelivery.domain.models
 
-import com.tz.fooddelivery.data.local.CategoryEntity
+import com.tz.fooddelivery.data.local.entities.CategoryEntity
 
 data class Category(
     val id: String,

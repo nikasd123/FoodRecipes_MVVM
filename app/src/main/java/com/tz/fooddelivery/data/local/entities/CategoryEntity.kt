@@ -1,4 +1,4 @@
-package com.tz.fooddelivery.data.local
+package com.tz.fooddelivery.data.local.entities
 
 import androidx.room.Entity
 import androidx.room.Ignore

@@ -2,9 +2,9 @@ package com.tz.fooddelivery.di.base
 
 import android.content.Context
 import androidx.room.Room
-import com.tz.fooddelivery.data.local.AppDatabase
-import com.tz.fooddelivery.data.local.CategoryEntity
-import com.tz.fooddelivery.data.local.DishEntity
+import com.tz.fooddelivery.data.local.base.AppDatabase
+import com.tz.fooddelivery.data.local.entities.CategoryEntity
+import com.tz.fooddelivery.data.local.entities.DishEntity
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

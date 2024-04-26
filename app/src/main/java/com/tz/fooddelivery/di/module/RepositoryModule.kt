@@ -1,7 +1,7 @@
 package com.tz.fooddelivery.di.module
 
-import com.tz.fooddelivery.data.local.CategoriesDao
-import com.tz.fooddelivery.data.local.DishesDao
+import com.tz.fooddelivery.data.local.dao.CategoriesDao
+import com.tz.fooddelivery.data.local.dao.DishesDao
 import com.tz.fooddelivery.data.remote.api.MealsApi
 import com.tz.fooddelivery.data.repository.DishesRepositoryImpl
 import com.tz.fooddelivery.domain.repository.DishesRepository

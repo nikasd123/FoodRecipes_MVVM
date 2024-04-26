@@ -1,6 +1,6 @@
 package com.tz.fooddelivery.domain.models
 
-import com.tz.fooddelivery.data.local.DishEntity
+import com.tz.fooddelivery.data.local.entities.DishEntity
 
 data class DishItem(
     val id: String,
