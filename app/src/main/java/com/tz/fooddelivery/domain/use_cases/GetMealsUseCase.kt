@@ -10,8 +10,8 @@ class GetMealsUseCase @Inject constructor(
     private val mealsRepository: MealsRepository,
     private val getTranslatedTextUseCase: GetTranslatedTextUseCase
 ){
-    suspend fun getDishes(): List<MealItem>? {
-        val dishes = mealsRepository.getDishes()
+    suspend fun getMeals(): List<MealItem>? {
+        val dishes = mealsRepository.getMeals()
         return dishes?.map { dishItem ->
             val translatedTitle = getTranslatedTextUseCase(dishItem.title)
             val translatedDescription = getTranslatedTextUseCase(dishItem.description)
@@ -22,8 +22,8 @@ class GetMealsUseCase @Inject constructor(
         }
     }
 
-    suspend fun getDishesByCategory(category: String): List<MealItem>? {
-        val dishes = mealsRepository.getDishesByCategory(convertRussianToEnglishText(category))
+    suspend fun getMealsByCategory(category: String): List<MealItem>? {
+        val dishes = mealsRepository.getMealsByCategory(convertRussianToEnglishText(category))
 
         return dishes?.map { dishItem ->
             val translatedTitle = getTranslatedTextUseCase(dishItem.title)

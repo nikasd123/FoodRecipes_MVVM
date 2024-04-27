@@ -71,7 +71,7 @@ class CatalogFragment : Fragment(R.layout.fragment_catalog) {
     }
 
     private fun onItemClick(category: Category){
-        viewModel.getDishesByCategory(category.category)
+        viewModel.getMealsByCategory(category.category)
         (activity as MainActivity).showProgressBar()
     }
 

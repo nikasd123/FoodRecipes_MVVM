@@ -23,9 +23,9 @@ class CatalogViewModel @Inject constructor(
     private val _categoriesList = MutableLiveData<List<Category>?>()
     val categoriesList: LiveData<List<Category>?> = _categoriesList
 
-    private fun getDishes(){
+    private fun getMeals(){
         viewModelScope.launch {
-            val response = getMealsUseCase.getDishes()
+            val response = getMealsUseCase.getMeals()
             _dishesList.value = response
         }
     }
@@ -37,15 +37,15 @@ class CatalogViewModel @Inject constructor(
         }
     }
 
-    fun getDishesByCategory(category: String) {
+    fun getMealsByCategory(category: String) {
         viewModelScope.launch {
-            val dishes = getMealsUseCase.getDishesByCategory(category)
+            val dishes = getMealsUseCase.getMealsByCategory(category)
             _dishesList.value = dishes
         }
     }
 
     init {
-        getDishes()
+        getMeals()
         getCategories()
     }
 }
