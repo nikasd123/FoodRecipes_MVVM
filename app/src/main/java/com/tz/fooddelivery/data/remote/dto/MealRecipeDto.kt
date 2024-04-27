@@ -64,5 +64,5 @@ fun MealRecipeDto.toDomain(): MealRecipe =
             strIngredient18.takeIf { it?.isNotEmpty() == true },
             strIngredient19.takeIf { it?.isNotEmpty() == true },
             strIngredient20.takeIf { it?.isNotEmpty() == true },
-        ).joinToString(", ")
+        ).joinToString(", ").replace("\\r\\n", "")
     )
