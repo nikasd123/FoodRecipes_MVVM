@@ -1,10 +1,10 @@
 package com.tz.fooddelivery.domain.repository
 
 import com.tz.fooddelivery.domain.models.Category
-import com.tz.fooddelivery.domain.models.DishItem
+import com.tz.fooddelivery.domain.models.MealItem
 
 interface MealsRepository {
-    suspend fun getDishes(): List<DishItem>?
+    suspend fun getMeals(): List<MealItem>?
     suspend fun getCategories(): List<Category>?
-    suspend fun getDishesByCategory(category: String): List<DishItem>?
+    suspend fun getMealsByCategory(category: String): List<MealItem>?
 }

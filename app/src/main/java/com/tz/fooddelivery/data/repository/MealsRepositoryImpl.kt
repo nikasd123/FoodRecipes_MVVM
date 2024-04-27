@@ -18,7 +18,7 @@ class MealsRepositoryImpl @Inject constructor(
     private val mealsDao: MealsDao,
     private val categoriesDao: CategoriesDao
 ): MealsRepository {
-    override suspend fun getDishes(): List<MealItem>? = withContext(Dispatchers.IO){
+    override suspend fun getMeals(): List<MealItem>? = withContext(Dispatchers.IO){
         return@withContext try {
             val dishesFromApi = mealsApi.getMeals().meals?.map { it.toDomain() }
             mealsDao.insertAll(dishesFromApi?.map { it.toEntity() } ?: emptyList())
@@ -38,7 +38,7 @@ class MealsRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getDishesByCategory(category: String): List<MealItem>? = withContext(Dispatchers.IO){
+    override suspend fun getMealsByCategory(category: String): List<MealItem>? = withContext(Dispatchers.IO){
         try {
             val dishesFromApi = mealsApi.getMealsByCategory(category).meals?.map { it.toDomain() }
             mealsDao.insertAll(dishesFromApi?.map { it.toEntity() } ?: emptyList())
