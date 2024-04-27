@@ -5,8 +5,10 @@ import com.tz.fooddelivery.data.local.dao.MealsDao
 import com.tz.fooddelivery.data.remote.api.MealsApi
 import com.tz.fooddelivery.data.remote.api.TranslationApi
 import com.tz.fooddelivery.data.repository.MealsRepositoryImpl
+import com.tz.fooddelivery.data.repository.RecipeRepositoryImpl
 import com.tz.fooddelivery.data.repository.TranslationRepositoryImpl
 import com.tz.fooddelivery.domain.repository.MealsRepository
+import com.tz.fooddelivery.domain.repository.RecipeRepository
 import com.tz.fooddelivery.domain.repository.TranslationRepository
 import dagger.Module
 import dagger.Provides
@@ -24,4 +26,8 @@ class RepositoryModule {
     @Provides
     fun provideTranslationRepository(translationApi: TranslationApi): TranslationRepository =
         TranslationRepositoryImpl(translationApi = translationApi)
+
+    @Provides
+    fun provideRecipeRepository(mealsApi: MealsApi): RecipeRepository =
+        RecipeRepositoryImpl(mealsApi = mealsApi)
 }
