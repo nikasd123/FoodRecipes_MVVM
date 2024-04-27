@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tz.fooddelivery.domain.models.Category
-import com.tz.fooddelivery.domain.models.DishItem
+import com.tz.fooddelivery.domain.models.MealItem
 import com.tz.fooddelivery.domain.use_cases.GetCategoriesUseCase
 import com.tz.fooddelivery.domain.use_cases.GetMealsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,8 +17,8 @@ class CatalogViewModel @Inject constructor(
     private val getCategoriesUseCase: GetCategoriesUseCase,
     private val getMealsUseCase: GetMealsUseCase
 ): ViewModel() {
-    private val _dishesList = MutableLiveData<List<DishItem>?>()
-    val dishesList: LiveData<List<DishItem>?> = _dishesList
+    private val _dishesList = MutableLiveData<List<MealItem>?>()
+    val dishesList: LiveData<List<MealItem>?> = _dishesList
 
     private val _categoriesList = MutableLiveData<List<Category>?>()
     val categoriesList: LiveData<List<Category>?> = _categoriesList

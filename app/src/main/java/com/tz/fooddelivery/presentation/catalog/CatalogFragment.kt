@@ -33,8 +33,8 @@ class CatalogFragment : Fragment(R.layout.fragment_catalog) {
     }
 
     private fun initFun(){
-        setupObservers()
         initRecyclerViews()
+        setupObservers()
         initRecyclerItemList()
     }
 

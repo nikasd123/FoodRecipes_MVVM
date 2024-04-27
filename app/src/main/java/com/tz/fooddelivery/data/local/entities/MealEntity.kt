@@ -3,10 +3,10 @@ package com.tz.fooddelivery.data.local.entities
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
-import com.tz.fooddelivery.domain.models.DishItem
+import com.tz.fooddelivery.domain.models.MealItem
 
 @Entity(tableName = "dishes")
-data class DishEntity(
+data class MealEntity(
     @PrimaryKey
     val dishId: String,
     val dishImage: String?,
@@ -18,8 +18,8 @@ data class DishEntity(
     constructor(): this("", null, null, null, null)
 }
 
-internal fun DishEntity.toDomain(): DishItem =
-    DishItem(
+internal fun MealEntity.toDomain(): MealItem =
+    MealItem(
         id = dishId,
         image = dishImage ?: "",
         title = dishTitle ?: "",

@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.tz.fooddelivery.data.local.base.AppDatabase
 import com.tz.fooddelivery.data.local.entities.CategoryEntity
-import com.tz.fooddelivery.data.local.entities.DishEntity
+import com.tz.fooddelivery.data.local.entities.MealEntity
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,11 +29,11 @@ class DatabaseModule {
 
     @Provides
     @Singleton
-    fun provideDishesDao(database: AppDatabase) = database.dishesDao()
+    fun provideDishesDao(database: AppDatabase) = database.mealsDao()
 
     @Provides
     @Singleton
-    fun provideDishEntity() = DishEntity()
+    fun provideDishEntity() = MealEntity()
 
     @Provides
     @Singleton

@@ -8,9 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.tz.fooddelivery.R
 import com.tz.fooddelivery.databinding.DishesItemBinding
-import com.tz.fooddelivery.domain.models.DishItem
+import com.tz.fooddelivery.domain.models.MealItem
 
-class MealsAdapter : ListAdapter<DishItem, MealsAdapter.DishesViewHolder>(DishesDiffCallback()) {
+class MealsAdapter : ListAdapter<MealItem, MealsAdapter.DishesViewHolder>(DishesDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DishesViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -24,23 +24,23 @@ class MealsAdapter : ListAdapter<DishItem, MealsAdapter.DishesViewHolder>(Dishes
     }
 
     inner class DishesViewHolder(private val binding: DishesItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(dishItem: DishItem) {
-            binding.title.text = dishItem.title
-            binding.description.text = dishItem.description
+        fun bind(mealItem: MealItem) {
+            binding.title.text = mealItem.title
+            binding.description.text = mealItem.description
             binding.price.text = itemView.context.getString(R.string.price)
 
             Glide.with(binding.image.context)
-                .load(dishItem.image)
+                .load(mealItem.image)
                 .into(binding.image)
         }
     }
 
-    class DishesDiffCallback : DiffUtil.ItemCallback<DishItem>() {
-        override fun areItemsTheSame(oldItem: DishItem, newItem: DishItem): Boolean {
+    class DishesDiffCallback : DiffUtil.ItemCallback<MealItem>() {
+        override fun areItemsTheSame(oldItem: MealItem, newItem: MealItem): Boolean {
             return oldItem.title == newItem.title
         }
 
-        override fun areContentsTheSame(oldItem: DishItem, newItem: DishItem): Boolean {
+        override fun areContentsTheSame(oldItem: MealItem, newItem: MealItem): Boolean {
             return oldItem == newItem
         }
     }

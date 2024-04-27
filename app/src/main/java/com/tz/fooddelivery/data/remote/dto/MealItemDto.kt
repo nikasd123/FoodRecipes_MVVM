@@ -1,13 +1,13 @@
 package com.tz.fooddelivery.data.remote.dto
 
 import com.google.gson.annotations.SerializedName
-import com.tz.fooddelivery.domain.models.DishItem
+import com.tz.fooddelivery.domain.models.MealItem
 
-data class DishItemDto(
+data class MealItemDto(
     @SerializedName("idMeal") val idMeal: String?,
-    @SerializedName("strMealThumb") val dishImage: String?,
-    @SerializedName("strMeal") val dishTitle: String?,
-    @SerializedName("strCategory") val dishCategory: String?,
+    @SerializedName("strMealThumb") val mealImage: String?,
+    @SerializedName("strMeal") val mealTitle: String?,
+    @SerializedName("strCategory") val mealCategory: String?,
     @SerializedName("strIngredient1") val strIngredient1: String?,
     @SerializedName("strIngredient2") val strIngredient2: String?,
     @SerializedName("strIngredient3") val strIngredient3: String?,
@@ -30,12 +30,12 @@ data class DishItemDto(
     @SerializedName("strIngredient20") val strIngredient20: String?
 )
 
-internal fun DishItemDto.toDomain(): DishItem =
-    DishItem(
+internal fun MealItemDto.toDomain(): MealItem =
+    MealItem(
         id = idMeal ?: "",
-        image = dishImage ?: "",
-        title = dishTitle ?: "",
-        category = dishCategory ?: "",
+        image = mealImage ?: "",
+        title = mealTitle ?: "",
+        category = mealCategory ?: "",
         description = listOfNotNull(
             strIngredient1.takeIf { it?.isNotEmpty() == true },
             strIngredient2.takeIf { it?.isNotEmpty() == true },

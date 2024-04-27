@@ -1,8 +1,8 @@
 package com.tz.fooddelivery.domain.models
 
-import com.tz.fooddelivery.data.local.entities.DishEntity
+import com.tz.fooddelivery.data.local.entities.MealEntity
 
-data class DishItem(
+data class MealItem(
     val id: String,
     val image: String,
     val title: String,
@@ -10,8 +10,8 @@ data class DishItem(
     val description: String
 )
 
-internal fun DishItem.toEntity(): DishEntity =
-    DishEntity(
+internal fun MealItem.toEntity(): MealEntity =
+    MealEntity(
         dishId = id,
         dishImage = image,
         dishTitle = title,
