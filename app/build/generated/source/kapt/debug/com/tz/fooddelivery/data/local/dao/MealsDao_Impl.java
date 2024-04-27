@@ -20,11 +20,11 @@ import java.util.List;
 public final class MealsDao_Impl extends MealsDao {
   private final RoomDatabase __db;
 
-  private final EntityInsertionAdapter<MealEntity> __insertionAdapterOfDishEntity;
+  private final EntityInsertionAdapter<MealEntity> __insertionAdapterOfMealEntity;
 
   public MealsDao_Impl(RoomDatabase __db) {
     this.__db = __db;
-    this.__insertionAdapterOfDishEntity = new EntityInsertionAdapter<MealEntity>(__db) {
+    this.__insertionAdapterOfMealEntity = new EntityInsertionAdapter<MealEntity>(__db) {
       @Override
       public String createQuery() {
         return "INSERT OR REPLACE INTO `dishes` (`dishId`,`dishImage`,`dishTitle`,`dishCategory`,`description`) VALUES (?,?,?,?,?)";
@@ -66,7 +66,7 @@ public final class MealsDao_Impl extends MealsDao {
     __db.assertNotSuspendingTransaction();
     __db.beginTransaction();
     try {
-      __insertionAdapterOfDishEntity.insert(dishes);
+      __insertionAdapterOfMealEntity.insert(dishes);
       __db.setTransactionSuccessful();
     } finally {
       __db.endTransaction();

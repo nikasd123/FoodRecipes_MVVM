@@ -84,6 +84,7 @@ dependencies {
     testImplementation ("junit:junit:4.13.2")
     testImplementation ("org.mockito:mockito-core:3.12.4")
     testImplementation ("org.assertj:assertj-core:3.20.2")
+    testImplementation ("org.mockito:mockito-inline:3.11.2")
 
     kapt ("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.4.2")
     implementation ("androidx.recyclerview:recyclerview:1.3.1")
