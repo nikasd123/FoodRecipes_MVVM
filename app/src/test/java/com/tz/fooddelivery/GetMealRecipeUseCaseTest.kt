@@ -5,6 +5,7 @@ import com.tz.fooddelivery.domain.repository.RecipeRepository
 import com.tz.fooddelivery.domain.use_cases.GetMealRecipeUseCase
 import com.tz.fooddelivery.domain.use_cases.GetTranslatedTextUseCase
 import junit.framework.TestCase.assertEquals
+import junit.framework.TestCase.assertNull
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
@@ -62,5 +63,15 @@ class GetMealRecipeUseCaseTest {
         assertEquals(translatedMealRecipe, result)
     }
 
+    @Test
+    fun `getMealRecipe returns null when repository returns null`() = runBlocking {
+        val mealId = "1"
+        `when`(recipeRepository.getMealRecipe(mealId)).thenReturn(null)
+
+        val result = getMealRecipeUseCaseTest.getMealRecipe(mealId)
+
+        verify(recipeRepository).getMealRecipe(mealId)
+        assertNull(result)
+    }
 
 }
