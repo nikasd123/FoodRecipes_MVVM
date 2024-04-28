@@ -1,4 +1,4 @@
-package com.tz.fooddelivery
+package com.tz.fooddelivery.use_cases
 
 import com.tz.fooddelivery.domain.models.Category
 import com.tz.fooddelivery.domain.repository.MealsRepository
