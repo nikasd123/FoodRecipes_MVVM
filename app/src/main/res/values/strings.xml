@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">FoodDelivery</string>
+    <string name="city_name">Москва</string>
+    <string name="filter_pizza">Пицца</string>
+    <string name="menu">Меню</string>
+    <string name="profile">Профиль</string>
+    <string name="cart">Корзина</string>
+    <string name="add_ingredients_to_shop_list">добавить ингредиенты в список для покупок</string>
+    <string name="recipe">Рецепт</string>
+    <string name="recipe_full">Разогрейте духовку до 350° F. Сбрызните антипригарным спреем форму для выпечки размером 9x13 дюймов.</string>
+    <string name="ingredients">Ветчина,шампиньоны, увеличинная порция моцареллы, томатный соус</string>
+    <string name="meal_title">Ветчина и грибы</string>
+    <string-array name="cities">
+        <item>Москва</item>
+        <item>Санкт-Питербург</item>
+        <item>Екатеринбург</item>
+        <item>Тюмень</item>
+        <item>Красноярск</item>
+    </string-array>
+</resources>
