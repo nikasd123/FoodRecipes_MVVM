@@ -22,3 +22,5 @@ dependencyResolutionManagement {
 rootProject.name = "FoodRecipesCompose"
 include(":app")
 include(":domain")
+include(":data")
+include(":di")
