@@ -139,35 +139,40 @@ fun PreviewMealsLazyColumn() {
             testImage = R.drawable.pizza,
             title = "Паста с морепро дукт а миморе продук тамимор епродуктамиепродуктамиепродуктами",
             category = "Итальянская кухня",
-            description = "Баварские колбаски, ветчина,пикантная пепперони, острая чоризо,томатный соус."
-        ),
-        MealItem(
-            id = "2",
-            testImage = R.drawable.banner_first,
-            title = "Салат Цезарь",
-            category = "Салаты",
-            description = "Баварские колбаски, ветчина,пикантная пепперони, острая чоризо,томатный соус."
+            description = "Баварские колбаски, ветчина,пикантная пепперони, острая чоризо,томатный соус.",
+            image = ""
         ),
         MealItem(
             id = "2",
             testImage = R.drawable.pizza,
             title = "Салат Цезарь",
             category = "Салаты",
-            description = "Баварские колбаски, ветчина,пикантная пепперони, острая чоризо,томатный соус."
+            description = "Баварские колбаски, ветчина,пикантная пепперони, острая чоризо,томатный соус.",
+            image = ""
         ),
         MealItem(
             id = "2",
             testImage = R.drawable.pizza,
             title = "Салат Цезарь",
             category = "Салаты",
-            description = "Классический салат с куриной грудкой, сухариками и соусом Цезарь."
+            description = "Баварские колбаски, ветчина,пикантная пепперони, острая чоризо,томатный соус.",
+            image = ""
         ),
         MealItem(
             id = "2",
             testImage = R.drawable.pizza,
             title = "Салат Цезарь",
             category = "Салаты",
-            description = "Классический салат с куриной грудкой, сухариками и соусом Цезарь."
+            description = "Классический салат с куриной грудкой, сухариками и соусом Цезарь.",
+            image = ""
+        ),
+        MealItem(
+            id = "2",
+            testImage = R.drawable.pizza,
+            title = "Салат Цезарь",
+            category = "Салаты",
+            description = "Классический салат с куриной грудкой, сухариками и соусом Цезарь.",
+            image = ""
         ),
     )
     Meals(mealItems = mealItems)
