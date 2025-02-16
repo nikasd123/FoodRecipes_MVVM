@@ -44,12 +44,4 @@ class MainActivity : AppCompatActivity() {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         cityName?.adapter = adapter
     }
-
-    fun showProgressBar(){
-        binding.progressBar.visibility = View.VISIBLE
-    }
-
-    fun hideProgressBar(){
-        binding.progressBar.visibility = View.GONE
-    }
 }

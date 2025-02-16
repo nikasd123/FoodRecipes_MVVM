@@ -27,7 +27,6 @@ class CatalogFragment : Fragment(R.layout.fragment_catalog) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentCatalogBinding.bind(view)
-        (activity as MainActivity).showProgressBar()
 
         initFun()
     }
@@ -41,7 +40,6 @@ class CatalogFragment : Fragment(R.layout.fragment_catalog) {
     private fun setupObservers(){
         viewModel.dishesList.observe(viewLifecycleOwner){ dishes ->
             mealsAdapter.submitList(dishes)
-            (activity as MainActivity).hideProgressBar()
         }
 
         viewModel.categoriesList.observe(viewLifecycleOwner){ categories ->
@@ -72,7 +70,6 @@ class CatalogFragment : Fragment(R.layout.fragment_catalog) {
 
     private fun onItemClick(category: Category){
         viewModel.getDishesByCategory(category.category)
-        (activity as MainActivity).showProgressBar()
     }
 
     private fun getBannerItems(): List<BannerItem> =
