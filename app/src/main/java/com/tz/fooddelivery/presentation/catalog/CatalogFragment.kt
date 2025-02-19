@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.tz.fooddelivery.R
 import com.tz.fooddelivery.databinding.FragmentCatalogBinding
 import com.tz.fooddelivery.domain.common.State
@@ -81,8 +82,10 @@ class CatalogFragment : Fragment(R.layout.fragment_catalog) {
         filtersAdapter.submitList(categories)
     }
 
-    private fun showError(message: String){
-
+    private fun showError(message: String) {
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG)
+            .setAction("Retry") { viewModel.loadInitialData() }
+            .show()
     }
 
     private fun initRecyclerViews(){

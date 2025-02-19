@@ -20,7 +20,7 @@ class UseCaseModule {
 
     @Provides
     fun provideGetCategoriesUseCase(mealsRepository: MealsRepository, getTranslatedTextUseCase: GetTranslatedTextUseCase) =
-        GetCategoriesUseCase(mealsRepository = mealsRepository, getTranslatedTextUseCase = getTranslatedTextUseCase)
+        GetCategoriesUseCase(mealsRepository = mealsRepository, translateUseCase = getTranslatedTextUseCase)
 
     @Provides
     fun provideGetTranslatedTextUseCase(translationRepository: TranslationRepository) =
