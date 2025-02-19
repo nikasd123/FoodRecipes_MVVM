@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.tz.fooddelivery"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.tz.fooddelivery"
