@@ -10,7 +10,7 @@ import com.tz.fooddelivery.R
 import com.tz.fooddelivery.databinding.DishesItemBinding
 import com.tz.fooddelivery.domain.models.DishItem
 
-class MealsAdapter : ListAdapter<DishItem, MealsAdapter.DishesViewHolder>(DishesDiffCallback()) {
+class MealsAdapter : ListAdapter<DishItem, MealsAdapter.DishesViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DishesViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -35,13 +35,15 @@ class MealsAdapter : ListAdapter<DishItem, MealsAdapter.DishesViewHolder>(Dishes
         }
     }
 
-    class DishesDiffCallback : DiffUtil.ItemCallback<DishItem>() {
-        override fun areItemsTheSame(oldItem: DishItem, newItem: DishItem): Boolean {
-            return oldItem.title == newItem.title
-        }
+    companion object {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<DishItem>() {
+            override fun areItemsTheSame(oldItem: DishItem, newItem: DishItem): Boolean {
+                return oldItem.id == newItem.id
+            }
 
-        override fun areContentsTheSame(oldItem: DishItem, newItem: DishItem): Boolean {
-            return oldItem == newItem
+            override fun areContentsTheSame(oldItem: DishItem, newItem: DishItem): Boolean {
+                return oldItem == newItem
+            }
         }
     }
 }
