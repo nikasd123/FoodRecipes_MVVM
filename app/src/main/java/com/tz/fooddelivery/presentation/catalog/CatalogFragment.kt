@@ -2,120 +2,147 @@ package com.tz.fooddelivery.presentation.catalog
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.tz.fooddelivery.R
 import com.tz.fooddelivery.databinding.FragmentCatalogBinding
-import com.tz.fooddelivery.domain.common.State
 import com.tz.fooddelivery.domain.models.BannerItem
 import com.tz.fooddelivery.domain.models.Category
-import com.tz.fooddelivery.domain.models.DishItem
-import com.tz.fooddelivery.presentation.MainActivity
 import com.tz.fooddelivery.presentation.catalog.adapters.BannerAdapter
-import com.tz.fooddelivery.presentation.catalog.adapters.MealsAdapter
 import com.tz.fooddelivery.presentation.catalog.adapters.FiltersAdapter
-import com.tz.fooddelivery.presentation.common.gone
-import com.tz.fooddelivery.presentation.common.setViewsVisibility
-import com.tz.fooddelivery.presentation.common.visible
+import com.tz.fooddelivery.presentation.catalog.adapters.MealsAdapter
+import com.tz.fooddelivery.presentation.utils.NetworkMonitor
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class CatalogFragment : Fragment(R.layout.fragment_catalog) {
 
-    private lateinit var binding: FragmentCatalogBinding
-    private val filtersAdapter: FiltersAdapter by lazy { FiltersAdapter(::onItemClick) }
-    private val mealsAdapter: MealsAdapter by lazy { MealsAdapter() }
-    private val bannersAdapter: BannerAdapter by lazy { BannerAdapter() }
+    private var _binding: FragmentCatalogBinding? = null
+    private val binding get() = _binding!!
+
+    private val networkMonitor: NetworkMonitor by lazy { NetworkMonitor(requireContext()) }
     private val viewModel: CatalogViewModel by viewModels()
+    private val filtersAdapter = FiltersAdapter(::onCategorySelected)
+    private val mealsAdapter by lazy { MealsAdapter() }
+    private val bannersAdapter by lazy { BannerAdapter() }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        initNetworkConnectionObserver()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentCatalogBinding.bind(view)
+        _binding = FragmentCatalogBinding.bind(view)
 
-        initFun()
-    }
-
-    private fun initFun(){
+        setupRecyclerViews()
         setupObservers()
-        initRecyclerViews()
-        initRecyclerItemList()
     }
 
     private fun setupObservers() {
-        viewModel.state.onEach { state ->
-            when (state) {
-                is State.Loading -> {
-                    setViewsVisibility(
-                        binding.progressBar to true,
-                        binding.rvFilters to true,
-                        binding.rvCatalog to false
-                    )
-                }
-                is State.Success -> {
-                    val (dishes, categories) = state.data
-                    updateAdapters(meals = dishes, categories =  categories)
-                    setViewsVisibility(
-                        binding.progressBar to false,
-                        binding.rvFilters to true,
-                        binding.rvCatalog to true
-                    )
-                }
-                is State.Error -> {
-                    showError(state.message)
-                    setViewsVisibility(
-                        binding.progressBar to false,
-                        binding.rvFilters to false,
-                        binding.rvCatalog to false
-                    )
-                }
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                initDishesObserver()
+                initCategoriesObserver()
             }
-        }.launchIn(viewLifecycleOwner.lifecycleScope)
+        }
     }
 
-    private fun updateAdapters(meals: List<DishItem>, categories: List<Category>) {
-        mealsAdapter.submitList(meals)
-        filtersAdapter.submitList(categories)
+    private suspend fun initDishesObserver() {
+        viewModel.uiState.collect { state ->
+            when (state) {
+                is CatalogViewModel.MealsUiState.Loading -> showLoading(true)
+                is CatalogViewModel.MealsUiState.Success -> {
+                    showLoading(false)
+                    mealsAdapter.submitList(state.dishes)
+                }
+
+                is CatalogViewModel.MealsUiState.Error -> {
+                    showLoading(false)
+                    showError(state.message)
+                }
+            }
+        }
+    }
+
+    private suspend fun initCategoriesObserver() {
+        viewModel.categoriesState.collect { state ->
+            when (state) {
+                is CatalogViewModel.CategoriesUiState.Loading -> showLoading(true)
+                is CatalogViewModel.CategoriesUiState.Success -> {
+                    showLoading(false)
+                    filtersAdapter.submitList(state.categories)
+                }
+
+                is CatalogViewModel.CategoriesUiState.Error -> {
+                    showLoading(false)
+                    showCategoriesError(state.message)
+                }
+            }
+        }
+    }
+
+    private fun setupRecyclerViews() {
+        with(binding) {
+            rvFilters.apply {
+                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                adapter = filtersAdapter
+            }
+
+            rvCatalog.apply {
+                layoutManager = LinearLayoutManager(context)
+                adapter = mealsAdapter
+            }
+
+            rvBanners.apply {
+                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                adapter = bannersAdapter
+            }
+        }
+
+        bannersAdapter.submitList(getBannerItems())
+    }
+
+    private fun initNetworkConnectionObserver() {
+        networkMonitor.observe(this) { isConnected ->
+            if (isConnected) {
+                viewModel.retry()
+            }
+        }
+    }
+
+    private fun showLoading(show: Boolean) {
+        binding.progressBar.visibility = if (show) View.VISIBLE else View.GONE
     }
 
     private fun showError(message: String) {
         Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG)
-            .setAction("Retry") { viewModel.loadInitialData() }
+            .setAction("Retry") { viewModel.retry() }
             .show()
     }
 
-    private fun initRecyclerViews(){
-        binding.rvFilters.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = filtersAdapter
-        }
-
-        binding.rvCatalog.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            adapter = mealsAdapter
-        }
-
-        binding.rvBanners.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = bannersAdapter
-        }
+    private fun showCategoriesError(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
-    private fun initRecyclerItemList(){
-        bannersAdapter.submitList(getBannerItems())
+    private fun onCategorySelected(category: Category) {
+        viewModel.selectCategory(category.category)
     }
 
-    private fun onItemClick(category: Category){
-        viewModel.getDishesByCategory(category.category)
-    }
+    private fun getBannerItems() = listOf(
+        BannerItem(R.drawable.banner),
+        BannerItem(R.drawable.banner)
+    )
 
-    private fun getBannerItems(): List<BannerItem> =
-        listOf(
-            BannerItem(R.drawable.banner),
-            BannerItem(R.drawable.banner)
-        )
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }
