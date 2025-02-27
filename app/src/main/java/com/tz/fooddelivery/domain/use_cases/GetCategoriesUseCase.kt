@@ -1,15 +1,18 @@
 package com.tz.fooddelivery.domain.use_cases
 
+import com.tz.fooddelivery.domain.common.DataError
+import com.tz.fooddelivery.domain.common.NetworkError
+import com.tz.fooddelivery.domain.common.Result
+import com.tz.fooddelivery.domain.common.mappers.mapTranslationError
 import com.tz.fooddelivery.domain.models.Category
 import com.tz.fooddelivery.domain.repository.MealsRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.flowOn
+import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -18,29 +21,54 @@ class GetCategoriesUseCase @Inject constructor(
     private val mealsRepository: MealsRepository,
     private val translateUseCase: GetTranslatedTextUseCase
 ) {
-    suspend fun getCategories(): List<Category>? {
-        val categories = mealsRepository.getCategories() ?: return null
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private val translationDispatcher = Dispatchers.IO.limitedParallelism(5)
+    private val translatedCache = ConcurrentHashMap<String, Category>()
 
-        return coroutineScope {
-            categories.map { category ->
-                async(Dispatchers.IO) {
-                    val translatedName = translateUseCase(category.category)
-                    category.copy(category = translatedName)
+    fun getCategories(): Flow<Result<List<Category>, NetworkError>> = channelFlow {
+        when (val result = mealsRepository.getCategories()) {
+            is Result.Success -> {
+                try {
+                    val processed = processCategories(result.data)
+                    send(Result.Success(processed))
+                } catch (e: Exception) {
+                    send(Result.Error(mapTranslationError(e)))
                 }
-            }.awaitAll()
+            }
+            is Result.Error -> send(mapRepositoryError(result.error))
+        }
+        close()
+    }.flowOn(translationDispatcher)
+
+    private suspend fun processCategories(categories: List<Category>): List<Category> = coroutineScope {
+        categories.map { category ->
+            translatedCache.getOrPut(category.id) {
+                try {
+                    translateCategory(category)
+                } catch (e: Exception) {
+                    throw GetTranslatedTextUseCase.TranslationException(mapTranslationError(e))
+                }
+            }
         }
     }
 
-    fun getCategoriesFlow(): Flow<List<Category?>> = flow {
-        val rawCategories = mealsRepository.getCategories() ?: emptyList()
+    private suspend fun translateCategory(category: Category): Category = coroutineScope {
+        val titleResult = translateUseCase(category.category)
 
-        val translatedCategories = translateUseCase
-            .translateFlow(rawCategories.map { it.category })
-            .map { (original, translated) ->
-                rawCategories.find { it.category == original }?.copy(category = translated)
-            }
-            .toList()
-
-        emit(translatedCategories)
+        category.copy(
+            category = (titleResult as? Result.Success)?.data ?: category.category
+        )
     }
+
+    private fun mapRepositoryError(error: DataError): Result.Error<Nothing, NetworkError> =
+        Result.Error(
+            when (error) {
+                is DataError.Network -> when (error) {
+                    DataError.Network.NO_INTERNET -> NetworkError.NETWORK_ERROR
+                    DataError.Network.DATA_NOT_FOUND -> NetworkError.DATA_NOT_FOUND
+                    else -> NetworkError.UNKNOWN_ERROR
+                }
+                is DataError.Local -> NetworkError.UNKNOWN_ERROR
+            }
+        )
 }
