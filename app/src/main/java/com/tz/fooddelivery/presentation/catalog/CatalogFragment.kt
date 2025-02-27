@@ -52,7 +52,7 @@ class CatalogFragment : Fragment(R.layout.fragment_catalog) {
                 is State.Loading -> {
                     setViewsVisibility(
                         binding.progressBar to true,
-                        binding.rvFilters to false,
+                        binding.rvFilters to true,
                         binding.rvCatalog to false
                     )
                 }
