@@ -12,5 +12,6 @@ internal fun CategoryDto.toDomain(): Category =
     Category(
         id = id ?: "",
         category = strCategory ?: "",
+        originalName = strCategory ?: "",
         isActive = false
     )

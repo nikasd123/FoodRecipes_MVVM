@@ -25,23 +25,16 @@ class GetMealsUseCase @Inject constructor(
     private val translationDispatcher = Dispatchers.IO.limitedParallelism(5)
     private val translatedCache = ConcurrentHashMap<String, DishItem>()
 
-    fun getDishes(): Flow<Result<List<DishItem>, NetworkError>> = channelFlow {
-        when (val result = mealsRepository.getDishes()) {
-            is Result.Success -> {
-                try {
-                    val processed = processDishes(result.data)
-                    send(Result.Success(processed))
-                } catch (e: Exception) {
-                    send(Result.Error(mapTranslationError(e)))
-                }
-            }
-            is Result.Error -> send(mapRepositoryError(result.error))
-        }
-        close()
-    }.flowOn(translationDispatcher)
+    fun getDishes(): Flow<Result<List<DishItem>, NetworkError>> =
+        processRepositoryResult { mealsRepository.getDishes() }
 
-    fun getDishesByCategory(category: String): Flow<Result<List<DishItem>, NetworkError>> = channelFlow {
-        when (val result = mealsRepository.getDishesByCategory(category)) {
+    fun getDishesByCategory(category: String): Flow<Result<List<DishItem>, NetworkError>> =
+        processRepositoryResult { mealsRepository.getDishesByCategory(category) }
+
+    private fun processRepositoryResult(
+        repositoryCall: suspend () -> Result<List<DishItem>, DataError>
+    ): Flow<Result<List<DishItem>, NetworkError>> = channelFlow {
+        when (val result = repositoryCall()) {
             is Result.Success -> {
                 try {
                     val processed = processDishes(result.data)

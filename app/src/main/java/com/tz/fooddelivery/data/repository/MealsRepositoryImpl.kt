@@ -1,12 +1,13 @@
 package com.tz.fooddelivery.data.repository
 
 import android.util.Log
-import com.tz.fooddelivery.domain.common.mappers.mapError
-import com.tz.fooddelivery.domain.common.mappers.mapLocalError
 import com.tz.fooddelivery.data.local.dao.CategoriesDao
 import com.tz.fooddelivery.data.local.dao.DishesDao
 import com.tz.fooddelivery.data.remote.api.MealsApi
+import com.tz.fooddelivery.domain.common.DataError
 import com.tz.fooddelivery.domain.common.Result
+import com.tz.fooddelivery.domain.common.mappers.mapError
+import com.tz.fooddelivery.domain.common.mappers.mapLocalError
 import com.tz.fooddelivery.domain.common.mappers.toCategories
 import com.tz.fooddelivery.domain.common.mappers.toCategoriesFromEntity
 import com.tz.fooddelivery.domain.common.mappers.toCategoryEntities
@@ -56,7 +57,7 @@ class MealsRepositoryImpl @Inject constructor(
         }
     }
 
-    private suspend fun <T : Any> processNetworkCall(
+    private suspend fun <T> processNetworkCall(
         networkCall: suspend () -> List<T>?,
         cacheWriter: suspend (List<T>) -> Unit
     ): Result<List<T>, DataError> {

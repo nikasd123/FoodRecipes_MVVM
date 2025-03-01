@@ -9,15 +9,17 @@ import com.tz.fooddelivery.domain.models.Category
 data class CategoryEntity(
     @PrimaryKey
     val categoryId: String,
+    val originalName: String?,
     val categoryName: String?
 ) {
     @Ignore
-    constructor(): this("", null)
+    constructor(): this("", null, null)
 }
 
 internal fun CategoryEntity.toDomain(): Category =
     Category(
         id = categoryId,
         category = categoryName ?: "",
+        originalName = originalName ?: "",
         isActive = false
     )

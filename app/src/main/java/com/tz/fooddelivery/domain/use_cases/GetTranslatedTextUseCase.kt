@@ -6,10 +6,6 @@ import com.tz.fooddelivery.domain.common.TranslationError
 import com.tz.fooddelivery.domain.repository.TranslationRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import java.io.IOException
 import javax.inject.Inject
@@ -30,18 +26,6 @@ class GetTranslatedTextUseCase @Inject constructor(
                 Result.Error(mapError(e))
             }
         }
-
-    fun translateBatch(texts: List<String>): Flow<Result<String, TranslationError>> = flow {
-        coroutineScope {
-            texts.map { text ->
-                async {
-                    invoke(text)
-                }
-            }.forEach { deferred ->
-                emit(deferred.await())
-            }
-        }
-    }
 
     private fun mapError(e: Exception): TranslationError =
         when (e) {

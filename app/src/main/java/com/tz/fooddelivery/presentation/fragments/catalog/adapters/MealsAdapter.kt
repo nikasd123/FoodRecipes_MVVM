@@ -1,4 +1,4 @@
-package com.tz.fooddelivery.presentation.catalog.adapters
+package com.tz.fooddelivery.presentation.fragments.catalog.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

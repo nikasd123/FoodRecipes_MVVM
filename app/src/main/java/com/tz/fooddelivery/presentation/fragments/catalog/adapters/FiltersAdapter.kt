@@ -1,4 +1,4 @@
-package com.tz.fooddelivery.presentation.catalog.adapters
+package com.tz.fooddelivery.presentation.fragments.catalog.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -15,6 +15,10 @@ class FiltersAdapter(
 ) : ListAdapter<Category, FiltersAdapter.ViewHolder>(ItemDiffCallback()) {
 
     private var activeItem: Category? = null
+
+    fun setSelectedCategory(category: Category?){
+        activeItem = category
+    }
 
     inner class ViewHolder(private val binding: FiltersItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Category, clickListener: (Category) -> Unit) {
