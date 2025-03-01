@@ -58,13 +58,13 @@ class CatalogFragment : Fragment(R.layout.fragment_catalog) {
     private suspend fun initObserver() {
         viewModel.uiState.collect { state ->
             when (state) {
-                is CatalogViewModel.CatalogUiState.Loading -> showLoading(isShow = true)
-                is CatalogViewModel.CatalogUiState.Success -> {
+                is CatalogUiState.Loading -> showLoading(isShow = true)
+                is CatalogUiState.Success -> {
                     showLoading(isShow = false)
                     mealsAdapter.submitList(state.dishes)
                     filtersAdapter.submitList(state.categories)
                 }
-                is CatalogViewModel.CatalogUiState.Error -> {
+                is CatalogUiState.Error -> {
                     showLoading(isShow = false)
                     showError(state.message)
                 }
