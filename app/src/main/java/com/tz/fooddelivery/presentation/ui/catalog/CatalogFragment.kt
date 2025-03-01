@@ -99,9 +99,7 @@ class CatalogFragment : Fragment(R.layout.fragment_catalog) {
 
     private fun initNetworkConnectionObserver() {
         networkMonitor.observe(this) { isConnected ->
-            if (isConnected) {
-                viewModel.retry()
-            }
+            if (isConnected) { viewModel.retry() }
         }
     }
 
@@ -110,7 +108,7 @@ class CatalogFragment : Fragment(R.layout.fragment_catalog) {
     }
 
     private fun showError(message: String) {
-        Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG)
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_INDEFINITE)
             .setAction("Retry") { viewModel.retry() }
             .show()
     }
