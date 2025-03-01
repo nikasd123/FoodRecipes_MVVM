@@ -5,15 +5,15 @@ import androidx.lifecycle.viewModelScope
 import com.tz.fooddelivery.domain.common.NetworkError
 import com.tz.fooddelivery.domain.common.Result
 import com.tz.fooddelivery.domain.models.Category
+import com.tz.fooddelivery.domain.models.DishItem
 import com.tz.fooddelivery.domain.use_cases.GetCategoriesUseCase
 import com.tz.fooddelivery.domain.use_cases.GetMealsUseCase
 import com.tz.fooddelivery.presentation.common.mapError
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,8 +23,11 @@ class CatalogViewModel @Inject constructor(
     private val getMealsUseCase: GetMealsUseCase
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow<CatalogUiState>(CatalogUiState.Loading)
-    val uiState: StateFlow<CatalogUiState> = _uiState.asStateFlow()
+    private val _categoriesState = MutableStateFlow<CategoriesState>(CategoriesState.Loading)
+    val categoriesState: StateFlow<CategoriesState> = _categoriesState.asStateFlow()
+
+    private val _dishesState = MutableStateFlow<DishesState>(DishesState.Loading)
+    val dishesState: StateFlow<DishesState> = _dishesState.asStateFlow()
 
     private val _selectedCategory = MutableStateFlow<Category?>(null)
     val selectedCategory: StateFlow<Category?> = _selectedCategory.asStateFlow()
@@ -33,76 +36,105 @@ class CatalogViewModel @Inject constructor(
         loadInitialData()
     }
 
-    fun selectCategory(category: Category) {
+    fun selectCategory(category: Category?) {
         _selectedCategory.value = category
-        loadDishesByCategory(category)
+        category?.let { loadDishesByCategory(it) } ?: loadDishes()
     }
 
     fun retry() {
-        _selectedCategory.value?.let { loadDishesByCategory(it) } ?: loadInitialData()
-    }
-
-    private fun loadInitialData() {
-        viewModelScope.launch {
-            val categoriesResult = handleResult { getCategoriesUseCase.getCategories() }
-            val dishesResult = handleResult { getMealsUseCase.getDishes() }
-
-            _uiState.value = when {
-                categoriesResult is Result.Success && dishesResult is Result.Success -> {
-                    CatalogUiState.Success(
-                        categories = categoriesResult.data,
-                        dishes = dishesResult.data,
-                        selectedCategory = null
-                    )
-                }
-                categoriesResult is Result.Error || dishesResult is Result.Error -> {
-                    val error = (categoriesResult as? Result.Error)?.error ?: (dishesResult as? Result.Error)?.error
-                    CatalogUiState.Error(
-                        error = error ?: NetworkError.UNKNOWN_ERROR,
-                        message = "Failed to load data",
-                        lastCategory = null
-                    )
-                }
-                else -> CatalogUiState.Loading
-            }
+        when (val current = _dishesState.value) {
+            is DishesState.Error -> current.lastCategory?.let { loadDishesByCategory(it) }
+            else -> loadInitialData()
         }
     }
 
+    private fun loadInitialData() {
+        loadCategories()
+        loadDishes()
+    }
+
+    private fun loadCategories() {
+        viewModelScope.launch {
+            getCategoriesUseCase.getCategories()
+                .catch { e ->
+                    _categoriesState.value = CategoriesState.Error(
+                        error = mapError(e),
+                        message = "Failed to load categories"
+                    )
+                }
+                .collect { result ->
+                    when (result) {
+                        is Result.Success -> {
+                            _categoriesState.value = CategoriesState.Success(result.data)
+                        }
+                        is Result.Error -> {
+                            _categoriesState.value = CategoriesState.Error(
+                                error = result.error,
+                                message = "Categories loading failed"
+                            )
+                        }
+                    }
+                }
+        }
+    }
+
+    private fun loadDishes() {
+        viewModelScope.launch {
+            _dishesState.value = DishesState.Loading
+            getMealsUseCase.getDishes()
+                .catch { e ->
+                    _dishesState.value = DishesState.Error(
+                        error = mapError(e),
+                        message = "Failed to load dishes",
+                        lastCategory = null
+                    )
+                }
+                .collect { result ->
+                    handleDishResult(result, null)
+                }
+        }
+    }
 
     private fun loadDishesByCategory(category: Category) {
         viewModelScope.launch {
-            val result = handleResult { getMealsUseCase.getDishesByCategory(category.originalName) }
-            _uiState.value = when (result) {
-                is Result.Success -> {
-                    val currentState = _uiState.value as? CatalogUiState.Success
-                    currentState?.copy(
-                        dishes = result.data,
-                        selectedCategory = category
-                    ) ?: CatalogUiState.Success(
-                        categories = emptyList(),
-                        dishes = result.data,
-                        selectedCategory = category
-                    )
-                }
-
-                is Result.Error -> {
-                    CatalogUiState.Error(
-                        error = result.error,
+            _dishesState.value = DishesState.Loading
+            getMealsUseCase.getDishesByCategory(category.originalName)
+                .catch { e ->
+                    _dishesState.value = DishesState.Error(
+                        error = mapError(e),
                         message = "Failed to load dishes",
                         lastCategory = category
                     )
                 }
-            }
+                .collect { result ->
+                    handleDishResult(result, category)
+                }
         }
     }
 
-    private suspend fun <T> handleResult(
-        block: suspend () -> Flow<Result<T, NetworkError>>
-    ): Result<T, NetworkError> {
-        return try {
-            block().first()
-        } catch (e: Exception) {
-            Result.Error(mapError(e))
+    private fun handleDishResult(result: Result<DishItem, NetworkError>, category: Category?) {
+        when (result) {
+            is Result.Success -> {
+                val newList = (_dishesState.value as? DishesState.Success)
+                    ?.dishes
+                    ?.toMutableList()
+                    ?: mutableListOf()
+
+                if (!newList.any { it.id == result.data.id }) {
+                    newList.add(result.data)
+                    _dishesState.value = DishesState.Success(
+                        dishes = newList,
+                        category = category ?: _selectedCategory.value
+                    )
+                }
+            }
+            is Result.Error -> {
+                _dishesState.value = DishesState.Error(
+                    error = result.error,
+                    message = "Dish loading error",
+                    lastCategory = category
+                )
+            }
         }
     }
 }

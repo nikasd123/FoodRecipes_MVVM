@@ -25,60 +25,65 @@ class GetMealsUseCase @Inject constructor(
     private val translationDispatcher = Dispatchers.IO.limitedParallelism(5)
     private val translatedCache = ConcurrentHashMap<String, DishItem>()
 
-    fun getDishes(): Flow<Result<List<DishItem>, NetworkError>> =
+    fun getDishes(): Flow<Result<DishItem, NetworkError>> =
         processRepositoryResult { mealsRepository.getDishes() }
 
-    fun getDishesByCategory(category: String): Flow<Result<List<DishItem>, NetworkError>> =
+    fun getDishesByCategory(category: String): Flow<Result<DishItem, NetworkError>> =
         processRepositoryResult { mealsRepository.getDishesByCategory(category) }
 
     private fun processRepositoryResult(
         repositoryCall: suspend () -> Result<List<DishItem>, DataError>
-    ): Flow<Result<List<DishItem>, NetworkError>> = channelFlow {
+    ): Flow<Result<DishItem, NetworkError>> = channelFlow {
         when (val result = repositoryCall()) {
             is Result.Success -> {
-                try {
-                    val processed = processDishes(result.data)
-                    send(Result.Success(processed))
-                } catch (e: Exception) {
-                    send(Result.Error(mapTranslationError(e)))
+                result.data.forEach { dish ->
+                    try {
+                        val translated = processDish(dish)
+                        send(Result.Success<DishItem, NetworkError>(translated))
+                    } catch (e: Exception) {
+                        send(Result.Error<DishItem, NetworkError>(mapTranslationError(e)))
+                    }
                 }
             }
-            is Result.Error -> send(mapRepositoryError(result.error))
+            is Result.Error -> {
+                send(Result.Error(mapRepositoryError(result.error)))
+            }
         }
-        close()
     }.flowOn(translationDispatcher)
 
-    private suspend fun processDishes(dishes: List<DishItem>): List<DishItem> = coroutineScope {
-        dishes.map { dish ->
-            translatedCache.getOrPut(dish.id) {
-                try {
-                    translateDish(dish)
-                } catch (e: Exception) {
-                    throw GetTranslatedTextUseCase.TranslationException(mapTranslationError(e))
-                }
+    private suspend fun processDish(dish: DishItem): DishItem = coroutineScope {
+        translatedCache.getOrPut(dish.id) {
+            try {
+                translateDish(dish)
+            } catch (e: Exception) {
+                throw GetTranslatedTextUseCase.TranslationException(mapTranslationError(e))
             }
         }
     }
 
-    private suspend fun translateDish(dish: DishItem): DishItem = coroutineScope {
-        val titleResult = getTranslatedTextUseCase(dish.title)
-        val descResult = getTranslatedTextUseCase(dish.description)
+    private suspend fun translateDish(dish: DishItem): DishItem {
+        val translatedTitle = translateText(dish.title)
+        val translatedDesc = translateText(dish.description)
 
-        dish.copy(
-            title = (titleResult as? Result.Success)?.data ?: dish.title,
-            description = (descResult as? Result.Success)?.data ?: dish.description
+        return dish.copy(
+            title = translatedTitle,
+            description = translatedDesc
         )
     }
 
-    private fun mapRepositoryError(error: DataError): Result.Error<Nothing, NetworkError> =
-        Result.Error(
-            when (error) {
-                is DataError.Network -> when (error) {
-                    DataError.Network.NO_INTERNET -> NetworkError.NETWORK_ERROR
-                    DataError.Network.DATA_NOT_FOUND -> NetworkError.DATA_NOT_FOUND
-                    else -> NetworkError.UNKNOWN_ERROR
-                }
-                is DataError.Local -> NetworkError.UNKNOWN_ERROR
+    private suspend fun translateText(text: String): String =
+        when (val result = getTranslatedTextUseCase(text)) {
+            is Result.Success -> result.data
+            else -> text
+        }
+
+    private fun mapRepositoryError(error: DataError): NetworkError =
+        when (error) {
+            is DataError.Network -> when (error) {
+                DataError.Network.NO_INTERNET -> NetworkError.NETWORK_ERROR
+                DataError.Network.DATA_NOT_FOUND -> NetworkError.DATA_NOT_FOUND
+                else -> NetworkError.UNKNOWN_ERROR
             }
-        )
+            is DataError.Local -> NetworkError.UNKNOWN_ERROR
+        }
 }

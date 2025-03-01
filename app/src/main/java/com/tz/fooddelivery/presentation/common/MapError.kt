@@ -3,7 +3,7 @@ package com.tz.fooddelivery.presentation.common
 import com.tz.fooddelivery.domain.common.NetworkError
 import java.io.IOException
 
-fun mapError(e: Exception): NetworkError =
+internal fun mapError(e: Throwable): NetworkError =
     when (e) {
         is IOException -> NetworkError.NETWORK_ERROR
         is NullPointerException -> NetworkError.DATA_NOT_FOUND

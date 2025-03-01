@@ -29,9 +29,11 @@ class CatalogFragment : Fragment(R.layout.fragment_catalog) {
 
     private val networkMonitor: NetworkMonitor by lazy { NetworkMonitor(requireContext()) }
     private val viewModel: CatalogViewModel by viewModels()
-    private val filtersAdapter = FiltersAdapter(::onCategorySelected)
     private val mealsAdapter by lazy { MealsAdapter() }
     private val bannersAdapter by lazy { BannerAdapter() }
+    private val filtersAdapter = FiltersAdapter{ category ->
+        viewModel.selectCategory(category)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,40 +51,60 @@ class CatalogFragment : Fragment(R.layout.fragment_catalog) {
     private fun setupObservers() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                initObserver()
-                initSelectedCategory()
+                launch { initDishesState() }
+                launch { initCategoriesState() }
+                launch { initSelectedCategory() }
             }
         }
     }
 
-    private suspend fun initObserver() {
-        viewModel.uiState.collect { state ->
+    private suspend fun initDishesState() {
+        viewModel.dishesState.collect { state ->
             when (state) {
-                is CatalogUiState.Loading -> showLoading(isShow = true)
-                is CatalogUiState.Success -> {
+                is DishesState.Loading -> showLoading(isShow = true)
+                is DishesState.Success -> {
                     showLoading(isShow = false)
                     mealsAdapter.submitList(state.dishes)
-                    filtersAdapter.submitList(state.categories)
                 }
-                is CatalogUiState.Error -> {
-                    showLoading(isShow = false)
-                    showError(state.message)
-                }
+
+                is DishesState.Error -> showError(state.message)
             }
         }
     }
 
-    private suspend fun initSelectedCategory(){
-        viewModel.selectedCategory.collect{ category ->
+    private suspend fun initCategoriesState() {
+        viewModel.categoriesState.collect { state ->
+            when (state) {
+                is CategoriesState.Loading -> showLoading(isShow = true)
+                is CategoriesState.Success -> {
+                    showLoading(isShow = false)
+                    filtersAdapter.submitList(state.categories)
+                }
+
+                is CategoriesState.Error -> showError(state.message)
+            }
+        }
+    }
+
+    private suspend fun initSelectedCategory() {
+        viewModel.selectedCategory.collect { category ->
             filtersAdapter.setSelectedCategory(category)
         }
     }
 
     private fun setupRecyclerViews() {
         with(binding) {
-            setupRecyclerView(rvFilters, LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false), filtersAdapter)
+            setupRecyclerView(
+                rvFilters,
+                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false),
+                filtersAdapter
+            )
             setupRecyclerView(rvCatalog, LinearLayoutManager(context), mealsAdapter)
-            setupRecyclerView(rvBanners, LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false), bannersAdapter)
+            setupRecyclerView(
+                rvBanners,
+                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false),
+                bannersAdapter
+            )
         }
 
         bannersAdapter.submitList(getBannerItems())
@@ -99,7 +121,9 @@ class CatalogFragment : Fragment(R.layout.fragment_catalog) {
 
     private fun initNetworkConnectionObserver() {
         networkMonitor.observe(this) { isConnected ->
-            if (isConnected) { viewModel.retry() }
+            if (isConnected) {
+                viewModel.retry()
+            }
         }
     }
 
