@@ -1,4 +1,4 @@
-package com.tz.fooddelivery.presentation.fragments.catalog
+package com.tz.fooddelivery.presentation.ui.catalog
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

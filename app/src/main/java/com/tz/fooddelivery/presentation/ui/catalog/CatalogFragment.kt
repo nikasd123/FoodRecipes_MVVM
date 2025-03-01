@@ -1,4 +1,4 @@
-package com.tz.fooddelivery.presentation.fragments.catalog
+package com.tz.fooddelivery.presentation.ui.catalog
 
 import android.os.Bundle
 import android.view.View
@@ -14,9 +14,9 @@ import com.tz.fooddelivery.R
 import com.tz.fooddelivery.databinding.FragmentCatalogBinding
 import com.tz.fooddelivery.domain.models.BannerItem
 import com.tz.fooddelivery.domain.models.Category
-import com.tz.fooddelivery.presentation.fragments.catalog.adapters.BannerAdapter
-import com.tz.fooddelivery.presentation.fragments.catalog.adapters.FiltersAdapter
-import com.tz.fooddelivery.presentation.fragments.catalog.adapters.MealsAdapter
+import com.tz.fooddelivery.presentation.ui.catalog.adapters.BannerAdapter
+import com.tz.fooddelivery.presentation.ui.catalog.adapters.FiltersAdapter
+import com.tz.fooddelivery.presentation.ui.catalog.adapters.MealsAdapter
 import com.tz.fooddelivery.presentation.utils.NetworkMonitor
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
