@@ -5,9 +5,9 @@ import androidx.lifecycle.viewModelScope
 import com.tz.fooddelivery.domain.common.NetworkError
 import com.tz.fooddelivery.domain.common.Result
 import com.tz.fooddelivery.domain.models.Category
-import com.tz.fooddelivery.domain.models.DishItem
 import com.tz.fooddelivery.domain.use_cases.GetCategoriesUseCase
 import com.tz.fooddelivery.domain.use_cases.GetMealsUseCase
+import com.tz.fooddelivery.presentation.common.mapError
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +15,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -105,27 +104,5 @@ class CatalogViewModel @Inject constructor(
         } catch (e: Exception) {
             Result.Error(mapError(e))
         }
-    }
-
-    private fun mapError(e: Exception): NetworkError =
-        when (e) {
-            is IOException -> NetworkError.NETWORK_ERROR
-            is NullPointerException -> NetworkError.DATA_NOT_FOUND
-            else -> NetworkError.UNKNOWN_ERROR
-        }
-
-    sealed interface CatalogUiState {
-        data object Loading : CatalogUiState
-        data class Success(
-            val categories: List<Category>,
-            val dishes: List<DishItem>,
-            val selectedCategory: Category?
-        ) : CatalogUiState
-
-        data class Error(
-            val error: NetworkError,
-            val message: String,
-            val lastCategory: Category?
-        ) : CatalogUiState
     }
 }
