@@ -6,8 +6,7 @@ data class Category(
     val id: String,
     val category: String,
     val originalName: String = "",
-    var isActive: Boolean = false,
-    val isLoading: Boolean = false
+    var isActive: Boolean = false
 )
 
 internal fun Category.toEntity(): CategoryEntity =
