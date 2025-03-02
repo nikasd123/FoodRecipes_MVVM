@@ -8,15 +8,19 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.tz.fooddelivery.R
 import com.tz.fooddelivery.databinding.FragmentCatalogBinding
+import com.tz.fooddelivery.databinding.ShimmerDishesItemBinding
+import com.tz.fooddelivery.databinding.ShimmerFilterItemBinding
 import com.tz.fooddelivery.domain.models.BannerItem
-import com.tz.fooddelivery.domain.models.Category
+import com.tz.fooddelivery.presentation.common.setupLinearRecyclerView
+import com.tz.fooddelivery.presentation.common.setupLinearRecyclerViewWithShimmer
+import com.tz.fooddelivery.presentation.common.showRecyclerView
 import com.tz.fooddelivery.presentation.ui.catalog.adapters.BannerAdapter
 import com.tz.fooddelivery.presentation.ui.catalog.adapters.FiltersAdapter
 import com.tz.fooddelivery.presentation.ui.catalog.adapters.MealsAdapter
+import com.tz.fooddelivery.presentation.ui.catalog.adapters.ShimmerAdapter
 import com.tz.fooddelivery.presentation.utils.NetworkMonitor
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -31,8 +35,22 @@ class CatalogFragment : Fragment(R.layout.fragment_catalog) {
     private val viewModel: CatalogViewModel by viewModels()
     private val mealsAdapter by lazy { MealsAdapter() }
     private val bannersAdapter by lazy { BannerAdapter() }
-    private val filtersAdapter = FiltersAdapter{ category ->
+    private val filtersAdapter = FiltersAdapter { category ->
         viewModel.selectCategory(category)
+    }
+    private val shimmerFiltersAdapter by lazy {
+        object : ShimmerAdapter<ShimmerFilterItemBinding>(R.layout.shimmer_filter_item) {
+            override fun createViewHolder(view: View): ViewHolder {
+                return object : ViewHolder(ShimmerFilterItemBinding.bind(view)) {}
+            }
+        }
+    }
+    private val shimmerDishesAdapter by lazy {
+        object : ShimmerAdapter<ShimmerDishesItemBinding>(R.layout.shimmer_dishes_item) {
+            override fun createViewHolder(view: View): ViewHolder {
+                return object : ViewHolder(ShimmerDishesItemBinding.bind(view)) {}
+            }
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,30 +76,37 @@ class CatalogFragment : Fragment(R.layout.fragment_catalog) {
         }
     }
 
-    private suspend fun initDishesState() {
-        viewModel.dishesState.collect { state ->
+    private suspend fun initCategoriesState() {
+        viewModel.categoriesState.collect { state ->
             when (state) {
-                is DishesState.Loading -> showLoading(isShow = true)
-                is DishesState.Success -> {
-                    showLoading(isShow = false)
-                    mealsAdapter.submitList(state.dishes)
+                is CategoriesState.Loading -> showFiltersShimmer(true)
+                is CategoriesState.Error -> {
+                    showFiltersShimmer(false)
+                    showError(state.message)
                 }
 
-                is DishesState.Error -> showError(state.message)
+                is CategoriesState.Success -> {
+                    showFiltersShimmer(false)
+                    filtersAdapter.submitList(state.categories)
+                }
             }
         }
     }
 
-    private suspend fun initCategoriesState() {
-        viewModel.categoriesState.collect { state ->
+    private suspend fun initDishesState() {
+        viewModel.dishesState.collect { state ->
             when (state) {
-                is CategoriesState.Loading -> showLoading(isShow = true)
-                is CategoriesState.Success -> {
-                    showLoading(isShow = false)
-                    filtersAdapter.submitList(state.categories)
+                is DishesState.Loading -> showDishesShimmer(isShow = true)
+                is DishesState.Error -> {
+                    showDishesShimmer(isShow = false)
+                    showError(state.message)
                 }
 
-                is CategoriesState.Error -> showError(state.message)
+                is DishesState.Success -> {
+                    showDishesShimmer(isShow = false)
+                    mealsAdapter.submitList(state.dishes)
+                }
+
             }
         }
     }
@@ -92,53 +117,51 @@ class CatalogFragment : Fragment(R.layout.fragment_catalog) {
         }
     }
 
+    private fun showFiltersShimmer(isShow: Boolean) {
+        binding.rvShimmerFilters.showRecyclerView(isShow)
+        binding.rvFilters.showRecyclerView(!isShow)
+    }
+
+    private fun showDishesShimmer(isShow: Boolean) {
+        binding.rvShimmerCatalog.showRecyclerView(isShow)
+        binding.rvCatalog.showRecyclerView(!isShow)
+    }
+
     private fun setupRecyclerViews() {
-        with(binding) {
-            setupRecyclerView(
-                rvFilters,
-                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false),
-                filtersAdapter
-            )
-            setupRecyclerView(rvCatalog, LinearLayoutManager(context), mealsAdapter)
-            setupRecyclerView(
-                rvBanners,
-                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false),
-                bannersAdapter
-            )
-        }
+        setupLinearRecyclerViewWithShimmer(
+            recyclerView = binding.rvFilters,
+            shimmerRecyclerView = binding.rvShimmerFilters,
+            adapter = filtersAdapter,
+            shimmerAdapter = shimmerFiltersAdapter,
+            orientation = LinearLayoutManager.HORIZONTAL
+        )
+
+        setupLinearRecyclerViewWithShimmer(
+            recyclerView = binding.rvCatalog,
+            shimmerRecyclerView = binding.rvShimmerCatalog,
+            adapter = mealsAdapter,
+            shimmerAdapter = shimmerDishesAdapter
+        )
+
+        setupLinearRecyclerView(
+            recyclerView = binding.rvBanners,
+            adapter = bannersAdapter,
+            orientation = LinearLayoutManager.HORIZONTAL
+        )
 
         bannersAdapter.submitList(getBannerItems())
     }
 
-    private fun setupRecyclerView(
-        recyclerView: RecyclerView,
-        layoutManager: RecyclerView.LayoutManager,
-        adapter: RecyclerView.Adapter<*>
-    ) {
-        recyclerView.layoutManager = layoutManager
-        recyclerView.adapter = adapter
-    }
-
     private fun initNetworkConnectionObserver() {
         networkMonitor.observe(this) { isConnected ->
-            if (isConnected) {
-                viewModel.retry()
-            }
+            if (isConnected) viewModel.retry()
         }
-    }
-
-    private fun showLoading(isShow: Boolean) {
-        binding.progressBar.visibility = if (isShow) View.VISIBLE else View.GONE
     }
 
     private fun showError(message: String) {
         Snackbar.make(binding.root, message, Snackbar.LENGTH_INDEFINITE)
             .setAction("Retry") { viewModel.retry() }
             .show()
-    }
-
-    private fun onCategorySelected(category: Category) {
-        viewModel.selectCategory(category)
     }
 
     private fun getBannerItems() = listOf(

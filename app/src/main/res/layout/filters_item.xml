@@ -19,7 +19,6 @@
         android:textSize="13sp"
         android:fontFamily="@font/roboto_regular"
         android:paddingHorizontal="22dp"
-        android:paddingVertical="8dp"
-        />
+        android:paddingVertical="8dp"/>
 
 </androidx.cardview.widget.CardView>

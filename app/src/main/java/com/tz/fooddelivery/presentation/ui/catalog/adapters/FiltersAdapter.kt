@@ -56,7 +56,6 @@ class FiltersAdapter(
                 binding.rootCard.setCardBackgroundColor(ContextCompat.getColor(context, R.color.white))
                 binding.textView.setTextColor(ContextCompat.getColor(context, R.color.black))
                 binding.textView.alpha = 0.3f
-                binding.rootCard.elevation = 0f
             }
         }
 

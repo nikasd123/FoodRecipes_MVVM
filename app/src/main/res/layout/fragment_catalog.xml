@@ -35,6 +35,15 @@
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_shimmer_filters"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/shimmer_filter_item"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="horizontal"
+            android:layout_marginTop="18dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_filters"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -42,7 +51,10 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:orientation="horizontal"
             android:layout_marginTop="18dp"
+            android:visibility="gone"
+            tools:visibility="visible"
             />
+
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -67,6 +79,21 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="10dp"
         tools:listitem="@layout/dishes_item"
+        tools:itemCount="2"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_marginTop="12dp"
+        tools:visibility="visible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rv_filters"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_shimmer_catalog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        tools:listitem="@layout/shimmer_dishes_item"
         tools:itemCount="2"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_marginTop="12dp"

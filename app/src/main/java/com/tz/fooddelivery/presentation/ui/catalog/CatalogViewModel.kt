@@ -55,6 +55,7 @@ class CatalogViewModel @Inject constructor(
 
     private fun loadCategories() {
         viewModelScope.launch {
+            _categoriesState.value = CategoriesState.Loading
             getCategoriesUseCase.getCategories()
                 .catch { e ->
                     _categoriesState.value = CategoriesState.Error(
