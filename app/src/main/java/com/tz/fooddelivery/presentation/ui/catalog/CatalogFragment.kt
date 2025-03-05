@@ -11,8 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.tz.fooddelivery.R
 import com.tz.fooddelivery.databinding.FragmentCatalogBinding
-import com.tz.fooddelivery.databinding.ShimmerDishesItemBinding
-import com.tz.fooddelivery.databinding.ShimmerFilterItemBinding
 import com.tz.fooddelivery.domain.models.BannerItem
 import com.tz.fooddelivery.presentation.common.setupLinearRecyclerView
 import com.tz.fooddelivery.presentation.common.setupLinearRecyclerViewWithShimmer
@@ -20,7 +18,8 @@ import com.tz.fooddelivery.presentation.common.showRecyclerView
 import com.tz.fooddelivery.presentation.ui.catalog.adapters.BannerAdapter
 import com.tz.fooddelivery.presentation.ui.catalog.adapters.FiltersAdapter
 import com.tz.fooddelivery.presentation.ui.catalog.adapters.MealsAdapter
-import com.tz.fooddelivery.presentation.ui.catalog.adapters.ShimmerAdapter
+import com.tz.fooddelivery.presentation.ui.catalog.adapters.ShimmerDishesAdapter
+import com.tz.fooddelivery.presentation.ui.catalog.adapters.ShimmerFiltersAdapter
 import com.tz.fooddelivery.presentation.utils.NetworkMonitor
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -35,22 +34,10 @@ class CatalogFragment : Fragment(R.layout.fragment_catalog) {
     private val viewModel: CatalogViewModel by viewModels()
     private val mealsAdapter by lazy { MealsAdapter() }
     private val bannersAdapter by lazy { BannerAdapter() }
+    private val shimmerFiltersAdapter by lazy { ShimmerFiltersAdapter() }
+    private val shimmerDishesAdapter by lazy { ShimmerDishesAdapter() }
     private val filtersAdapter = FiltersAdapter { category ->
         viewModel.selectCategory(category)
-    }
-    private val shimmerFiltersAdapter by lazy {
-        object : ShimmerAdapter<ShimmerFilterItemBinding>(R.layout.shimmer_filter_item) {
-            override fun createViewHolder(view: View): ViewHolder {
-                return object : ViewHolder(ShimmerFilterItemBinding.bind(view)) {}
-            }
-        }
-    }
-    private val shimmerDishesAdapter by lazy {
-        object : ShimmerAdapter<ShimmerDishesItemBinding>(R.layout.shimmer_dishes_item) {
-            override fun createViewHolder(view: View): ViewHolder {
-                return object : ViewHolder(ShimmerDishesItemBinding.bind(view)) {}
-            }
-        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
