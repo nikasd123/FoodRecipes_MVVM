@@ -16,4 +16,7 @@ abstract class DishesDao {
 
     @Query("SELECT * FROM dishes WHERE dishCategory = :category")
     abstract fun getDishesByCategory(category: String): List<DishEntity>
+
+    @Query("DELETE FROM dishes WHERE dishCategory = :category")
+    abstract fun clearByCategory(category: String)
 }
