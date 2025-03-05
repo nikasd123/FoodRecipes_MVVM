@@ -4,9 +4,10 @@ import com.tz.fooddelivery.domain.common.DataError
 import com.tz.fooddelivery.domain.common.Result
 import com.tz.fooddelivery.domain.models.Category
 import com.tz.fooddelivery.domain.models.DishItem
+import kotlinx.coroutines.flow.Flow
 
 interface MealsRepository {
-    suspend fun getDishes(): Result<List<DishItem>, DataError>
-    suspend fun getCategories(): Result<List<Category>, DataError>
-    suspend fun getDishesByCategory(category: String): Result<List<DishItem>, DataError>
+    suspend fun getDishes(): Flow<Result<List<DishItem>, DataError>>
+    suspend fun getCategories(): Flow<Result<List<Category>, DataError>>
+    suspend fun getDishesByCategory(category: String): Flow<Result<List<DishItem>, DataError>>
 }

@@ -10,13 +10,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.flatMapConcat
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
+@OptIn(ExperimentalCoroutinesApi::class)
 class GetMealsUseCase @Inject constructor(
     private val mealsRepository: MealsRepository,
     private val getTranslatedTextUseCase: GetTranslatedTextUseCase
@@ -25,39 +27,40 @@ class GetMealsUseCase @Inject constructor(
     private val translationDispatcher = Dispatchers.IO.limitedParallelism(5)
     private val translatedCache = ConcurrentHashMap<String, DishItem>()
 
-    fun getDishes(): Flow<Result<DishItem, NetworkError>> =
-        processRepositoryResult { mealsRepository.getDishes() }
+    suspend fun getDishes(): Flow<Result<DishItem, NetworkError>> =
+        mealsRepository.getDishes().flatMapConcat { result ->
+            processRepositoryResult(result)
+        }.flowOn(translationDispatcher)
 
-    fun getDishesByCategory(category: String): Flow<Result<DishItem, NetworkError>> =
-        processRepositoryResult { mealsRepository.getDishesByCategory(category) }
+    suspend fun getDishesByCategory(category: String): Flow<Result<DishItem, NetworkError>> =
+        mealsRepository.getDishesByCategory(category).flatMapConcat { result ->
+            processRepositoryResult(result)
+        }.flowOn(translationDispatcher)
 
-    private fun processRepositoryResult(
-        repositoryCall: suspend () -> Result<List<DishItem>, DataError>
-    ): Flow<Result<DishItem, NetworkError>> = channelFlow {
-        when (val result = repositoryCall()) {
-            is Result.Success -> {
-                result.data.forEach { dish ->
-                    try {
-                        val translated = processDish(dish)
-                        send(Result.Success<DishItem, NetworkError>(translated))
-                    } catch (e: Exception) {
-                        send(Result.Error<DishItem, NetworkError>(mapTranslationError(e)))
+    private fun processRepositoryResult(result: Result<List<DishItem>, DataError>): Flow<Result<DishItem, NetworkError>> =
+        flow {
+            when (result) {
+                is Result.Success -> {
+                    result.data.forEach { dish ->
+                        emit(processDishResult(dish))
                     }
                 }
-            }
-            is Result.Error -> {
-                send(Result.Error(mapRepositoryError(result.error)))
+                is Result.Error -> {
+                    emit(Result.Error(mapRepositoryError(result.error)))
+                }
             }
         }
-    }.flowOn(translationDispatcher)
+
+    private suspend fun processDishResult(dish: DishItem): Result<DishItem, NetworkError> =
+        try {
+            Result.Success(processDish(dish))
+        } catch (e: Exception) {
+            Result.Error(mapTranslationError(e))
+        }
 
     private suspend fun processDish(dish: DishItem): DishItem = coroutineScope {
         translatedCache.getOrPut(dish.id) {
-            try {
-                translateDish(dish)
-            } catch (e: Exception) {
-                throw GetTranslatedTextUseCase.TranslationException(mapTranslationError(e))
-            }
+            translateDish(dish)
         }
     }
 
@@ -87,3 +90,4 @@ class GetMealsUseCase @Inject constructor(
             is DataError.Local -> NetworkError.UNKNOWN_ERROR
         }
 }
+

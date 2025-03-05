@@ -10,8 +10,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -25,37 +25,31 @@ class GetCategoriesUseCase @Inject constructor(
     private val translationDispatcher = Dispatchers.IO.limitedParallelism(5)
     private val translatedCache = ConcurrentHashMap<String, Category>()
 
-    fun getCategories(): Flow<Result<List<Category>, NetworkError>> = channelFlow {
-        when (val result = mealsRepository.getCategories()) {
-            is Result.Success -> {
-                try {
-                    val processed = processCategories(result.data)
-                    send(Result.Success(processed))
-                } catch (e: Exception) {
-                    send(Result.Error(mapTranslationError(e)))
+    suspend fun getCategories(): Flow<Result<List<Category>, NetworkError>> =
+        mealsRepository.getCategories().map { result ->
+            when (result) {
+                is Result.Success -> {
+                    try {
+                        Result.Success(processCategories(result.data))
+                    } catch (e: Exception) {
+                        Result.Error(mapTranslationError(e))
+                    }
                 }
+                is Result.Error -> mapRepositoryError(result.error)
             }
-            is Result.Error -> send(mapRepositoryError(result.error))
-        }
-        close()
-    }.flowOn(translationDispatcher)
+        }.flowOn(translationDispatcher)
 
     private suspend fun processCategories(categories: List<Category>): List<Category> = coroutineScope {
         categories.map { category ->
             translatedCache.getOrPut(category.id) {
-                try {
-                    translateCategory(category)
-                } catch (e: Exception) {
-                    throw GetTranslatedTextUseCase.TranslationException(mapTranslationError(e))
-                }
+                translateCategory(category)
             }
         }
     }
 
-    private suspend fun translateCategory(category: Category): Category = coroutineScope {
+    private suspend fun translateCategory(category: Category): Category {
         val titleResult = translateUseCase(category.category)
-
-        category.copy(
+        return category.copy(
             category = (titleResult as? Result.Success)?.data ?: category.category
         )
     }
