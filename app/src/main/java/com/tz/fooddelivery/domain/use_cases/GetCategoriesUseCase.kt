@@ -5,7 +5,7 @@ import com.tz.fooddelivery.domain.common.NetworkError
 import com.tz.fooddelivery.domain.common.Result
 import com.tz.fooddelivery.domain.common.mappers.mapTranslationError
 import com.tz.fooddelivery.domain.models.Category
-import com.tz.fooddelivery.domain.repository.MealsRepository
+import com.tz.fooddelivery.domain.repository.CategoryRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.coroutineScope
@@ -18,7 +18,7 @@ import javax.inject.Singleton
 
 @Singleton
 class GetCategoriesUseCase @Inject constructor(
-    private val mealsRepository: MealsRepository,
+    private val categoryRepository: CategoryRepository,
     private val translateUseCase: GetTranslatedTextUseCase
 ) {
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -26,7 +26,7 @@ class GetCategoriesUseCase @Inject constructor(
     private val translatedCache = ConcurrentHashMap<String, Category>()
 
     suspend fun getCategories(): Flow<Result<List<Category>, NetworkError>> =
-        mealsRepository.getCategories().map { result ->
+        categoryRepository.getCategories().map { result ->
             when (result) {
                 is Result.Success -> {
                     try {

@@ -1,18 +1,13 @@
 package com.tz.fooddelivery.data.repository
 
-import com.tz.fooddelivery.data.local.dao.CategoriesDao
 import com.tz.fooddelivery.data.local.dao.DishesDao
 import com.tz.fooddelivery.data.remote.api.MealsApi
 import com.tz.fooddelivery.domain.common.DataError
 import com.tz.fooddelivery.domain.common.Result
 import com.tz.fooddelivery.domain.common.mappers.mapError
-import com.tz.fooddelivery.domain.common.mappers.toCategories
-import com.tz.fooddelivery.domain.common.mappers.toCategoriesFromEntity
-import com.tz.fooddelivery.domain.common.mappers.toCategoryEntities
 import com.tz.fooddelivery.domain.common.mappers.toDishEntities
 import com.tz.fooddelivery.domain.common.mappers.toDishItems
 import com.tz.fooddelivery.domain.common.mappers.toDishItemsFromEntity
-import com.tz.fooddelivery.domain.models.Category
 import com.tz.fooddelivery.domain.models.DishItem
 import com.tz.fooddelivery.domain.repository.MealsRepository
 import kotlinx.coroutines.CoroutineDispatcher
@@ -25,7 +20,6 @@ import javax.inject.Inject
 class MealsRepositoryImpl @Inject constructor(
     private val mealsApi: MealsApi,
     private val dishesDao: DishesDao,
-    private val categoriesDao: CategoriesDao,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : MealsRepository {
 
@@ -36,13 +30,6 @@ class MealsRepositoryImpl @Inject constructor(
             },
             getNetwork = { mealsApi.getMeals().meals?.toDishItems() ?: emptyList() },
             saveCache = { networkData -> dishesDao.insertAll(networkData.toDishEntities()) }
-        )
-
-    override suspend fun getCategories(): Flow<Result<List<Category>, DataError>> =
-        fetchData(
-            getCache = { categoriesDao.getAllCategories().toCategoriesFromEntity() },
-            getNetwork = { mealsApi.getCategories().categories?.toCategories() ?: emptyList() },
-            saveCache = { networkData -> categoriesDao.insertAll(networkData.toCategoryEntities()) }
         )
 
     override suspend fun getDishesByCategory(category: String): Flow<Result<List<DishItem>, DataError>> =

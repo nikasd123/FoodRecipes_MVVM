@@ -1,5 +1,6 @@
 package com.tz.fooddelivery.di.module
 
+import com.tz.fooddelivery.domain.repository.CategoryRepository
 import com.tz.fooddelivery.domain.repository.MealsRepository
 import com.tz.fooddelivery.domain.repository.TranslationRepository
 import com.tz.fooddelivery.domain.use_cases.GetCategoriesUseCase
@@ -19,8 +20,8 @@ class UseCaseModule {
         GetMealsUseCase(mealsRepository = mealsRepository, getTranslatedTextUseCase = getTranslatedTextUseCase)
 
     @Provides
-    fun provideGetCategoriesUseCase(mealsRepository: MealsRepository, getTranslatedTextUseCase: GetTranslatedTextUseCase) =
-        GetCategoriesUseCase(mealsRepository = mealsRepository, translateUseCase = getTranslatedTextUseCase)
+    fun provideGetCategoriesUseCase(categoryRepository: CategoryRepository, getTranslatedTextUseCase: GetTranslatedTextUseCase) =
+        GetCategoriesUseCase(categoryRepository = categoryRepository, translateUseCase = getTranslatedTextUseCase)
 
     @Provides
     fun provideGetTranslatedTextUseCase(translationRepository: TranslationRepository) =
