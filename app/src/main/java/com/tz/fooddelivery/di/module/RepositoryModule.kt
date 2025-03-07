@@ -5,9 +5,11 @@ import com.tz.fooddelivery.data.local.dao.DishesDao
 import com.tz.fooddelivery.data.remote.api.MealsApi
 import com.tz.fooddelivery.data.remote.api.TranslationApi
 import com.tz.fooddelivery.data.repository.CategoryRepositoryImpl
+import com.tz.fooddelivery.data.repository.MealRecipeRepositoryImpl
 import com.tz.fooddelivery.data.repository.MealsRepositoryImpl
 import com.tz.fooddelivery.data.repository.TranslationRepositoryImpl
 import com.tz.fooddelivery.domain.repository.CategoryRepository
+import com.tz.fooddelivery.domain.repository.MealRecipeRepository
 import com.tz.fooddelivery.domain.repository.MealsRepository
 import com.tz.fooddelivery.domain.repository.TranslationRepository
 import dagger.Module
@@ -26,6 +28,10 @@ class RepositoryModule {
     @Provides
     fun provideCategoryRepository(mealsApi: MealsApi, categoriesDao: CategoriesDao): CategoryRepository =
         CategoryRepositoryImpl(mealsApi = mealsApi, categoriesDao = categoriesDao)
+
+    @Provides
+    fun provideMealRecipeRepository(mealsApi: MealsApi): MealRecipeRepository =
+        MealRecipeRepositoryImpl(api = mealsApi)
 
     @Provides
     fun provideTranslationRepository(translationApi: TranslationApi): TranslationRepository =

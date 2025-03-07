@@ -10,7 +10,9 @@ import com.tz.fooddelivery.R
 import com.tz.fooddelivery.databinding.DishesItemBinding
 import com.tz.fooddelivery.domain.models.DishItem
 
-class MealsAdapter : ListAdapter<DishItem, MealsAdapter.DishesViewHolder>(DIFF_CALLBACK) {
+class MealsAdapter(
+    private val onItemClick: (DishItem) -> Unit
+) : ListAdapter<DishItem, MealsAdapter.DishesViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DishesViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -32,6 +34,10 @@ class MealsAdapter : ListAdapter<DishItem, MealsAdapter.DishesViewHolder>(DIFF_C
             Glide.with(binding.image.context)
                 .load(dishItem.image)
                 .into(binding.image)
+
+            itemView.rootView.setOnClickListener {
+                onItemClick(dishItem)
+            }
         }
     }
 

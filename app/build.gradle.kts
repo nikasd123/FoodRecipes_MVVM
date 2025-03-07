@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.kapt")
     id ("com.google.dagger.hilt.android")
+    id ("androidx.navigation.safeargs.kotlin")
 }
 
 android {
@@ -71,6 +72,7 @@ dependencies {
     //Glide
     implementation ("com.github.bumptech.glide:glide:4.16.0")
     annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
+    implementation ("jp.wasabeef:glide-transformations:4.3.0")
 
     //Coroutine
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")

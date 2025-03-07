@@ -26,7 +26,7 @@ class MealsRepositoryImpl @Inject constructor(
     override suspend fun getDishes(): Flow<Result<List<DishItem>, DataError>> =
         fetchData(
             getCache = {
-                dishesDao.getAllDishes().toDishItemsFromEntity().filter { it.category == "" }
+                dishesDao.getAllDishes().toDishItemsFromEntity()
             },
             getNetwork = { mealsApi.getMeals().meals?.toDishItems() ?: emptyList() },
             saveCache = { networkData -> dishesDao.insertAll(networkData.toDishEntities()) }

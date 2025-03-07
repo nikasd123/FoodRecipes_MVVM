@@ -7,11 +7,13 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.tz.fooddelivery.R
 import com.tz.fooddelivery.databinding.FragmentCatalogBinding
 import com.tz.fooddelivery.domain.models.BannerItem
+import com.tz.fooddelivery.domain.models.DishItem
 import com.tz.fooddelivery.presentation.common.setupLinearRecyclerView
 import com.tz.fooddelivery.presentation.common.setupLinearRecyclerViewWithShimmer
 import com.tz.fooddelivery.presentation.common.showRecyclerView
@@ -32,7 +34,7 @@ class CatalogFragment : Fragment(R.layout.fragment_catalog) {
 
     private val networkMonitor: NetworkMonitor by lazy { NetworkMonitor(requireContext()) }
     private val viewModel: CatalogViewModel by viewModels()
-    private val mealsAdapter by lazy { MealsAdapter() }
+    private val mealsAdapter by lazy { MealsAdapter(::onMealItemClick) }
     private val bannersAdapter by lazy { BannerAdapter() }
     private val shimmerFiltersAdapter by lazy { ShimmerFiltersAdapter() }
     private val shimmerDishesAdapter by lazy { ShimmerDishesAdapter() }
@@ -137,6 +139,15 @@ class CatalogFragment : Fragment(R.layout.fragment_catalog) {
         )
 
         bannersAdapter.submitList(getBannerItems())
+    }
+
+    private fun onMealItemClick(dishItem: DishItem){
+        val action = CatalogFragmentDirections.actionCatalogFragmentToMealRecipeFragment(
+            mealId = dishItem.id,
+            title = dishItem.title,
+            imageUrl = dishItem.image
+        )
+        findNavController().navigate(action)
     }
 
     private fun initNetworkConnectionObserver() {

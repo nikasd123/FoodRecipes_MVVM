@@ -1,9 +1,11 @@
 package com.tz.fooddelivery.di.module
 
 import com.tz.fooddelivery.domain.repository.CategoryRepository
+import com.tz.fooddelivery.domain.repository.MealRecipeRepository
 import com.tz.fooddelivery.domain.repository.MealsRepository
 import com.tz.fooddelivery.domain.repository.TranslationRepository
 import com.tz.fooddelivery.domain.use_cases.GetCategoriesUseCase
+import com.tz.fooddelivery.domain.use_cases.GetMealRecipeUseCase
 import com.tz.fooddelivery.domain.use_cases.GetMealsUseCase
 import com.tz.fooddelivery.domain.use_cases.GetTranslatedTextUseCase
 import dagger.Module
@@ -22,6 +24,10 @@ class UseCaseModule {
     @Provides
     fun provideGetCategoriesUseCase(categoryRepository: CategoryRepository, getTranslatedTextUseCase: GetTranslatedTextUseCase) =
         GetCategoriesUseCase(categoryRepository = categoryRepository, translateUseCase = getTranslatedTextUseCase)
+
+    @Provides
+    fun provideGetMealRecipeUseCase(mealRecipeRepository: MealRecipeRepository, getTranslatedTextUseCase: GetTranslatedTextUseCase) =
+        GetMealRecipeUseCase(mealRecipeRepository = mealRecipeRepository, translateTextUseCase = getTranslatedTextUseCase)
 
     @Provides
     fun provideGetTranslatedTextUseCase(translationRepository: TranslationRepository) =

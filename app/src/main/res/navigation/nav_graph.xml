@@ -9,5 +9,36 @@
         android:id="@+id/catalogFragment"
         android:name="com.tz.fooddelivery.presentation.ui.catalog.CatalogFragment"
         android:label="fragment_catalog"
-        tools:layout="@layout/fragment_catalog" />
+        tools:layout="@layout/fragment_catalog" >
+        <action
+            android:id="@+id/action_catalogFragment_to_mealRecipeFragment"
+            app:destination="@id/mealRecipeFragment">
+            <argument
+                android:name="mealId"
+                app:argType="string"/>
+            <argument
+                android:name="title"
+                app:argType="string"/>
+            <argument
+                android:name="image_url"
+                app:argType="string"/>
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/mealRecipeFragment"
+        android:name="com.tz.fooddelivery.presentation.ui.recipe.MealRecipeFragment"
+        android:label="MealRecipeFragment" >
+        <argument
+            android:name="mealId"
+            app:argType="string"/>
+        <argument
+            android:name="title"
+            app:argType="string"/>
+        <argument
+            android:name="image_url"
+            app:argType="string"/>
+        <action
+            android:id="@+id/action_mealRecipeFragment_to_catalogFragment"
+            app:destination="@id/catalogFragment" />
+    </fragment>
 </navigation>
