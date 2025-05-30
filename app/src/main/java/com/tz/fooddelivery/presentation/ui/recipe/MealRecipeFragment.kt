@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -40,6 +41,7 @@ class MealRecipeFragment : Fragment(R.layout.fragment_meal_recipe) {
     }
 
     private fun setupUI() {
+        setupToolbar()
         with(binding) {
             textDishName.text = args.title
 
@@ -62,6 +64,12 @@ class MealRecipeFragment : Fragment(R.layout.fragment_meal_recipe) {
         sharedElementReturnTransition = MaterialContainerTransform().apply {
             duration = 300L
             scrimColor = Color.TRANSPARENT
+        }
+    }
+
+    private fun setupToolbar(){
+        binding.toolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
         }
     }
 
