@@ -14,6 +14,7 @@
     <color name="shimmer_color">#D7FFFFFF</color>
     <color name="background">#FBFBFB</color>
     <color name="elements_pink">#FD3A69</color>
-    <color name="background_pink">#33FD3A69</color>
+    <color name="background_pink">#D51818</color>
+    <color name="transparent_pink">#33D51818</color>
 
 </resources>
