@@ -5,16 +5,16 @@
     android:id="@+id/root_card"
     android:layout_marginStart="10dp"
     app:cardElevation="0dp"
-    app:cardBackgroundColor="@color/background_pink"
+    app:cardBackgroundColor="@color/transparent_pink"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="6dp">
+    app:cardCornerRadius="16dp">
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/filter_pizza"
-        android:textColor="@color/elements_pink"
+        android:textColor="@color/black"
         android:textStyle="bold"
         android:textSize="13sp"
         android:fontFamily="@font/roboto_regular"

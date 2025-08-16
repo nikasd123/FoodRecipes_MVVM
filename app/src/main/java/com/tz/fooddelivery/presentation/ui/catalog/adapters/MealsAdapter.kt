@@ -27,9 +27,8 @@ class MealsAdapter(
 
     inner class DishesViewHolder(private val binding: DishesItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(dishItem: DishItem) {
-            binding.title.text = dishItem.title
-            binding.description.text = dishItem.description
-            binding.price.text = itemView.context.getString(R.string.price)
+            binding.dishName.text = dishItem.title
+            binding.dishCookingTime.text = dishItem.id
 
             Glide.with(binding.image.context)
                 .load(dishItem.image)

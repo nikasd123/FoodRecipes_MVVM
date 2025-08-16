@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.tz.fooddelivery.R
 import com.tz.fooddelivery.databinding.ShimmerDishesItemBinding
+import com.tz.fooddelivery.databinding.ShimmerDishesItemNewBinding
 import com.tz.fooddelivery.databinding.ShimmerFilterItemBinding
 
 abstract class BaseShimmerAdapter<B : ViewBinding>(
@@ -31,8 +32,8 @@ class ShimmerFiltersAdapter : BaseShimmerAdapter<ShimmerFilterItemBinding>(R.lay
     override fun onBindViewHolder(holder: ViewHolder<ShimmerFilterItemBinding>, position: Int) {}
 }
 
-class ShimmerDishesAdapter : BaseShimmerAdapter<ShimmerDishesItemBinding>(R.layout.shimmer_dishes_item) {
-    override fun createBinding(view: View) = ShimmerDishesItemBinding.bind(view)
+class ShimmerDishesAdapter : BaseShimmerAdapter<ShimmerDishesItemNewBinding>(R.layout.shimmer_dishes_item_new) {
+    override fun createBinding(view: View): ShimmerDishesItemNewBinding = ShimmerDishesItemNewBinding.bind(view)
     override fun getItemCount(): Int = 5
-    override fun onBindViewHolder(holder: ViewHolder<ShimmerDishesItemBinding>, position: Int) {}
+    override fun onBindViewHolder(holder: ViewHolder<ShimmerDishesItemNewBinding>, position: Int) {}
 }

@@ -9,10 +9,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.github.javafaker.Cat
 import com.google.android.material.snackbar.Snackbar
 import com.tz.fooddelivery.R
 import com.tz.fooddelivery.databinding.FragmentCatalogBinding
 import com.tz.fooddelivery.domain.models.BannerItem
+import com.tz.fooddelivery.domain.models.Category
 import com.tz.fooddelivery.domain.models.DishItem
 import com.tz.fooddelivery.presentation.common.setupLinearRecyclerView
 import com.tz.fooddelivery.presentation.common.setupLinearRecyclerViewWithShimmer
@@ -67,6 +69,9 @@ class CatalogFragment : Fragment(R.layout.fragment_catalog) {
 
     private suspend fun initCategoriesState() {
         viewModel.categoriesState.collect { state ->
+
+            val test: List<Category> = listOf(Category(id = "-1", category = "Для вас", originalName = "", isActive = true))
+
             when (state) {
                 is CategoriesState.Loading -> showFiltersShimmer(true)
                 is CategoriesState.Error -> {
@@ -76,7 +81,7 @@ class CatalogFragment : Fragment(R.layout.fragment_catalog) {
 
                 is CategoriesState.Success -> {
                     showFiltersShimmer(false)
-                    filtersAdapter.submitList(state.categories)
+                    filtersAdapter.submitList(test + state.categories)
                 }
             }
         }
@@ -129,14 +134,15 @@ class CatalogFragment : Fragment(R.layout.fragment_catalog) {
             recyclerView = binding.rvCatalog,
             shimmerRecyclerView = binding.rvShimmerCatalog,
             adapter = mealsAdapter,
-            shimmerAdapter = shimmerDishesAdapter
+            shimmerAdapter = shimmerDishesAdapter,
+            orientation = LinearLayoutManager.HORIZONTAL
         )
 
-        setupLinearRecyclerView(
+        /*setupLinearRecyclerView(
             recyclerView = binding.rvBanners,
             adapter = bannersAdapter,
             orientation = LinearLayoutManager.HORIZONTAL
-        )
+        )*/
 
         bannersAdapter.submitList(getBannerItems())
     }

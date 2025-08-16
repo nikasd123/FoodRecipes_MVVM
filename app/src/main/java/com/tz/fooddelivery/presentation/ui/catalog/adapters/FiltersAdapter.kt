@@ -50,12 +50,10 @@ class FiltersAdapter(
             val context = binding.root.context
             if (isActive) {
                 binding.rootCard.setCardBackgroundColor(ContextCompat.getColor(context, R.color.background_pink))
-                binding.textView.setTextColor(ContextCompat.getColor(context, R.color.elements_pink))
-                binding.textView.alpha = 1.0f
+                binding.textView.setTextColor(ContextCompat.getColor(context, R.color.white))
             } else {
-                binding.rootCard.setCardBackgroundColor(ContextCompat.getColor(context, R.color.white))
+                binding.rootCard.setCardBackgroundColor(ContextCompat.getColor(context, R.color.transparent_pink))
                 binding.textView.setTextColor(ContextCompat.getColor(context, R.color.black))
-                binding.textView.alpha = 0.3f
             }
         }
 

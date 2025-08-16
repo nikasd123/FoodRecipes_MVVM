@@ -8,6 +8,12 @@
     <string name="menu">Меню</string>
     <string name="profile">Профиль</string>
     <string name="cart">Корзина</string>
+    <string name="subscription_title">Расширенная подписка</string>
+    <string name="subscription_description">Оформите подписку \nдля больших возможностей</string>
+    <string name="try_subscription_button">Попробовать бесплатно</string>
+    <string name="catalog_action_text">Что будете готовить сегодня?</string>
+    <string name="catalog_fragment_greetings">Добрый день</string>
+    <string name="catalog_recommendations_action_text">Рекомендации</string>
     <string-array name="cities">
         <item>Москва</item>
         <item>Санкт-Питербург</item>

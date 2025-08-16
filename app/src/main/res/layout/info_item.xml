@@ -10,7 +10,7 @@
     >
 
     <TextView
-        android:id="@+id/text_dish_name"
+        android:id="@+id/dish_cooking_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="Говядина"
