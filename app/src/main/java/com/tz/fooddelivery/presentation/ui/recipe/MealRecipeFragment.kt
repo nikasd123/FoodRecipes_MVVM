@@ -1,8 +1,11 @@
 package com.tz.fooddelivery.presentation.ui.recipe
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -73,15 +76,43 @@ class MealRecipeFragment : Fragment(R.layout.fragment_meal_recipe) {
                         }
                     }
                 }
+                launch {
+                    viewModel.event.collect { event ->
+                        when (event) {
+                            is MealRecipeViewModel.Event.OpenYoutube ->
+                                openYoutubeLink(event.url)
+                        }
+                    }
+                }
             }
         }
     }
 
     private fun initRecipeInfo(recipe: MealRecipe){
         setupShortInfo(recipe.mealCategory, "25", recipe.area)
+        setupYoutubeButton(recipe.strYoutube)
         binding.apply {
             updateIngredients(recipe.ingredientsList)
             recipeDescription.text = recipe.mealRecipe
+        }
+    }
+
+    private fun setupYoutubeButton(youtubeUrl: String) {
+        binding.youtubeBtn.apply {
+            visibility = if(youtubeUrl.isNotBlank()) View.VISIBLE else View.GONE
+            setOnClickListener { viewModel.openYoutube(youtubeUrl) }
+        }
+    }
+
+    private fun openYoutubeLink(url: String) {
+        try {
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                data = url.toUri()
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            }
+            ContextCompat.startActivity(requireContext(), intent, null)
+        } catch (e: Exception) {
+            Snackbar.make(binding.root, "YouTube app not installed", Snackbar.LENGTH_SHORT).show()
         }
     }
 

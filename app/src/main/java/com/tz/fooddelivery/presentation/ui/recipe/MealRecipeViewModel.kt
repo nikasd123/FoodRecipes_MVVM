@@ -7,9 +7,11 @@ import androidx.lifecycle.viewModelScope
 import com.tz.fooddelivery.domain.common.Result
 import com.tz.fooddelivery.domain.use_cases.GetMealRecipeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -36,6 +38,20 @@ class MealRecipeViewModel @Inject constructor(
                     _recipe.value = RecipeState.Success(result.data)
                 }
             }
+        }
+    }
+
+    sealed class Event {
+        data class OpenYoutube(val url: String) : Event()
+    }
+
+    private val _event = Channel<Event>()
+    val event = _event.receiveAsFlow()
+
+    fun openYoutube(url: String) {
+        if (url.isBlank()) return
+        viewModelScope.launch {
+            _event.send(Event.OpenYoutube(url))
         }
     }
 
