@@ -2,8 +2,6 @@ package com.tz.fooddelivery.presentation
 
 import android.os.Bundle
 import android.view.View
-import android.widget.ArrayAdapter
-import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.NavController
@@ -38,19 +36,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initToolbar() {
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        val toolbar = findViewById<Toolbar>(R.id.catalog_toolbar)
         setSupportActionBar(toolbar)
-
-        val cityName = toolbar?.findViewById<Spinner>(R.id.city_name)
-
-        val adapter =
-            ArrayAdapter.createFromResource(
-                this,
-                R.array.cities,
-                R.layout.spinner_item
-            )
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        cityName?.adapter = adapter
     }
 
     private fun setupToolbarVisibility() {

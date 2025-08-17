@@ -8,6 +8,11 @@
     <string name="menu">Меню</string>
     <string name="profile">Профиль</string>
     <string name="cart">Корзина</string>
+    <string name="meal_info">Суп харчо - традиционное блюдо грузинской кухни, острый суп на говяжьем бульоне, наваристый и сытный, с пикантным вкусом. Именно грецкие орехи придают этому замечательному супу такой необычный, незабываемый вкус, в сочетании с томатной заправкой и чесноком, суп получается очень ароматным. А говяжий бульон сделает суп полезным и вкусным.</string>
+    <string name="ingredients_title">Ингредиенты</string>
+    <string name="all">Все</string>
+    <string name="serving_count_title">Количество порций</string>
+    <string name="recipe_title">Пошаговый рецепт</string>
     <string name="subscription_title">Расширенная подписка</string>
     <string name="subscription_description">Оформите подписку \nдля больших возможностей</string>
     <string name="try_subscription_button">Попробовать бесплатно</string>

@@ -1,12 +1,13 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root"
     android:layout_width="0dp"
+    tools:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    >
+    app:layout_constraintTop_toTopOf="parent">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar_layout"
@@ -18,40 +19,42 @@
         app:layout_constraintEnd_toEndOf="parent"
         >
 
-        <androidx.appcompat.widget.Toolbar android:id="@+id/toolbar"
+        <androidx.appcompat.widget.Toolbar android:id="@+id/catalog_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/background">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-
-                <Spinner
-                    android:id="@+id/city_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_gravity="start|center_vertical"
-                    android:background="@color/transparent"
-                    android:theme="@style/Theme.AppCompat.Light" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
+                android:gravity="start">
 
                 <ImageView
-                    android:id="@+id/imageView"
+                    android:id="@+id/profile_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="20dp"
-                    android:layout_gravity="end"
-                    android:src="@drawable/qr_code_icon" />
+                    android:src="@drawable/profile_icon"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    />
 
-            </LinearLayout>
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:text="@string/catalog_fragment_greetings"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/profile_icon"
+                    app:layout_constraintTop_toTopOf="@+id/profile_icon"
+                    app:layout_constraintBottom_toBottomOf="@+id/profile_icon"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.appcompat.widget.Toolbar>
 

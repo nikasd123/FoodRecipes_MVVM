@@ -9,7 +9,7 @@
         android:id="@+id/catalogFragment"
         android:name="com.tz.fooddelivery.presentation.ui.catalog.CatalogFragment"
         android:label="fragment_catalog"
-        tools:layout="@layout/fragment_catalog" >
+        tools:layout="@layout/fragment_catalog_new" >
         <action
             android:id="@+id/action_catalogFragment_to_mealRecipeFragment"
             app:destination="@id/mealRecipeFragment">

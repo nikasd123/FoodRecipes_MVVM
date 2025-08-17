@@ -6,31 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-    <ImageView
-        android:id="@+id/profile_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/profile_icon"
-        android:layout_marginStart="20dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="16dp"
-        android:fontFamily="@font/roboto_regular"
-        android:text="@string/catalog_fragment_greetings"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/profile_icon"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <androidx.cardview.widget.CardView
         android:visibility="gone"
         android:id="@+id/cardView"
@@ -41,7 +16,7 @@
         app:cardCornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_icon">
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -145,16 +120,32 @@
         android:id="@+id/rv_filters"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="16dp"
         android:orientation="horizontal"
         android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rv_shimmer_filters"
+        app:layout_constraintTop_toBottomOf="@+id/textView3"
         tools:listitem="@layout/filters_item"
         tools:visibility="visible" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:visibility="invisible"
+        android:id="@+id/rv_shimmer_catalog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        tools:listitem="@layout/shimmer_dishes_item_new"
+        tools:itemCount="4"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rv_shimmer_filters"
+        />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_catalog"
@@ -166,18 +157,18 @@
         android:orientation="horizontal"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="16dp"
         tools:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rv_filters"
+        app:layout_constraintTop_toBottomOf="@+id/rv_shimmer_filters"
         />
 
     <TextView
         android:id="@+id/textView5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="16dp"
+        android:layout_marginTop="24dp"
         android:layout_marginHorizontal="20dp"
         android:fontFamily="@font/roboto_regular"
         android:text="@string/catalog_recommendations_action_text"
@@ -185,7 +176,8 @@
         android:textSize="20sp"
         android:textStyle="bold"
         app:drawableEndCompat="@drawable/action_arrow"
-        app:layout_constraintTop_toBottomOf="@+id/rv_catalog" />
+        app:layout_constraintTop_toBottomOf="@+id/rv_shimmer_catalog"
+        />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rec_catalog"

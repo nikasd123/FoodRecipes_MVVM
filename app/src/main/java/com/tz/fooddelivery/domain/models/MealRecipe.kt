@@ -8,5 +8,6 @@ data class MealRecipe(
     val mealRecipe: String,
     val mealImage: String,
     val strYoutube: String,
-    val ingredients: String
+    val ingredients: String,
+    val ingredientsList: List<IngredientItem> = emptyList()
 )

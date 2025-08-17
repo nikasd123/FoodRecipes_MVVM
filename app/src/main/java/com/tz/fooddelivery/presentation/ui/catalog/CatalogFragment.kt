@@ -9,14 +9,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.github.javafaker.Cat
 import com.google.android.material.snackbar.Snackbar
 import com.tz.fooddelivery.R
-import com.tz.fooddelivery.databinding.FragmentCatalogBinding
+import com.tz.fooddelivery.databinding.FragmentCatalogNewBinding
 import com.tz.fooddelivery.domain.models.BannerItem
 import com.tz.fooddelivery.domain.models.Category
 import com.tz.fooddelivery.domain.models.DishItem
-import com.tz.fooddelivery.presentation.common.setupLinearRecyclerView
 import com.tz.fooddelivery.presentation.common.setupLinearRecyclerViewWithShimmer
 import com.tz.fooddelivery.presentation.common.showRecyclerView
 import com.tz.fooddelivery.presentation.ui.catalog.adapters.BannerAdapter
@@ -29,9 +27,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class CatalogFragment : Fragment(R.layout.fragment_catalog) {
+class CatalogFragment : Fragment(R.layout.fragment_catalog_new) {
 
-    private var _binding: FragmentCatalogBinding? = null
+    private var _binding: FragmentCatalogNewBinding? = null
     private val binding get() = _binding!!
 
     private val networkMonitor: NetworkMonitor by lazy { NetworkMonitor(requireContext()) }
@@ -51,7 +49,7 @@ class CatalogFragment : Fragment(R.layout.fragment_catalog) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _binding = FragmentCatalogBinding.bind(view)
+        _binding = FragmentCatalogNewBinding.bind(view)
 
         setupRecyclerViews()
         setupObservers()
@@ -70,7 +68,7 @@ class CatalogFragment : Fragment(R.layout.fragment_catalog) {
     private suspend fun initCategoriesState() {
         viewModel.categoriesState.collect { state ->
 
-            val test: List<Category> = listOf(Category(id = "-1", category = "Для вас", originalName = "", isActive = true))
+            val test: List<Category> = listOf(Category(id = "0", category = "Для вас", originalName = "", isActive = true))
 
             when (state) {
                 is CategoriesState.Loading -> showFiltersShimmer(true)
@@ -137,12 +135,6 @@ class CatalogFragment : Fragment(R.layout.fragment_catalog) {
             shimmerAdapter = shimmerDishesAdapter,
             orientation = LinearLayoutManager.HORIZONTAL
         )
-
-        /*setupLinearRecyclerView(
-            recyclerView = binding.rvBanners,
-            adapter = bannersAdapter,
-            orientation = LinearLayoutManager.HORIZONTAL
-        )*/
 
         bannersAdapter.submitList(getBannerItems())
     }

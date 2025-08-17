@@ -1,124 +1,239 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/coordinator_layout"
+    android:id="@+id/root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appbar"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:background="@color/background"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        android:layout_height="wrap_content"
+        >
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/collapsing_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:collapsedTitleTextAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse"
-            app:contentScrim="@color/background_pink"
-            app:expandedTitleMarginBottom="16dp"
-            app:expandedTitleMarginStart="16dp"
-            app:expandedTitleTextAppearance="@style/TextAppearance.AppCompat.Large"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+        <ImageView
+            android:id="@+id/image_main"
+            android:layout_width="0dp"
+            android:layout_height="300dp"
+            android:src="@drawable/meal_illustration"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
 
-            <!-- Фоновое изображение с эффектом blur (будет подгружено через Glide) -->
-            <ImageView
-                android:id="@+id/image_blurred"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:alpha="0.5"
-                android:scaleType="centerCrop"
-                app:layout_collapseMode="parallax" />
-
-            <!-- Контейнер с основной картинкой и текстовой информацией -->
-            <LinearLayout
-                android:id="@+id/header_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="16dp"
-                app:layout_collapseMode="parallax">
-
-                <ImageView
-                    android:id="@+id/image_main"
-                    android:layout_width="200dp"
-                    android:layout_height="200dp"
-                    tools:src="@drawable/banner"
-                    android:layout_marginEnd="16dp"
-                    android:scaleType="centerCrop"
-                    android:transitionName="mealImage" />
-
-                <!-- Контейнер с названием блюда и ингредиентами -->
-                <LinearLayout
-                    android:id="@+id/text_container"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <!-- Название блюда -->
-                    <TextView
-                        android:id="@+id/dish_cooking_time"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        tools:text="Dish Name"
-                        android:textColor="@android:color/white"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-
-                    <!-- Ингредиенты блюда -->
-                    <TextView
-                        android:id="@+id/text_ingredients"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="Ingredients list..."
-                        android:textColor="@android:color/white"
-                        android:textSize="16sp" />
-
-                </LinearLayout>
-            </LinearLayout>
-
-            <!-- Toolbar, который появляется в свернутом состоянии -->
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin"
-                app:navigationIcon="@drawable/ic_close"
-                app:title="Dish Name"
-                app:titleTextColor="@android:color/white" />
-
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <!-- Основной контент: рецепт блюда, прокручиваемый через NestedScrollView -->
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/nested_scroll_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <LinearLayout
-            android:id="@+id/recipe_container"
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/navigate_back"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/ic_back"
+            android:layout_margin="12dp"
+            />
 
-            <!-- Здесь размещается рецепт блюда -->
-            <TextView
-                android:id="@+id/text_recipe"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Recipe details..."
-                android:textColor="@android:color/black"
-                android:textSize="16sp" />
+        <ImageView
+            android:id="@+id/like_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/ic_like_white"
+            android:layout_margin="12dp"
+            />
 
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+        <TextView
+            android:id="@+id/text_dish_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/image_main"
+            tools:text="Суп харчо"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/roboto_regular"
+            android:textColor="@color/black"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/short_info_rv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_dish_name"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="horizontal"
+            tools:listitem="@layout/info_item"
+            tools:itemCount="3"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
+            />
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/text_dish_info"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/short_info_rv"
+            tools:text="@string/meal_info"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/roboto_regular"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            />
+
+        <TextView
+            android:id="@+id/ingredients_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/short_info_rv"
+            android:text="@string/ingredients_title"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/roboto_regular"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/see_all_ingredients"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/ingredients_title"
+            app:layout_constraintBottom_toBottomOf="@+id/ingredients_title"
+            android:text="@string/all"
+            android:textColor="@color/background_pink"
+            android:layout_marginEnd="12dp"
+            android:padding="8dp"
+            />
+
+        <TextView
+            android:id="@+id/serving_count_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ingredients_title"
+            android:text="@string/serving_count_title"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/roboto_regular"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            />
+
+        <ImageView
+            android:id="@+id/plus_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_plus"
+            app:layout_constraintTop_toTopOf="@+id/serving_count_title"
+            app:layout_constraintBottom_toBottomOf="@+id/serving_count_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="12dp"
+            />
+
+        <TextView
+            android:id="@+id/text_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_plus"
+            app:layout_constraintTop_toTopOf="@+id/serving_count_title"
+            app:layout_constraintBottom_toBottomOf="@+id/serving_count_title"
+            app:layout_constraintEnd_toStartOf="@+id/plus_btn"
+            android:layout_marginEnd="12dp"
+            android:text="1"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            />
+
+        <ImageView
+            android:id="@+id/minus_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_minus"
+            app:layout_constraintTop_toTopOf="@+id/serving_count_title"
+            app:layout_constraintBottom_toBottomOf="@+id/serving_count_title"
+            app:layout_constraintEnd_toStartOf="@+id/text_count"
+            android:layout_marginEnd="12dp"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/ingredients_rv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/ingredient_item"
+            android:layout_marginTop="12dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/serving_count_title"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="3"
+            tools:itemCount="3"
+            />
+
+        <TextView
+            android:id="@+id/recipe_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ingredients_rv"
+            android:text="@string/recipe_title"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/roboto_regular"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/recipe_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recipe_title"
+            tools:text="1. Приготовьте)))"
+            android:text="@string/meal_info"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/roboto_regular"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            />
+
+<!--        <com.google.android.material.button.MaterialButton-->
+<!--            android:id="@+id/watch_youtube"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/recipe_description"-->
+<!--            android:background="@drawable/hard_rounded_button_shape"-->
+<!--            android:textAllCaps="false"-->
+<!--            android:layout_marginHorizontal="12dp"-->
+<!--            android:layout_marginVertical="18dp"-->
+<!--            android:text="Видео рецепта"-->
+<!--            android:textColor="@color/white"-->
+<!--            app:icon="@drawable/ic_play"-->
+<!--            app:iconGravity="textEnd"-->
+<!--            app:iconPadding="0dp"-->
+<!--            />-->
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

@@ -18,5 +18,5 @@ fun setViewsVisibility(vararg views: Pair<View, Boolean>) {
 }
 
 internal fun RecyclerView.showRecyclerView(show: Boolean) {
-    visibility = if (show) View.VISIBLE else View.GONE
+    visibility = if (show) View.VISIBLE else View.INVISIBLE
 }
