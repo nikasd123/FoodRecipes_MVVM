@@ -16,6 +16,7 @@ class MealRecipeRepositoryImpl @Inject constructor(
     private val api: MealsApi,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ): MealRecipeRepository {
+
     override suspend fun getMealRecipe(id: String): Result<List<MealRecipe>, DataError> = withContext(ioDispatcher){
         try {
             val response = api.getMealRecipeById(id = id).mealsRecipe?.map {
