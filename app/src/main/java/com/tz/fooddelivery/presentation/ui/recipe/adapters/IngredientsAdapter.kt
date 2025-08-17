@@ -42,6 +42,7 @@ class IngredientsAdapter(
         fun bind(item: IngredientItem) {
             with(binding) {
                 ingredientText.text = item.translatedName
+                ingredientMeasure.text = item.translatedMeasure
                 Glide.with(ingredientImage.context)
                     .load(item.imageUrl)
                     .transition(DrawableTransitionOptions.withCrossFade())

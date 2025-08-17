@@ -5,7 +5,6 @@ import com.tz.fooddelivery.domain.common.NetworkError
 import com.tz.fooddelivery.domain.common.Result
 import com.tz.fooddelivery.domain.common.TranslationError
 import com.tz.fooddelivery.domain.common.mappers.mapTranslationError
-import com.tz.fooddelivery.domain.models.IngredientItem
 import com.tz.fooddelivery.domain.models.MealRecipe
 import com.tz.fooddelivery.domain.repository.MealRecipeRepository
 import kotlinx.coroutines.async
@@ -47,26 +46,17 @@ class GetMealRecipeUseCase @Inject constructor(
         val categoryDeferred = async { translateTextUseCase(recipe.mealCategory) }
         val recipeDeferred = async { translateTextUseCase(recipe.mealRecipe) }
 
-        val originalIngredients: List<IngredientItem> = recipe.ingredients
-            .split(",")
-            .map { it.trim() }
-            .filter { it.isNotEmpty() }
-            .map { name ->
-                IngredientItem(
-                    translatedName = name,
-                    originalName = name,
-                    imageUrl = buildImageUrl(name)
-                )
-            }
-
-        val ingredientsDeferred = originalIngredients.map { ingredient ->
+        val ingredientsDeferred = recipe.ingredientsList.map { ingredient ->
             async {
-                val translationResult = translateTextUseCase(ingredient.originalName)
+                val nameDeferred = async { translateTextUseCase(ingredient.originalName) }
+                val measureDeferred = async { translateTextUseCase(ingredient.originalMeasure) }
+
+                val nameResult = nameDeferred.await()
+                val measureResult = measureDeferred.await()
+
                 ingredient.copy(
-                    translatedName = when (translationResult) {
-                        is Result.Success -> translationResult.data
-                        is Result.Error -> ingredient.originalName
-                    }
+                    translatedName = getTranslatedText(nameResult) ?: ingredient.originalName,
+                    translatedMeasure = getTranslatedText(measureResult) ?: ingredient.originalMeasure
                 )
             }
         }
@@ -76,7 +66,9 @@ class GetMealRecipeUseCase @Inject constructor(
         val recipeResult = recipeDeferred.await()
         val ingredientItems = ingredientsDeferred.awaitAll()
 
-        val translatedIngredientsString = ingredientItems.joinToString(", ") { it.translatedName }
+        val translatedIngredientsString = ingredientItems.joinToString(", ") {
+            "${it.translatedName}${if (it.translatedMeasure.isNotEmpty()) ": ${it.translatedMeasure}" else ""}"
+        }
 
         recipe.copy(
             mealRecipe = getTranslatedText(recipeResult) ?: recipe.mealRecipe,
@@ -92,14 +84,6 @@ class GetMealRecipeUseCase @Inject constructor(
             is Result.Success -> result.data
             is Result.Error -> null
         }
-    }
-
-    private fun buildImageUrl(ingredientName: String): String {
-        val formattedName = ingredientName
-            .trim()
-            .replace(" ", "_")
-            .lowercase()
-        return "https://www.themealdb.com/images/ingredients/$formattedName-medium.png"
     }
 
     private fun mapRepositoryError(error: DataError): Result.Error<Nothing, NetworkError> =

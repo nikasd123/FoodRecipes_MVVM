@@ -1,6 +1,7 @@
 package com.tz.fooddelivery.data.remote.dto
 
 import com.google.gson.annotations.SerializedName
+import com.tz.fooddelivery.domain.models.IngredientItem
 import com.tz.fooddelivery.domain.models.MealRecipe
 
 data class MealRecipeDto(
@@ -40,10 +41,75 @@ data class MealRecipeDto(
     @SerializedName("strIngredient26") val strIngredient26: String?,
     @SerializedName("strIngredient27") val strIngredient27: String?,
     @SerializedName("strIngredient28") val strIngredient28: String?,
+    @SerializedName("strMeasure1") val strMeasure1: String?,
+    @SerializedName("strMeasure2") val strMeasure2: String?,
+    @SerializedName("strMeasure3") val strMeasure3: String?,
+    @SerializedName("strMeasure4") val strMeasure4: String?,
+    @SerializedName("strMeasure5") val strMeasure5: String?,
+    @SerializedName("strMeasure6") val strMeasure6: String?,
+    @SerializedName("strMeasure7") val strMeasure7: String?,
+    @SerializedName("strMeasure8") val strMeasure8: String?,
+    @SerializedName("strMeasure9") val strMeasure9: String?,
+    @SerializedName("strMeasure10") val strMeasure10: String?,
+    @SerializedName("strMeasure11") val strMeasure11: String?,
+    @SerializedName("strMeasure12") val strMeasure12: String?,
+    @SerializedName("strMeasure13") val strMeasure13: String?,
+    @SerializedName("strMeasure14") val strMeasure14: String?,
+    @SerializedName("strMeasure15") val strMeasure15: String?,
+    @SerializedName("strMeasure16") val strMeasure16: String?,
+    @SerializedName("strMeasure17") val strMeasure17: String?,
+    @SerializedName("strMeasure18") val strMeasure18: String?,
+    @SerializedName("strMeasure19") val strMeasure19: String?,
+    @SerializedName("strMeasure20") val strMeasure20: String?,
+    @SerializedName("strMeasure21") val strMeasure21: String?,
+    @SerializedName("strMeasure22") val strMeasure22: String?,
+    @SerializedName("strMeasure23") val strMeasure23: String?,
+    @SerializedName("strMeasure24") val strMeasure24: String?,
+    @SerializedName("strMeasure25") val strMeasure25: String?,
+    @SerializedName("strMeasure26") val strMeasure26: String?,
+    @SerializedName("strMeasure27") val strMeasure27: String?,
+    @SerializedName("strMeasure28") val strMeasure28: String?,
 )
 
-fun MealRecipeDto.toDomain(): MealRecipe =
-    MealRecipe(
+fun MealRecipeDto.toDomain(): MealRecipe {
+    // Создаем списки ингредиентов и мер
+    val ingredients = listOf(
+        strIngredient1, strIngredient2, strIngredient3, strIngredient4, strIngredient5,
+        strIngredient6, strIngredient7, strIngredient8, strIngredient9, strIngredient10,
+        strIngredient11, strIngredient12, strIngredient13, strIngredient14, strIngredient15,
+        strIngredient16, strIngredient17, strIngredient18, strIngredient19, strIngredient20,
+        strIngredient21, strIngredient22, strIngredient23, strIngredient24, strIngredient25,
+        strIngredient26, strIngredient27, strIngredient28
+    )
+
+    val measures = listOf(
+        strMeasure1, strMeasure2, strMeasure3, strMeasure4, strMeasure5,
+        strMeasure6, strMeasure7, strMeasure8, strMeasure9, strMeasure10,
+        strMeasure11, strMeasure12, strMeasure13, strMeasure14, strMeasure15,
+        strMeasure16, strMeasure17, strMeasure18, strMeasure19, strMeasure20,
+        strMeasure21, strMeasure22, strMeasure23, strMeasure24, strMeasure25,
+        strMeasure26, strMeasure27, strMeasure28
+    )
+
+    // Формируем список IngredientItem
+    val ingredientItems = ingredients.zip(measures) { name, measure ->
+        name?.takeIf { it.isNotEmpty() }?.let {
+            IngredientItem(
+                translatedName = it,
+                originalName = it,
+                translatedMeasure = measure ?: "",
+                originalMeasure = measure ?: "",
+                imageUrl = buildImageUrl(it)
+            )
+        }
+    }.filterNotNull()
+
+    // Формируем строку ингредиентов для обратной совместимости
+    val ingredientsString = ingredientItems.joinToString(", ") {
+        "${it.translatedName}${if (it.translatedMeasure.isNotEmpty()) ": ${it.translatedMeasure}" else ""}"
+    }
+
+    return MealRecipe(
         idMeal = idMeal ?: "",
         mealTitle = mealTitle ?: "",
         mealCategory = mealCategory ?: "",
@@ -51,35 +117,15 @@ fun MealRecipeDto.toDomain(): MealRecipe =
         mealRecipe = mealRecipe ?: "",
         mealImage = mealImage ?: "",
         strYoutube = strYoutube ?: "",
-        ingredients = listOfNotNull(
-            strIngredient1?.takeIf { it.isNotEmpty() },
-            strIngredient2?.takeIf { it.isNotEmpty() },
-            strIngredient3?.takeIf { it.isNotEmpty() },
-            strIngredient4?.takeIf { it.isNotEmpty() },
-            strIngredient5?.takeIf { it.isNotEmpty() },
-            strIngredient6?.takeIf { it.isNotEmpty() },
-            strIngredient7?.takeIf { it.isNotEmpty() },
-            strIngredient8?.takeIf { it.isNotEmpty() },
-            strIngredient9?.takeIf { it.isNotEmpty() },
-            strIngredient10?.takeIf { it.isNotEmpty() },
-            strIngredient11?.takeIf { it.isNotEmpty() },
-            strIngredient12?.takeIf { it.isNotEmpty() },
-            strIngredient13?.takeIf { it.isNotEmpty() },
-            strIngredient14?.takeIf { it.isNotEmpty() },
-            strIngredient15?.takeIf { it.isNotEmpty() },
-            strIngredient16?.takeIf { it.isNotEmpty() },
-            strIngredient17?.takeIf { it.isNotEmpty() },
-            strIngredient18?.takeIf { it.isNotEmpty() },
-            strIngredient19?.takeIf { it.isNotEmpty() },
-            strIngredient20?.takeIf { it.isNotEmpty() },
-            strIngredient21?.takeIf { it.isNotEmpty() },
-            strIngredient22?.takeIf { it.isNotEmpty() },
-            strIngredient23?.takeIf { it.isNotEmpty() },
-            strIngredient24?.takeIf { it.isNotEmpty() },
-            strIngredient25?.takeIf { it.isNotEmpty() },
-            strIngredient26?.takeIf { it.isNotEmpty() },
-            strIngredient27?.takeIf { it.isNotEmpty() },
-            strIngredient28?.takeIf { it.isNotEmpty() },
-        ).joinToString(", ").replace("\\r\\n", "")
+        ingredients = ingredientsString,
+        ingredientsList = ingredientItems
     )
+}
 
+private fun buildImageUrl(ingredientName: String): String {
+    val formattedName = ingredientName
+        .trim()
+        .replace(" ", "_")
+        .lowercase()
+    return "https://www.themealdb.com/images/ingredients/$formattedName-medium.png"
+}
