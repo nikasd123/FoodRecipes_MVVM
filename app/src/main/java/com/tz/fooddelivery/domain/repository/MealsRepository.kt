@@ -8,4 +8,6 @@ import kotlinx.coroutines.flow.Flow
 interface MealsRepository {
     suspend fun getDishes(): Flow<Result<List<DishItem>, DataError>>
     suspend fun getDishesByCategory(category: String): Flow<Result<List<DishItem>, DataError>>
+    suspend fun getFavoriteDishes(): Flow<Result<List<DishItem>, DataError>>
+    suspend fun setFavoriteDish(dishId: String) : Boolean
 }

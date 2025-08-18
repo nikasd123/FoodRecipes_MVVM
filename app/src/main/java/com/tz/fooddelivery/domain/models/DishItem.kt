@@ -8,6 +8,7 @@ data class DishItem(
     val title: String,
     val category: String,
     val description: String,
+    val isFavorite: Boolean
 )
 
 internal fun DishItem.toEntity(): DishEntity =
@@ -16,5 +17,6 @@ internal fun DishItem.toEntity(): DishEntity =
         dishImage = image,
         dishTitle = title,
         dishCategory = category,
-        description = description
+        description = description,
+        isFavorite = isFavorite
     )

@@ -2,11 +2,15 @@ package com.tz.fooddelivery.data.repository
 
 import com.tz.fooddelivery.data.local.dao.DishesDao
 import com.tz.fooddelivery.data.remote.api.MealsApi
+import com.tz.fooddelivery.data.local.dao.DishesDao
+import com.tz.fooddelivery.data.local.data_source.LocalDataSource
 import com.tz.fooddelivery.domain.common.DataError
 import com.tz.fooddelivery.domain.common.Result
 import com.tz.fooddelivery.domain.common.mappers.mapError
 import com.tz.fooddelivery.domain.common.mappers.toDishEntities
 import com.tz.fooddelivery.domain.common.mappers.toDishItems
+import com.tz.fooddelivery.domain.common.mappers.toDishItemsFromEntity
+import com.tz.fooddelivery.domain.common.mappers.toDishEntities
 import com.tz.fooddelivery.domain.common.mappers.toDishItemsFromEntity
 import com.tz.fooddelivery.domain.models.DishItem
 import com.tz.fooddelivery.domain.repository.MealsRepository
@@ -19,8 +23,9 @@ import javax.inject.Inject
 
 class MealsRepositoryImpl @Inject constructor(
     private val mealsApi: MealsApi,
+    private val localDataSource: LocalDataSource,
     private val dishesDao: DishesDao,
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : MealsRepository {
 
     override suspend fun getDishes(): Flow<Result<List<DishItem>, DataError>> =
@@ -50,19 +55,27 @@ class MealsRepositoryImpl @Inject constructor(
     private fun <T> fetchData(
         getCache: suspend () -> List<T>,
         getNetwork: suspend () -> List<T>,
-        saveCache: suspend (List<T>) -> Unit
+        saveCache: suspend (List<T>) -> Unit,
     ): Flow<Result<List<T>, DataError>> = channelFlow {
         val cachedData = withContext(ioDispatcher) { getCache() }
         if (cachedData.isNotEmpty()) {
             send(Result.Success(cachedData))
         }
-        try {
-            val networkData = getNetwork()
+        override suspend fun setFavoriteDish(dishId: String): Boolean = withContext(ioDispatcher) {
+            val response = dishesDao.toggleFavoriteDish(dishId)
 
-            withContext(ioDispatcher) { saveCache(networkData) }
-            send(Result.Success(networkData))
-        } catch (e: Exception) {
-            send(Result.Error(mapError(e)))
+            return@withContext response == 1
+        }
+
+        override suspend fun getFavoriteDishes(): Flow<Result<List<DishItem>, DataError>> = flow {
+            try {
+                val dishes = withContext(ioDispatcher) {
+                    dishesDao.getFavoriteDishes()
+                }
+                emit(Result.Success(dishes.toDishItemsFromEntity()))
+            } catch (e: Exception) {
+                emit(Result.Error(DataError.Local.DATABASE_ERROR))
+            }
         }
     }
 }

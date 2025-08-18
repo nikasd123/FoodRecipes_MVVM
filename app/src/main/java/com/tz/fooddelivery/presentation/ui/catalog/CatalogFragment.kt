@@ -1,6 +1,7 @@
 package com.tz.fooddelivery.presentation.ui.catalog
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -34,7 +35,8 @@ class CatalogFragment : Fragment(R.layout.fragment_catalog_new) {
 
     private val networkMonitor: NetworkMonitor by lazy { NetworkMonitor(requireContext()) }
     private val viewModel: CatalogViewModel by viewModels()
-    private val mealsAdapter by lazy { MealsAdapter(::onMealItemClick) }
+    private val mealsAdapter by lazy { MealsAdapter(::onMealItemClick, ::onFavoriteClick) }
+    private val favoriteMealsAdapter by lazy {MealsAdapter(::onMealItemClick, ::onFavoriteClick)}
     private val bannersAdapter by lazy { BannerAdapter() }
     private val shimmerFiltersAdapter by lazy { ShimmerFiltersAdapter() }
     private val shimmerDishesAdapter by lazy { ShimmerDishesAdapter() }
@@ -61,6 +63,7 @@ class CatalogFragment : Fragment(R.layout.fragment_catalog_new) {
                 launch { initDishesState() }
                 launch { initCategoriesState() }
                 launch { initSelectedCategory() }
+                launch { initFavoriteDishesState() }
             }
         }
     }
@@ -80,6 +83,20 @@ class CatalogFragment : Fragment(R.layout.fragment_catalog_new) {
                 is CategoriesState.Success -> {
                     showFiltersShimmer(false)
                     filtersAdapter.submitList(test + state.categories)
+                }
+            }
+        }
+    }
+
+    private suspend fun initFavoriteDishesState(){
+        viewModel.favoriteDishesState.collect{ state ->
+            when(state) {
+                is FavoriteDishesState.Loading -> {Unit}
+                is FavoriteDishesState.Error -> {
+                    Unit
+                }
+                is FavoriteDishesState.Success -> {
+                    favoriteMealsAdapter.submitList(state.favoriteDishes)
                 }
             }
         }
@@ -136,6 +153,14 @@ class CatalogFragment : Fragment(R.layout.fragment_catalog_new) {
             orientation = LinearLayoutManager.HORIZONTAL
         )
 
+        setupLinearRecyclerViewWithShimmer(
+            recyclerView = binding.favCatalog,
+            shimmerRecyclerView = binding.rvShimmerCatalog,
+            adapter = favoriteMealsAdapter,
+            shimmerAdapter = shimmerDishesAdapter,
+            orientation = LinearLayoutManager.HORIZONTAL
+        )
+
         bannersAdapter.submitList(getBannerItems())
     }
 
@@ -146,6 +171,11 @@ class CatalogFragment : Fragment(R.layout.fragment_catalog_new) {
             imageUrl = dishItem.image
         )
         findNavController().navigate(action)
+    }
+
+    private fun onFavoriteClick(dishItem: DishItem){
+        Log.e("favorite button", "click")
+        viewModel.handleFavoriteButtonClick(dishItem)
     }
 
     private fun initNetworkConnectionObserver() {
