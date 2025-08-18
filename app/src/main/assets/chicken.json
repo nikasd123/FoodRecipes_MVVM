@@ -2,88 +2,105 @@
   "meals": [
     {
       "strMeal": "15-minute chicken & halloumi burgers",
-      "strMealThumb": "https:\/\/www.themealdb.com\/images\/media\/meals\/vdwloy1713225718.jpg",
-      "idMeal": "53085"
+      "strMealThumb": "https://www.themealdb.com/images/media/meals/vdwloy1713225718.jpg",
+      "idMeal": "53085",
+      "ruMeal": "15-минутные бургеры с курицей и халлуми"
     },
     {
       "strMeal": "Ayam Percik",
-      "strMealThumb": "https:\/\/www.themealdb.com\/images\/media\/meals\/020z181619788503.jpg",
-      "idMeal": "53050"
+      "strMealThumb": "https://www.themealdb.com/images/media/meals/020z181619788503.jpg",
+      "idMeal": "53050",
+      "ruMeal": "Аям Перчик (малайская курица)"
     },
     {
       "strMeal": "Brown Stew Chicken",
-      "strMealThumb": "https:\/\/www.themealdb.com\/images\/media\/meals\/sypxpx1515365095.jpg",
-      "idMeal": "52940"
+      "strMealThumb": "https://www.themealdb.com/images/media/meals/sypxpx1515365095.jpg",
+      "idMeal": "52940",
+      "ruMeal": "Тушёная курица"
     },
     {
       "strMeal": "Chick-Fil-A Sandwich",
-      "strMealThumb": "https:\/\/www.themealdb.com\/images\/media\/meals\/sbx7n71587673021.jpg",
-      "idMeal": "53016"
+      "strMealThumb": "https://www.themealdb.com/images/media/meals/sbx7n71587673021.jpg",
+      "idMeal": "53016",
+      "ruMeal": "Сэндвич Chick-Fil-A"
     },
     {
       "strMeal": "Chicken & mushroom Hotpot",
-      "strMealThumb": "https:\/\/www.themealdb.com\/images\/media\/meals\/uuuspp1511297945.jpg",
-      "idMeal": "52846"
+      "strMealThumb": "https://www.themealdb.com/images/media/meals/uuuspp1511297945.jpg",
+      "idMeal": "52846",
+      "ruMeal": "Куриный хотпот с грибами"
     },
     {
       "strMeal": "Chicken Alfredo Primavera",
-      "strMealThumb": "https:\/\/www.themealdb.com\/images\/media\/meals\/syqypv1486981727.jpg",
-      "idMeal": "52796"
+      "strMealThumb": "https://www.themealdb.com/images/media/meals/syqypv1486981727.jpg",
+      "idMeal": "52796",
+      "ruMeal": "Курица Альфредо Примавера"
     },
     {
       "strMeal": "Chicken Basquaise",
-      "strMealThumb": "https:\/\/www.themealdb.com\/images\/media\/meals\/wruvqv1511880994.jpg",
-      "idMeal": "52934"
+      "strMealThumb": "https://www.themealdb.com/images/media/meals/wruvqv1511880994.jpg",
+      "idMeal": "52934",
+      "ruMeal": "Курица по-баскски"
     },
     {
       "strMeal": "Chicken Congee",
-      "strMealThumb": "https:\/\/www.themealdb.com\/images\/media\/meals\/1529446352.jpg",
-      "idMeal": "52956"
+      "strMealThumb": "https://www.themealdb.com/images/media/meals/1529446352.jpg",
+      "idMeal": "52956",
+      "ruMeal": "Куриный конджи (рисовая каша)"
     },
     {
       "strMeal": "Chicken Couscous",
-      "strMealThumb": "https:\/\/www.themealdb.com\/images\/media\/meals\/qxytrx1511304021.jpg",
-      "idMeal": "52850"
+      "strMealThumb": "https://www.themealdb.com/images/media/meals/qxytrx1511304021.jpg",
+      "idMeal": "52850",
+      "ruMeal": "Куриный кускус"
     },
     {
       "strMeal": "Chicken Enchilada Casserole",
-      "strMealThumb": "https:\/\/www.themealdb.com\/images\/media\/meals\/qtuwxu1468233098.jpg",
-      "idMeal": "52765"
+      "strMealThumb": "https://www.themealdb.com/images/media/meals/qtuwxu1468233098.jpg",
+      "idMeal": "52765",
+      "ruMeal": "Куриная энчилада-запеканка"
     },
     {
       "strMeal": "Chicken Fajita Mac and Cheese",
-      "strMealThumb": "https:\/\/www.themealdb.com\/images\/media\/meals\/qrqywr1503066605.jpg",
-      "idMeal": "52818"
+      "strMealThumb": "https://www.themealdb.com/images/media/meals/qrqywr1503066605.jpg",
+      "idMeal": "52818",
+      "ruMeal": "Макароны с сыром и куриным фахитас"
     },
     {
       "strMeal": "Chicken Ham and Leek Pie",
-      "strMealThumb": "https:\/\/www.themealdb.com\/images\/media\/meals\/xrrtss1511555269.jpg",
-      "idMeal": "52875"
+      "strMealThumb": "https://www.themealdb.com/images/media/meals/xrrtss1511555269.jpg",
+      "idMeal": "52875",
+      "ruMeal": "Пирог с курицей, ветчиной и луком-пореем"
     },
     {
       "strMeal": "Chicken Handi",
-      "strMealThumb": "https:\/\/www.themealdb.com\/images\/media\/meals\/wyxwsp1486979827.jpg",
-      "idMeal": "52795"
+      "strMealThumb": "https://www.themealdb.com/images/media/meals/wyxwsp1486979827.jpg",
+      "idMeal": "52795",
+      "ruMeal": "Курица Ханди"
     },
     {
       "strMeal": "Chicken Karaage",
-      "strMealThumb": "https:\/\/www.themealdb.com\/images\/media\/meals\/tyywsw1505930373.jpg",
-      "idMeal": "52831"
+      "strMealThumb": "https://www.themealdb.com/images/media/meals/tyywsw1505930373.jpg",
+      "idMeal": "52831",
+      "ruMeal": "Курица Карааге"
     },
     {
       "strMeal": "Chicken Marengo",
-      "strMealThumb": "https:\/\/www.themealdb.com\/images\/media\/meals\/qpxvuq1511798906.jpg",
-      "idMeal": "52920"
+      "strMealThumb": "https://www.themealdb.com/images/media/meals/qpxvuq1511798906.jpg",
+      "idMeal": "52920",
+      "ruMeal": "Курица Маренго"
     },
     {
       "strMeal": "Chicken Parmentier",
-      "strMealThumb": "https:\/\/www.themealdb.com\/images\/media\/meals\/uwvxpv1511557015.jpg",
-      "idMeal": "52879"
+      "strMealThumb": "https://www.themealdb.com/images/media/meals/uwvxpv1511557015.jpg",
+      "idMeal": "52879",
+      "ruMeal": "Курица Пармантье"
     },
     {
       "strMeal": "Chicken Quinoa Greek Salad",
-      "strMealThumb": "https:\/\/www.themealdb.com\/images\/media\/meals\/k29viq1585565980.jpg",
-      "idMeal": "53011"
+      "strMealThumb": "https://www.themealdb.com/images/media/meals/k29viq1585565980.jpg",
+      "idMeal": "53011",
+      "ruMeal": "Греческий салат с курицей и киноа"
     }
   ]
 }

@@ -20,6 +20,6 @@ internal fun CategoryEntity.toDomain(): Category =
     Category(
         id = categoryId,
         category = categoryName ?: "",
-        originalName = originalName ?: "",
+        ruCategory = originalName ?: "",
         isActive = false
     )

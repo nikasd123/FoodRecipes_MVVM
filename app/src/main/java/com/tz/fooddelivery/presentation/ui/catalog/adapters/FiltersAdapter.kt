@@ -43,7 +43,7 @@ class FiltersAdapter(
             }
 
             updateAppearance(isActive)
-            binding.textView.text = item.category
+            binding.textView.text = item.ruCategory
         }
 
         private fun updateAppearance(isActive: Boolean) {

@@ -1,1 +1,40 @@
-{"meals":[{"strMeal":"Baingan Bharta","strMealThumb":"https:\/\/www.themealdb.com\/images\/media\/meals\/urtpqw1487341253.jpg","idMeal":"52807"},{"strMeal":"Beetroot Soup (Borscht)","strMealThumb":"https:\/\/www.themealdb.com\/images\/media\/meals\/zadvgb1699012544.jpg","idMeal":"53078"},{"strMeal":"Cabbage Soup (Shchi)","strMealThumb":"https:\/\/www.themealdb.com\/images\/media\/meals\/60oc3k1699009846.jpg","idMeal":"53077"},{"strMeal":"Chickpea Fajitas","strMealThumb":"https:\/\/www.themealdb.com\/images\/media\/meals\/tvtxpq1511464705.jpg","idMeal":"52870"},{"strMeal":"Crispy Eggplant","strMealThumb":"https:\/\/www.themealdb.com\/images\/media\/meals\/c7lzrl1683208757.jpg","idMeal":"53072"},{"strMeal":"Dal fry","strMealThumb":"https:\/\/www.themealdb.com\/images\/media\/meals\/wuxrtu1483564410.jpg","idMeal":"52785"}]}
+{
+  "meals": [
+    {
+      "strMeal": "Baingan Bharta",
+      "ruMeal": "Байган Бхарта (Баклажанное пюре)",
+      "strMealThumb": "https:\/\/www.themealdb.com\/images\/media\/meals\/urtpqw1487341253.jpg",
+      "idMeal": "52807"
+    },
+    {
+      "strMeal": "Beetroot Soup (Borscht)",
+      "ruMeal": "Свекольник (Борщ)",
+      "strMealThumb": "https:\/\/www.themealdb.com\/images\/media\/meals\/zadvgb1699012544.jpg",
+      "idMeal": "53078"
+    },
+    {
+      "strMeal": "Cabbage Soup (Shchi)",
+      "ruMeal": "Щи (Капустный суп)",
+      "strMealThumb": "https:\/\/www.themealdb.com\/images\/media\/meals\/60oc3k1699009846.jpg",
+      "idMeal": "53077"
+    },
+    {
+      "strMeal": "Chickpea Fajitas",
+      "ruMeal": "Фахитас с нутом",
+      "strMealThumb": "https:\/\/www.themealdb.com\/images\/media\/meals\/tvtxpq1511464705.jpg",
+      "idMeal": "52870"
+    },
+    {
+      "strMeal": "Crispy Eggplant",
+      "ruMeal": "Хрустящие баклажаны",
+      "strMealThumb": "https:\/\/www.themealdb.com\/images\/media\/meals\/c7lzrl1683208757.jpg",
+      "idMeal": "53072"
+    },
+    {
+      "strMeal": "Dal fry",
+      "ruMeal": "Жареный дал (Острая чечевица)",
+      "strMealThumb": "https:\/\/www.themealdb.com\/images\/media\/meals\/wuxrtu1483564410.jpg",
+      "idMeal": "52785"
+    }
+  ]
+}

@@ -5,7 +5,7 @@ import com.tz.fooddelivery.data.local.entities.CategoryEntity
 data class Category(
     val id: String = "1",
     val category: String = "beef",
-    val originalName: String = "",
+    val ruCategory: String = "",
     var isActive: Boolean = true
 )
 
@@ -15,5 +15,5 @@ internal fun Category.toEntity(): CategoryEntity =
     CategoryEntity(
         categoryId = id,
         categoryName = category,
-        originalName = originalName
+        originalName = ruCategory
     )

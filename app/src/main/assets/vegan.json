@@ -1,1 +1,22 @@
-{"meals":[{"strMeal":"Roast fennel and aubergine paella","strMealThumb":"https:\/\/www.themealdb.com\/images\/media\/meals\/1520081754.jpg","idMeal":"52942"},{"strMeal":"Vegan Chocolate Cake","strMealThumb":"https:\/\/www.themealdb.com\/images\/media\/meals\/qxutws1486978099.jpg","idMeal":"52794"},{"strMeal":"Vegan Lasagna","strMealThumb":"https:\/\/www.themealdb.com\/images\/media\/meals\/rvxxuy1468312893.jpg","idMeal":"52775"}]}
+{
+  "meals": [
+    {
+      "strMeal": "Roast fennel and aubergine paella",
+      "strMealThumb": "https://www.themealdb.com/images/media/meals/1520081754.jpg",
+      "idMeal": "52942",
+      "ruMeal": "Паэлья с запечённым фенхелем и баклажаном"
+    },
+    {
+      "strMeal": "Vegan Chocolate Cake",
+      "strMealThumb": "https://www.themealdb.com/images/media/meals/qxutws1486978099.jpg",
+      "idMeal": "52794",
+      "ruMeal": "Веганский шоколадный торт"
+    },
+    {
+      "strMeal": "Vegan Lasagna",
+      "strMealThumb": "https://www.themealdb.com/images/media/meals/rvxxuy1468312893.jpg",
+      "idMeal": "52775",
+      "ruMeal": "Веганская лазанья"
+    }
+  ]
+}

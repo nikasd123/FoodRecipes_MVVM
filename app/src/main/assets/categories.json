@@ -1,13 +1,49 @@
 {
   "categories": [
-    { "idCategory": "1", "strCategory": "Beef" },
-    { "idCategory": "2", "strCategory": "Chicken" },
-    { "idCategory": "3", "strCategory": "Dessert" },
-    { "idCategory": "5", "strCategory": "Miscellaneous" },
-    { "idCategory": "6", "strCategory": "Pasta" },
-    { "idCategory": "8", "strCategory": "Seafood" },
-    { "idCategory": "11", "strCategory": "Vegan" },
-    { "idCategory": "12", "strCategory": "Vegetarian" },
-    { "idCategory": "13", "strCategory": "Breakfast" }
+    {
+      "idCategory": "1",
+      "strCategory": "Beef",
+      "ruCategory": "Говядина"
+    },
+    {
+      "idCategory": "2",
+      "strCategory": "Chicken",
+      "ruCategory": "Курица"
+    },
+    {
+      "idCategory": "3",
+      "strCategory": "Dessert",
+      "ruCategory": "Десерт"
+    },
+    {
+      "idCategory": "5",
+      "strCategory": "Miscellaneous",
+      "ruCategory": "Разное"
+    },
+    {
+      "idCategory": "6",
+      "strCategory": "Pasta",
+      "ruCategory": "Паста"
+    },
+    {
+      "idCategory": "8",
+      "strCategory": "Seafood",
+      "ruCategory": "Морепродукты"
+    },
+    {
+      "idCategory": "11",
+      "strCategory": "Vegan",
+      "ruCategory": "Веганское"
+    },
+    {
+      "idCategory": "12",
+      "strCategory": "Vegetarian",
+      "ruCategory": "Вегетарианское"
+    },
+    {
+      "idCategory": "13",
+      "strCategory": "Breakfast",
+      "ruCategory": "Завтрак"
+    }
   ]
 }

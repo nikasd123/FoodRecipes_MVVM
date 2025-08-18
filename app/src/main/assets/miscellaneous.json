@@ -1,1 +1,40 @@
-{"meals":[{"strMeal":"Bean & Sausage Hotpot","strMealThumb":"https:\/\/www.themealdb.com\/images\/media\/meals\/vxuyrx1511302687.jpg","idMeal":"52848"},{"strMeal":"Callaloo Jamaican Style","strMealThumb":"https:\/\/www.themealdb.com\/images\/media\/meals\/ussyxw1515364536.jpg","idMeal":"52939"},{"strMeal":"Chakchouka ","strMealThumb":"https:\/\/www.themealdb.com\/images\/media\/meals\/gpz67p1560458984.jpg","idMeal":"52969"},{"strMeal":"Duck Confit","strMealThumb":"https:\/\/www.themealdb.com\/images\/media\/meals\/wvpvsu1511786158.jpg","idMeal":"52907"},{"strMeal":"French Lentils With Garlic and Thyme","strMealThumb":"https:\/\/www.themealdb.com\/images\/media\/meals\/vwwspt1487394060.jpg","idMeal":"52815"},{"strMeal":"French Omelette","strMealThumb":"https:\/\/www.themealdb.com\/images\/media\/meals\/yvpuuy1511797244.jpg","idMeal":"52915"}]}
+{
+  "meals": [
+    {
+      "strMeal": "Bean & Sausage Hotpot",
+      "strMealThumb": "https://www.themealdb.com/images/media/meals/vxuyrx1511302687.jpg",
+      "idMeal": "52848",
+      "ruMeal": "Хот‑пот с фасолью и сосисками"
+    },
+    {
+      "strMeal": "Callaloo Jamaican Style",
+      "strMealThumb": "https://www.themealdb.com/images/media/meals/ussyxw1515364536.jpg",
+      "idMeal": "52939",
+      "ruMeal": "Калалу по‑ямайски"
+    },
+    {
+      "strMeal": "Chakchouka ",
+      "strMealThumb": "https://www.themealdb.com/images/media/meals/gpz67p1560458984.jpg",
+      "idMeal": "52969",
+      "ruMeal": "Чакчука"
+    },
+    {
+      "strMeal": "Duck Confit",
+      "strMealThumb": "https://www.themealdb.com/images/media/meals/wvpvsu1511786158.jpg",
+      "idMeal": "52907",
+      "ruMeal": "Конфи из утки"
+    },
+    {
+      "strMeal": "French Lentils With Garlic and Thyme",
+      "strMealThumb": "https://www.themealdb.com/images/media/meals/vwwspt1487394060.jpg",
+      "idMeal": "52815",
+      "ruMeal": "Французская чечевица с чесноком и тимьяном"
+    },
+    {
+      "strMeal": "French Omelette",
+      "strMealThumb": "https://www.themealdb.com/images/media/meals/yvpuuy1511797244.jpg",
+      "idMeal": "52915",
+      "ruMeal": "Французский омлет"
+    }
+  ]
+}
