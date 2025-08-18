@@ -72,7 +72,7 @@ class MealRecipeFragment : Fragment(R.layout.fragment_meal_recipe) {
                         when (state){
                             is RecipeState.Error -> showError(state.message)
                             RecipeState.Loading -> Unit
-                            is RecipeState.Success -> initRecipeInfo(state.recipes[0])
+                            is RecipeState.Success -> initRecipeInfo(state.recipes)
                         }
                     }
                 }

@@ -1,6 +1,5 @@
 package com.tz.fooddelivery.data.remote.api
 
-import com.tz.fooddelivery.data.remote.dto.TranslationResponseDto
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -12,3 +11,5 @@ interface TranslationApi {
         @Query("dl") destinationLanguage: String,
     ): TranslationResponseDto
 }
+
+data class TranslationResponseDto(val translatedText: String)

@@ -1,11 +1,12 @@
 package com.tz.fooddelivery.presentation.ui.catalog
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tz.fooddelivery.domain.common.NetworkError
 import com.tz.fooddelivery.domain.common.Result
 import com.tz.fooddelivery.domain.models.Category
-import com.tz.fooddelivery.domain.models.DishItem
+import com.tz.fooddelivery.domain.models.DefaultCategory
 import com.tz.fooddelivery.domain.use_cases.GetCategoriesUseCase
 import com.tz.fooddelivery.domain.use_cases.GetMealsUseCase
 import com.tz.fooddelivery.presentation.common.mapError
@@ -15,6 +16,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -58,6 +60,7 @@ class CatalogViewModel @Inject constructor(
             _categoriesState.value = CategoriesState.Loading
             getCategoriesUseCase.getCategories()
                 .catch { e ->
+                    Log.e("CatalogVM", "Categories load error", e)
                     _categoriesState.value = CategoriesState.Error(
                         error = mapError(e),
                         message = "Failed to load categories"
@@ -66,12 +69,22 @@ class CatalogViewModel @Inject constructor(
                 .collect { result ->
                     when (result) {
                         is Result.Success -> {
-                            _categoriesState.value = CategoriesState.Success(result.data)
+                            if (result.data.isNotEmpty()) {
+                                _categoriesState.value = CategoriesState.Success(result.data)
+                            } else {
+                                _categoriesState.value = CategoriesState.Error(
+                                    error = NetworkError.DATA_NOT_FOUND,
+                                    message = "No categories found"
+                                )
+                            }
                         }
                         is Result.Error -> {
                             _categoriesState.value = CategoriesState.Error(
                                 error = result.error,
-                                message = "Categories loading failed"
+                                message = when (result.error) {
+                                    NetworkError.DATA_NOT_FOUND -> "Categories not found"
+                                    else -> "Failed to load categories"
+                                }
                             )
                         }
                     }
@@ -82,16 +95,28 @@ class CatalogViewModel @Inject constructor(
     private fun loadDishes() {
         viewModelScope.launch {
             _dishesState.value = DishesState.Loading
-            getMealsUseCase.getDishes()
+            getMealsUseCase.getDishesByCategory("beef")
                 .catch { e ->
                     _dishesState.value = DishesState.Error(
                         error = mapError(e),
                         message = "Failed to load dishes",
-                        lastCategory = null
+                        lastCategory = DefaultCategory
                     )
                 }
                 .collect { result ->
-                    handleDishResult(result, null)
+                    when (result) {
+                        is Result.Success -> {
+                            _dishesState.value = DishesState.Success(result.data)
+                        }
+                        is Result.Error -> {
+                            _dishesState.value = DishesState.Error(
+                                error = result.error,
+                                message = "Failed to load dishes",
+                                lastCategory = DefaultCategory
+                            )
+                        }
+                    }
+                    //handleDishResult(result, null)
                 }
         }
     }
@@ -99,7 +124,7 @@ class CatalogViewModel @Inject constructor(
     private fun loadDishesByCategory(category: Category) {
         viewModelScope.launch {
             _dishesState.value = DishesState.Loading
-            getMealsUseCase.getDishesByCategory(category.originalName)
+            getMealsUseCase.getDishesByCategory(category.category.lowercase(Locale.ROOT))
                 .catch { e ->
                     _dishesState.value = DishesState.Error(
                         error = mapError(e),
@@ -108,34 +133,20 @@ class CatalogViewModel @Inject constructor(
                     )
                 }
                 .collect { result ->
-                    handleDishResult(result, category)
+                    when (result) {
+                        is Result.Success -> {
+                            _dishesState.value = DishesState.Success(result.data)
+                        }
+                        is Result.Error -> {
+                            _dishesState.value = DishesState.Error(
+                                error = result.error,
+                                message = "Failed to load dishes",
+                                lastCategory = category
+                            )
+                        }
+                    }
+                    //handleDishResult(result, category)
                 }
-        }
-    }
-
-    private fun handleDishResult(result: Result<DishItem, NetworkError>, category: Category?) {
-        when (result) {
-            is Result.Success -> {
-                val newList = (_dishesState.value as? DishesState.Success)
-                    ?.dishes
-                    ?.toMutableList()
-                    ?: mutableListOf()
-
-                if (!newList.any { it.id == result.data.id }) {
-                    newList.add(result.data)
-                    _dishesState.value = DishesState.Success(
-                        dishes = newList,
-                        category = category ?: _selectedCategory.value
-                    )
-                }
-            }
-            is Result.Error -> {
-                _dishesState.value = DishesState.Error(
-                    error = result.error,
-                    message = "Dish loading error",
-                    lastCategory = category
-                )
-            }
         }
     }
 }

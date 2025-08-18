@@ -1,8 +1,6 @@
 package com.tz.fooddelivery.di.module
 
-import com.tz.fooddelivery.data.local.dao.CategoriesDao
-import com.tz.fooddelivery.data.local.dao.DishesDao
-import com.tz.fooddelivery.data.remote.api.MealsApi
+import com.tz.fooddelivery.data.local.data_source.LocalDataSource
 import com.tz.fooddelivery.data.remote.api.TranslationApi
 import com.tz.fooddelivery.data.repository.CategoryRepositoryImpl
 import com.tz.fooddelivery.data.repository.MealRecipeRepositoryImpl
@@ -22,16 +20,16 @@ import dagger.hilt.components.SingletonComponent
 class RepositoryModule {
 
     @Provides
-    fun provideDishesRepository(mealsApi: MealsApi, dishesDao: DishesDao): MealsRepository =
-        MealsRepositoryImpl(mealsApi = mealsApi, dishesDao = dishesDao)
+    fun provideDishesRepository(localDataSource: LocalDataSource): MealsRepository =
+        MealsRepositoryImpl(localDataSource = localDataSource,)
 
     @Provides
-    fun provideCategoryRepository(mealsApi: MealsApi, categoriesDao: CategoriesDao): CategoryRepository =
-        CategoryRepositoryImpl(mealsApi = mealsApi, categoriesDao = categoriesDao)
+    fun provideCategoryRepository(localDataSource: LocalDataSource): CategoryRepository =
+        CategoryRepositoryImpl(localDataSource = localDataSource)
 
     @Provides
-    fun provideMealRecipeRepository(mealsApi: MealsApi): MealRecipeRepository =
-        MealRecipeRepositoryImpl(api = mealsApi)
+    fun provideMealRecipeRepository(localDataSource: LocalDataSource): MealRecipeRepository =
+        MealRecipeRepositoryImpl(localDataSource = localDataSource)
 
     @Provides
     fun provideTranslationRepository(translationApi: TranslationApi): TranslationRepository =

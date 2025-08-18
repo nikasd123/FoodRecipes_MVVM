@@ -7,8 +7,7 @@ import com.tz.fooddelivery.domain.models.DishItem
 sealed interface DishesState {
     data object Loading : DishesState
     data class Success(
-        val dishes: List<DishItem>,
-        val category: Category?
+        val dishes: List<DishItem>
     ) : DishesState
     data class Error(
         val error: NetworkError,

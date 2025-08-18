@@ -6,7 +6,6 @@ import com.tz.fooddelivery.domain.common.TranslationError
 import com.tz.fooddelivery.domain.repository.TranslationRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.withContext
 import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -19,13 +18,14 @@ class GetTranslatedTextUseCase @Inject constructor(
     private val translationDispatcher = Dispatchers.IO.limitedParallelism(5)
 
     suspend operator fun invoke(text: String): Result<String, TranslationError> =
-        withContext(translationDispatcher) {
-            try {
-                Result.Success(translationRepository.getRussianText(text))
-            } catch (e: Exception) {
-                Result.Error(mapError(e))
-            }
-        }
+        Result.Error(mapError(Exception()))
+        //withContext(translationDispatcher) {
+        //    try {
+        //        Result.Success(translationRepository.getRussianText(text))
+        //    } catch (e: Exception) {
+        //        Result.Error(mapError(e))
+        //    }
+        //}
 
     private fun mapError(e: Exception): TranslationError =
         when (e) {

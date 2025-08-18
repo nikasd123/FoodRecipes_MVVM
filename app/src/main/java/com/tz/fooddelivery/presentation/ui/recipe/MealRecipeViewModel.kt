@@ -1,9 +1,11 @@
 package com.tz.fooddelivery.presentation.ui.recipe
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tz.fooddelivery.domain.common.NetworkError
 import com.tz.fooddelivery.domain.common.Result
 import com.tz.fooddelivery.domain.use_cases.GetMealRecipeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,19 +29,34 @@ class MealRecipeViewModel @Inject constructor(
     val mealId: LiveData<String> = _mealId
 
     fun getMealRecipeById(id: String){
+        Log.d("MealRecipeVM", "Запрос рецепта по id: $id")
         viewModelScope.launch {
-            when (val result = getMealRecipeUseCase.getMealRecipe(id)){
-                is Result.Error -> _recipe.value = RecipeState.Error(
-                    error = result.error,
-                    message = "Recipe loading failed",
+            try {
+                when (val result = getMealRecipeUseCase.getMealRecipe(id)) {
+                    is Result.Error -> {
+                        Log.e("MealRecipeVM", "Ошибка загрузки рецепта: ${result.error}")
+                        _recipe.value = RecipeState.Error(
+                            error = result.error,
+                            message = "Recipe loading failed",
+                            id = id
+                        )
+                    }
+                    is Result.Success -> {
+                        Log.d("MealRecipeVM", "Рецепт успешно загружен: ${result.data}")
+                        _recipe.value = RecipeState.Success(result.data)
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e("MealRecipeVM", "Непредвиденная ошибка при загрузке рецепта", e)
+                _recipe.value = RecipeState.Error(
+                    error = NetworkError.UNKNOWN_ERROR,
+                    message = "Unexpected error",
                     id = id
                 )
-                is Result.Success -> {
-                    _recipe.value = RecipeState.Success(result.data)
-                }
             }
         }
     }
+
 
     sealed class Event {
         data class OpenYoutube(val url: String) : Event()
