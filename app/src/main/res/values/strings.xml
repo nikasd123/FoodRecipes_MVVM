@@ -18,7 +18,7 @@
     <string name="try_subscription_button">Попробовать бесплатно</string>
     <string name="catalog_action_text">Что будете готовить сегодня?</string>
     <string name="catalog_fragment_greetings">Добрый день</string>
-    <string name="catalog_recommendations_action_text">Рекомендации</string>
+    <string name="catalog_recommendations_action_text">Вам понравилось</string>
     <string-array name="cities">
         <item>Москва</item>
         <item>Санкт-Питербург</item>

@@ -14,6 +14,7 @@ data class DishItemDto(
         title = ruMeal ?: "",
         image = image ?: "",
         category = category,
-        description = ""
+        description = "",
+        isFavorite = false
     )
 }

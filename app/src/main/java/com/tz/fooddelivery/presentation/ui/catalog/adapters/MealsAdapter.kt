@@ -11,7 +11,8 @@ import com.tz.fooddelivery.databinding.DishesItemBinding
 import com.tz.fooddelivery.domain.models.DishItem
 
 class MealsAdapter(
-    private val onItemClick: (DishItem) -> Unit
+    private val onItemClick: (DishItem) -> Unit,
+    private val onFavoriteClick: (DishItem) -> Unit
 ) : ListAdapter<DishItem, MealsAdapter.DishesViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DishesViewHolder {
@@ -35,9 +36,16 @@ class MealsAdapter(
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(binding.image)
 
-            itemView.rootView.setOnClickListener {
+            binding.image.setOnClickListener {
                 onItemClick(dishItem)
             }
+
+            binding.favoriteIcon.isSelected = dishItem.isFavorite
+
+            binding.favoriteIcon.setOnClickListener{
+                onFavoriteClick(dishItem)
+            }
+
         }
     }
 
