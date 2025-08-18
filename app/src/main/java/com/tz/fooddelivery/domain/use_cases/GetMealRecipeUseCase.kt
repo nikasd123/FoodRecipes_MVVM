@@ -5,7 +5,6 @@ import com.tz.fooddelivery.domain.common.NetworkError
 import com.tz.fooddelivery.domain.common.Result
 import com.tz.fooddelivery.domain.models.MealRecipe
 import com.tz.fooddelivery.domain.repository.MealRecipeRepository
-import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -15,7 +14,7 @@ class GetMealRecipeUseCase @Inject constructor(
 ) {
     suspend fun getMealRecipe(id: String): Result<MealRecipe, NetworkError> {
         return try {
-            when (val result = mealRecipeRepository.getDishById(id).first()) {
+            when (val result = mealRecipeRepository.getDishById(id)) {
                 is Result.Success -> Result.Success(result.data)
                 is Result.Error -> Result.Error(mapRepositoryError(result.error))
             }

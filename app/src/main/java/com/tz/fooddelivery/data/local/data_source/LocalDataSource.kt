@@ -10,7 +10,10 @@ import com.tz.fooddelivery.domain.models.Category
 import com.tz.fooddelivery.domain.models.DishItem
 import com.tz.fooddelivery.domain.models.MealRecipe
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
+import kotlin.coroutines.cancellation.CancellationException
 
 class LocalDataSource @Inject constructor(
     @ApplicationContext private val context: Context
@@ -46,9 +49,18 @@ class LocalDataSource @Inject constructor(
     }
 
     suspend fun getDishById(id: String): MealRecipe? {
-        val recipes = cachedRecipes ?: loadAllRecipes()
-        Log.d("LocalDataSource", "Loaded recipes count = ${recipes.size}, searching id=$id")
-        return recipes.find { it.idMeal == id }
+        return try {
+            val json = withContext(Dispatchers.IO) {
+                context.assets.open("recipes.json").bufferedReader().use { it.readText() }
+            }
+            val response = gson.fromJson(json, MealsRecipeResponse::class.java)
+            response.meals.find { it.idMeal == id }?.toDomain()
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            Log.e("LocalDataSource", "Error loading recipe $id", e)
+            null
+        }
     }
 
     private suspend fun loadAllRecipes(): List<MealRecipe> {
