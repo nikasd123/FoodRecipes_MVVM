@@ -23,10 +23,6 @@ class MealsRepositoryImpl @Inject constructor(
     private val dishesDao: DishesDao
 ) : MealsRepository {
 
-   // override suspend fun getDishes(): Flow<Result<List<DishItem>, DataError>> {
-   //
-   // }
-
     override suspend fun setFavoriteDish(dishId: String): Boolean =  withContext(ioDispatcher){
         val response = dishesDao.toggleFavoriteDish(dishId)
 
@@ -46,14 +42,24 @@ class MealsRepositoryImpl @Inject constructor(
 
     override suspend fun getDishesByCategory(category: String): Flow<Result<List<DishItem>, DataError>> = flow {
         try {
-            val dishes = withContext(ioDispatcher) {
-                localDataSource.getDishesByCategory(category)
-            }
-            withContext(ioDispatcher){
-                val updatedDishes = dishes.map { it.copy(category = category) }
+            val synchronizedDishes = withContext(ioDispatcher){
+
+                val dishesFromJson = localDataSource.getDishesByCategory(category)
+                val favoriteDishes = dishesDao.getFavoriteDishes()
+                val favoriteDishesIds = favoriteDishes.map { it.dishId }.toSet()
+
+                val updatedDishes = dishesFromJson.map { dish ->
+                    dish.copy(
+                        category = category,
+                        isFavorite = dish.id in favoriteDishesIds
+                    )
+                }
+
                 dishesDao.setDishesByCategory(dishes = updatedDishes.toDishEntities())
+
+                return@withContext updatedDishes
             }
-            emit(Result.Success(dishes))
+            emit(Result.Success(synchronizedDishes))
         } catch (e: Exception) {
             emit(Result.Error(DataError.Local.DATABASE_ERROR))
         }

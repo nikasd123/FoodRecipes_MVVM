@@ -69,7 +69,6 @@ class CatalogFragment : Fragment(R.layout.fragment_catalog_new) {
 
     private suspend fun initCategoriesState() {
         viewModel.categoriesState.collect { state ->
-
             when (state) {
                 is CategoriesState.Loading -> showFiltersShimmer(true)
                 is CategoriesState.Error -> {
