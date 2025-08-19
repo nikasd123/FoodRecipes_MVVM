@@ -1,9 +1,11 @@
 package com.tz.fooddelivery.presentation.ui.recipe
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tz.fooddelivery.domain.common.NetworkError
 import com.tz.fooddelivery.domain.common.Result
 import com.tz.fooddelivery.domain.use_cases.GetMealRecipeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,7 +28,11 @@ class MealRecipeViewModel @Inject constructor(
     private val _mealId = MutableLiveData<String>()
     val mealId: LiveData<String> = _mealId
 
+    private val _servingCount = MutableLiveData<Int>(1)
+    val servingCount: LiveData<Int> = _servingCount
+
     fun getMealRecipeById(id: String){
+        Log.d("MealRecipeVM", "Запрос рецепта по id: $id")
         viewModelScope.launch {
             when (val result = getMealRecipeUseCase.getMealRecipe(id)){
                 is Result.Error -> _recipe.value = RecipeState.Error(
@@ -38,6 +44,18 @@ class MealRecipeViewModel @Inject constructor(
                     _recipe.value = RecipeState.Success(result.data)
                 }
             }
+        }
+    }
+
+    fun increaseServingCount() {
+        _servingCount.value?.let {
+            if (it > 0) _servingCount.value = it + 1
+        }
+    }
+
+    fun decreaseServingCount(){
+        _servingCount.value?.let {
+            if (it > 1) _servingCount.value = it - 1
         }
     }
 
