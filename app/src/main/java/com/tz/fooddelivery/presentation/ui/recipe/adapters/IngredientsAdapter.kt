@@ -9,16 +9,34 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.tz.fooddelivery.databinding.IngredientItemBinding
 import com.tz.fooddelivery.domain.models.IngredientItem
+import com.tz.fooddelivery.presentation.utils.IngredientMeasureScaler
 
 class IngredientsAdapter(
     private val onItemClick: (IngredientItem) -> Unit = {}
 ) : ListAdapter<IngredientItem, IngredientsAdapter.IngredientViewHolder>(IngredientDiffCallback()) {
 
-    private var showAllIngredients = false
+    private var showAll = false
+    private var fullList: List<IngredientItem> = emptyList()
+    private var servingCount: Int = 1
+
+    fun setServingCount(count: Int) {
+        servingCount = count
+        notifyDataSetChanged()
+    }
 
     fun toggleShowAll(showAll: Boolean) {
-        showAllIngredients = showAll
-        submitList(currentList)
+        this.showAll = showAll
+        updateDisplayedList()
+    }
+
+    override fun submitList(list: List<IngredientItem>?) {
+        fullList = list ?: emptyList()
+        updateDisplayedList()
+    }
+
+    private fun updateDisplayedList() {
+        val displayList = if (showAll || fullList.size <= 3) fullList else fullList.take(3)
+        super.submitList(displayList)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IngredientViewHolder {
@@ -28,21 +46,18 @@ class IngredientsAdapter(
     }
 
     override fun onBindViewHolder(holder: IngredientViewHolder, position: Int) {
-        holder.bind(getItem(position))
-    }
-
-    override fun submitList(list: List<IngredientItem>?) {
-        super.submitList(list)
+        holder.bind(getItem(position), servingCount)
     }
 
     inner class IngredientViewHolder(
         private val binding: IngredientItemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: IngredientItem) {
+        fun bind(item: IngredientItem, servings: Int) {
             with(binding) {
                 ingredientText.text = item.translatedName
-                ingredientMeasure.text = item.translatedMeasure
+                ingredientMeasure.text = IngredientMeasureScaler.scale(item.translatedMeasure, servings)
+
                 Glide.with(ingredientImage.context)
                     .load(item.imageUrl)
                     .transition(DrawableTransitionOptions.withCrossFade())
