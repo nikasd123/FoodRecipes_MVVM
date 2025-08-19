@@ -62,17 +62,4 @@ class LocalDataSource @Inject constructor(
             null
         }
     }
-
-    private suspend fun loadAllRecipes(): List<MealRecipe> {
-        return try {
-            val json = context.assets.open("recipes.json").bufferedReader().use { it.readText() }
-            val response = gson.fromJson(json, MealsRecipeResponse::class.java)
-            Log.d("LocalDataSource", "Parsed ${response.meals.size} recipes from JSON")
-            response.meals.map { it.toDomain() }.also { cachedRecipes = it }
-        } catch (e: Exception) {
-            Log.e("LocalDataSource", "Failed to load recipes", e)
-            emptyList()
-        }
-    }
-
 }
