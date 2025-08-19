@@ -86,6 +86,11 @@ class MealRecipeFragment : Fragment(R.layout.fragment_meal_recipe) {
                 }
             }
         }
+
+        viewModel.servingCount.observe(viewLifecycleOwner){ servingCount ->
+            ingredientsAdapter.setServingCount(servingCount)
+            binding.textCount.text = servingCount.toString()
+        }
     }
 
     private fun initRecipeInfo(recipe: MealRecipe){
@@ -123,12 +128,9 @@ class MealRecipeFragment : Fragment(R.layout.fragment_meal_recipe) {
         }
         binding.shortInfoRv.apply {
             adapter = shortInfoAdapter
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         }
-    }
-
-    private fun updateIngredients(ingredients: List<IngredientItem>) {
-        ingredientsAdapter.submitList(ingredients)
     }
 
     private fun smoothTransition() {
@@ -143,17 +145,36 @@ class MealRecipeFragment : Fragment(R.layout.fragment_meal_recipe) {
     }
 
     private fun setupButtons(){
+        setupServingCounter()
         binding.apply {
             navigateBack.setOnClickListener { findNavController().navigateUp() }
             likeBtn.setOnClickListener {  }
             seeAllIngredients.setOnClickListener {
-                showAllIngredients = !showAllIngredients //todo viewModel
+                showAllIngredients = !showAllIngredients
                 ingredientsAdapter.toggleShowAll(showAllIngredients)
-
-                val buttonText = if (showAllIngredients) "Свернуть" else "Все"
-                seeAllIngredients.text = buttonText
+                updateButtonText()
             }
         }
+    }
+
+    private fun updateIngredients(ingredients: List<IngredientItem>) {
+        ingredientsAdapter.submitList(ingredients)
+        updateButtonText()
+        updateButtonVisibility(ingredients.size)
+    }
+
+    private fun updateButtonText() {
+        binding.seeAllIngredients.text = if (showAllIngredients) "Свернуть" else "Все"
+    }
+
+    private fun updateButtonVisibility(ingredientsCount: Int) {
+        binding.seeAllIngredients.visibility =
+            if (ingredientsCount > 3) View.VISIBLE else View.GONE
+    }
+
+    private fun setupServingCounter(){
+        binding.plusBtn.setOnClickListener { viewModel.increaseServingCount() }
+        binding.minusBtn.setOnClickListener { viewModel.decreaseServingCount() }
     }
 
     private fun setupShortInfo(category: String, time: String, area: String){

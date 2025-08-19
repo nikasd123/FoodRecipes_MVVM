@@ -28,6 +28,9 @@ class MealRecipeViewModel @Inject constructor(
     private val _mealId = MutableLiveData<String>()
     val mealId: LiveData<String> = _mealId
 
+    private val _servingCount = MutableLiveData<Int>(1)
+    val servingCount: LiveData<Int> = _servingCount
+
     fun getMealRecipeById(id: String){
         Log.d("MealRecipeVM", "Запрос рецепта по id: $id")
         viewModelScope.launch {
@@ -57,6 +60,17 @@ class MealRecipeViewModel @Inject constructor(
         }
     }
 
+    fun increaseServingCount() {
+        _servingCount.value?.let {
+            if (it > 0) _servingCount.value = it + 1
+        }
+    }
+
+    fun decreaseServingCount(){
+        _servingCount.value?.let {
+            if (it > 1) _servingCount.value = it - 1
+        }
+    }
 
     sealed class Event {
         data class OpenYoutube(val url: String) : Event()
