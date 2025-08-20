@@ -10,14 +10,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.tz.fooddelivery.R
 import com.tz.fooddelivery.databinding.FiltersItemBinding
 import com.tz.fooddelivery.domain.models.Category
+import com.tz.fooddelivery.domain.models.DefaultCategory
 
 class FiltersAdapter(
-    private val clickListener: (Category?) -> Unit
+    private val clickListener: (Category) -> Unit
 ) : ListAdapter<Category, FiltersAdapter.ViewHolder>(ItemDiffCallback()) {
 
-    private var activeItem: Category? = null
+    private var activeItem: Category = DefaultCategory
 
-    fun setSelectedCategory(category: Category?) {
+    fun setSelectedCategory(category: Category) {
         val previousActive = activeItem
         activeItem = category
         val indexesToUpdate = mutableListOf<Int>()
@@ -34,12 +35,13 @@ class FiltersAdapter(
     }
 
     inner class ViewHolder(private val binding: FiltersItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Category, clickListener: (Category?) -> Unit) {
+        fun bind(item: Category) {
             val isActive = item == activeItem
 
             binding.rootCard.setOnClickListener {
-                val newSelection = if (isActive) null else item
-                clickListener(newSelection)
+                if (!isActive) {
+                    this@FiltersAdapter.clickListener(item)
+                }
             }
 
             updateAppearance(isActive)
@@ -67,7 +69,7 @@ class FiltersAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position), clickListener)
+        holder.bind(getItem(position))
     }
 
     class ItemDiffCallback : DiffUtil.ItemCallback<Category>() {

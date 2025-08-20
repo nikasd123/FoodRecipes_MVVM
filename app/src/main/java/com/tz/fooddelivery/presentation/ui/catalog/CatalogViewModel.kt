@@ -18,7 +18,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import java.util.Locale
 import javax.inject.Inject
@@ -40,16 +39,16 @@ class CatalogViewModel @Inject constructor(
     private val _favoriteDishesState = MutableStateFlow<FavoriteDishesState>(FavoriteDishesState.Loading)
     val favoriteDishesState: StateFlow<FavoriteDishesState> = _favoriteDishesState.asStateFlow()
 
-    private val _selectedCategory = MutableStateFlow<Category?>(null)
-    val selectedCategory: StateFlow<Category?> = _selectedCategory.asStateFlow()
+    private val _selectedCategory = MutableStateFlow<Category>(DefaultCategory)
+    val selectedCategory: StateFlow<Category> = _selectedCategory.asStateFlow()
 
     init {
         loadInitialData()
     }
 
-    fun selectCategory(category: Category?) {
+    fun selectCategory(category: Category) {
         _selectedCategory.value = category
-        category?.let { loadDishesByCategory(it) } ?: loadDishes()
+        loadDishesByCategory(category)
     }
 
     fun retry() {
@@ -179,7 +178,7 @@ class CatalogViewModel @Inject constructor(
 
     private fun loadDishesByCategory(category: Category) {
         viewModelScope.launch {
-            _dishesState.value = DishesState.Loading
+            //_dishesState.value = DishesState.Loading todo uncomment for rest request
             getMealsUseCase.getDishesByCategory(category.category.lowercase(Locale.ROOT))
                 .catch { e ->
                     _dishesState.value = DishesState.Error(
@@ -207,15 +206,11 @@ class CatalogViewModel @Inject constructor(
     }
 
     fun handleFavoriteButtonClick(dishItem: DishItem) {
-
         viewModelScope.launch {
-
             val success = setFavoriteDishUseCase.setFavoriteDish(dishId = dishItem.id)
-
             if(success){
                 loadFavoriteDishes()
             }
         }
-
     }
 }

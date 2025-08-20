@@ -8,5 +8,9 @@ data class CategoryDto(
     @SerializedName("strCategory") val strCategory: String,
     @SerializedName("ruCategory") val ruCategory: String
 ) {
-    fun toDomain() = Category(id = idCategory, category = strCategory, ruCategory = ruCategory)
+    fun toDomain() = Category(
+        id = idCategory,
+        category = strCategory,
+        ruCategory = ruCategory
+    )
 }

@@ -60,8 +60,8 @@ class CatalogFragment : Fragment(R.layout.fragment_catalog_new) {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch { initDishesState() }
-                launch { initCategoriesState() }
                 launch { initSelectedCategory() }
+                launch { initCategoriesState() }
                 launch { initFavoriteDishesState() }
             }
         }
@@ -69,7 +69,6 @@ class CatalogFragment : Fragment(R.layout.fragment_catalog_new) {
 
     private suspend fun initCategoriesState() {
         viewModel.categoriesState.collect { state ->
-
             when (state) {
                 is CategoriesState.Loading -> showFiltersShimmer(true)
                 is CategoriesState.Error -> {

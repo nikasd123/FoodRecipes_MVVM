@@ -3,13 +3,17 @@ package com.tz.fooddelivery.domain.models
 import com.tz.fooddelivery.data.local.entities.CategoryEntity
 
 data class Category(
-    val id: String = "1",
-    val category: String = "beef",
-    val ruCategory: String = "",
-    var isActive: Boolean = true
+    val id: String,
+    val category: String,
+    val ruCategory: String,
+    var isActive: Boolean = false
 )
 
-val DefaultCategory = Category()
+val DefaultCategory = Category(
+    id = "1",
+    category = "Beef",
+    ruCategory = "Говядина"
+)
 
 internal fun Category.toEntity(): CategoryEntity =
     CategoryEntity(
