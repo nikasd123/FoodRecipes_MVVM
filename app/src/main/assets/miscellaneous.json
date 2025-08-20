@@ -4,37 +4,43 @@
       "strMeal": "Bean & Sausage Hotpot",
       "strMealThumb": "https://www.themealdb.com/images/media/meals/vxuyrx1511302687.jpg",
       "idMeal": "52848",
-      "ruMeal": "Хот‑пот с фасолью и сосисками"
+      "ruMeal": "Хот‑пот с фасолью и сосисками",
+      "ruArea": "Британская"
     },
     {
       "strMeal": "Callaloo Jamaican Style",
       "strMealThumb": "https://www.themealdb.com/images/media/meals/ussyxw1515364536.jpg",
       "idMeal": "52939",
-      "ruMeal": "Калалу по‑ямайски"
+      "ruMeal": "Калалу по‑ямайски",
+      "ruArea": "Ямайская"
     },
     {
       "strMeal": "Chakchouka ",
       "strMealThumb": "https://www.themealdb.com/images/media/meals/gpz67p1560458984.jpg",
       "idMeal": "52969",
-      "ruMeal": "Чакчука"
+      "ruMeal": "Чакчука",
+      "ruArea": "Тунисская"
     },
     {
       "strMeal": "Duck Confit",
       "strMealThumb": "https://www.themealdb.com/images/media/meals/wvpvsu1511786158.jpg",
       "idMeal": "52907",
-      "ruMeal": "Конфи из утки"
+      "ruMeal": "Конфи из утки",
+      "ruArea": "Французская"
     },
     {
       "strMeal": "French Lentils With Garlic and Thyme",
       "strMealThumb": "https://www.themealdb.com/images/media/meals/vwwspt1487394060.jpg",
       "idMeal": "52815",
-      "ruMeal": "Французская чечевица с чесноком и тимьяном"
+      "ruMeal": "Французская чечевица с чесноком и тимьяном",
+      "ruArea": "Французская"
     },
     {
       "strMeal": "French Omelette",
       "strMealThumb": "https://www.themealdb.com/images/media/meals/yvpuuy1511797244.jpg",
       "idMeal": "52915",
-      "ruMeal": "Французский омлет"
+      "ruMeal": "Французский омлет",
+      "ruArea": "Французская"
     }
   ]
 }

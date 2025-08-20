@@ -7,6 +7,7 @@ data class DishItemDto(
     @SerializedName("idMeal") val id: String?,
     @SerializedName("strMeal") val title: String?,
     @SerializedName("strMealThumb") val image: String?,
+    @SerializedName("ruArea") val ruArea: String?,
     @SerializedName("ruMeal") val ruMeal: String?
 ) {
     fun toDomain(category: String) = DishItem(
@@ -15,6 +16,7 @@ data class DishItemDto(
         image = image ?: "",
         category = category,
         description = "",
+        area = ruArea ?: "",
         isFavorite = false
     )
 }

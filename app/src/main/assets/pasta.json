@@ -4,37 +4,43 @@
       "strMeal": "Chilli prawn linguine",
       "strMealThumb": "https://www.themealdb.com/images/media/meals/usywpp1511189717.jpg",
       "idMeal": "52839",
-      "ruMeal": "Лингвини с креветками и чили"
+      "ruMeal": "Лингвини с креветками и чили",
+      "ruArea": "Итальянская"
     },
     {
       "strMeal": "Fettuccine Alfredo",
       "strMealThumb": "https://www.themealdb.com/images/media/meals/0jv5gx1661040802.jpg",
       "idMeal": "53064",
-      "ruMeal": "Фетучини Альфредо"
+      "ruMeal": "Фетучини Альфредо",
+      "ruArea": "Итальянская"
     },
     {
       "strMeal": "Fettucine alfredo",
       "strMealThumb": "https://www.themealdb.com/images/media/meals/uquqtu1511178042.jpg",
       "idMeal": "52835",
-      "ruMeal": "Фетучини Альфредо"
+      "ruMeal": "Фетучини Альфредо",
+      "ruArea": "Итальянская"
     },
     {
       "strMeal": "Grilled Mac and Cheese Sandwich",
       "strMealThumb": "https://www.themealdb.com/images/media/meals/xutquv1505330523.jpg",
       "idMeal": "52829",
-      "ruMeal": "Сэндвич с мак‑н‑чиз на гриле"
+      "ruMeal": "Сэндвич с мак‑н‑чиз на гриле",
+      "ruArea": "Американская"
     },
     {
       "strMeal": "Lasagna Sandwiches",
       "strMealThumb": "https://www.themealdb.com/images/media/meals/xr0n4r1576788363.jpg",
       "idMeal": "52987",
-      "ruMeal": "Сэндвичи с лазаньей"
+      "ruMeal": "Сэндвичи с лазаньей",
+      "ruArea": "Американская"
     },
     {
       "strMeal": "Lasagne",
       "strMealThumb": "https://www.themealdb.com/images/media/meals/wtsvxx1511296896.jpg",
       "idMeal": "52844",
-      "ruMeal": "Лазанья"
+      "ruMeal": "Лазанья",
+      "ruArea": "Итальянская"
     }
   ]
 }

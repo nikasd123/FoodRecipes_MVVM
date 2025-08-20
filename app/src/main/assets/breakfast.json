@@ -4,49 +4,57 @@
       "strMeal": "Bread omelette",
       "strMealThumb": "https://www.themealdb.com/images/media/meals/hqaejl1695738653.jpg",
       "idMeal": "53076",
-      "ruMeal": "Омлет с хлебом"
+      "ruMeal": "Омлет с хлебом",
+      "ruArea": "Индийская"
     },
     {
       "strMeal": "Breakfast Potatoes",
       "strMealThumb": "https://www.themealdb.com/images/media/meals/1550441882.jpg",
       "idMeal": "52965",
-      "ruMeal": "Картофель на завтрак"
+      "ruMeal": "Картофель на завтрак",
+      "ruArea": "Американская"
     },
     {
       "strMeal": "English Breakfast",
       "strMealThumb": "https://www.themealdb.com/images/media/meals/utxryw1511721587.jpg",
       "idMeal": "52895",
-      "ruMeal": "Английский завтрак"
+      "ruMeal": "Английский завтрак",
+      "ruArea": "Британская"
     },
     {
       "strMeal": "Fruit and Cream Cheese Breakfast Pastries",
       "strMealThumb": "https://www.themealdb.com/images/media/meals/1543774956.jpg",
       "idMeal": "52957",
-      "ruMeal": "Фруктовые слойки с крем‑сыром на завтрак"
+      "ruMeal": "Фруктовые слойки с крем‑сыром на завтрак",
+      "ruArea": "Американская"
     },
     {
       "strMeal": "Full English Breakfast",
       "strMealThumb": "https://www.themealdb.com/images/media/meals/sqrtwu1511721265.jpg",
       "idMeal": "52896",
-      "ruMeal": "Полный английский завтрак"
+      "ruMeal": "Полный английский завтрак",
+      "ruArea": "Британская"
     },
     {
       "strMeal": "Home-made Mandazi",
       "strMealThumb": "https://www.themealdb.com/images/media/meals/thazgm1555350962.jpg",
       "idMeal": "52967",
-      "ruMeal": "Домашние мандази"
+      "ruMeal": "Домашние мандази",
+      "ruArea": "Восточноафриканская"
     },
     {
       "strMeal": "Salmon Eggs Eggs Benedict",
       "strMealThumb": "https://www.themealdb.com/images/media/meals/1550440197.jpg",
       "idMeal": "52962",
-      "ruMeal": "Яйца Бенедикт с лососем"
+      "ruMeal": "Яйца Бенедикт с лососем",
+      "ruArea": "Американская"
     },
     {
       "strMeal": "Smoked Haddock Kedgeree",
       "strMealThumb": "https://www.themealdb.com/images/media/meals/1550441275.jpg",
       "idMeal": "52964",
-      "ruMeal": "Кеджери с копчёной пикшей"
+      "ruMeal": "Кеджери с копчёной пикшей",
+      "ruArea": "Британская"
     }
   ]
 }

@@ -13,10 +13,11 @@ data class DishEntity(
     val dishTitle: String?,
     val dishCategory: String?,
     val description: String?,
+    val area: String?,
     val isFavorite: Boolean
 ) {
     @Ignore
-    constructor(): this("", null, null, null, null, false)
+    constructor(): this("", null, null, null, null, null, false)
 }
 
 internal fun DishEntity.toDomain(): DishItem =
@@ -26,5 +27,6 @@ internal fun DishEntity.toDomain(): DishItem =
         title = dishTitle ?: "",
         category = dishCategory ?: "",
         description = description ?: "",
+        area = area ?: "",
         isFavorite = isFavorite
     )

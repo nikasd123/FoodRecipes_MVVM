@@ -4,55 +4,64 @@
       "strMeal": "Apam balik",
       "strMealThumb": "https://www.themealdb.com/images/media/meals/adxcbq1619787919.jpg",
       "idMeal": "53049",
-      "ruMeal": "Апам балик"
+      "ruMeal": "Апам балик",
+      "ruArea": "Малайзийская"
     },
     {
       "strMeal": "Apple & Blackberry Crumble",
       "strMealThumb": "https://www.themealdb.com/images/media/meals/xvsurr1511719182.jpg",
       "idMeal": "52893",
-      "ruMeal": "Крамбл с яблоками и ежевикой"
+      "ruMeal": "Крамбл с яблоками и ежевикой",
+      "ruArea": "Британская"
     },
     {
       "strMeal": "Apple Frangipan Tart",
       "strMealThumb": "https://www.themealdb.com/images/media/meals/wxywrq1468235067.jpg",
       "idMeal": "52768",
-      "ruMeal": "Тарт с франжипаном и яблоками"
+      "ruMeal": "Тарт с франжипаном и яблоками",
+      "ruArea": "Французская"
     },
     {
       "strMeal": "Bakewell tart",
       "strMealThumb": "https://www.themealdb.com/images/media/meals/wyrqqq1468233628.jpg",
       "idMeal": "52767",
-      "ruMeal": "Тарт Бейквелл"
+      "ruMeal": "Тарт Бейквелл",
+      "ruArea": "Британская"
     },
     {
       "strMeal": "Banana Pancakes",
       "strMealThumb": "https://www.themealdb.com/images/media/meals/sywswr1511383814.jpg",
       "idMeal": "52855",
-      "ruMeal": "Банановые панкейки"
+      "ruMeal": "Банановые панкейки",
+      "ruArea": "Американская"
     },
     {
       "strMeal": "Battenberg Cake",
       "strMealThumb": "https://www.themealdb.com/images/media/meals/ywwrsp1511720277.jpg",
       "idMeal": "52894",
-      "ruMeal": "Торт Баттенберг"
+      "ruMeal": "Торт Баттенберг",
+      "ruArea": "Британская"
     },
     {
       "strMeal": "BeaverTails",
       "strMealThumb": "https://www.themealdb.com/images/media/meals/ryppsv1511815505.jpg",
       "idMeal": "52928",
-      "ruMeal": "Пирожки «БиверТейлс»"
+      "ruMeal": "Пирожки «БиверТейлс»",
+      "ruArea": "Канадская"
     },
     {
       "strMeal": "Blackberry Fool",
       "strMealThumb": "https://www.themealdb.com/images/media/meals/rpvptu1511641092.jpg",
       "idMeal": "52891",
-      "ruMeal": "Десерт «Фул» с ежевикой"
+      "ruMeal": "Десерт «Фул» с ежевикой",
+      "ruArea": "Британская"
     },
     {
       "strMeal": "Bread and Butter Pudding",
       "strMealThumb": "https://www.themealdb.com/images/media/meals/xqwwpy1483908697.jpg",
       "idMeal": "52792",
-      "ruMeal": "Пудинг «Хлеб и масло»"
+      "ruMeal": "Пудинг «Хлеб и масло»",
+      "ruArea": "Британская"
     }
   ]
 }
