@@ -1,5 +1,6 @@
 package com.tz.fooddelivery.presentation.common
 
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 

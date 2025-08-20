@@ -1,8 +1,9 @@
 package com.tz.fooddelivery.presentation.ui.catalog
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -35,7 +36,7 @@ class CatalogFragment : Fragment(R.layout.fragment_catalog_new) {
     private val networkMonitor: NetworkMonitor by lazy { NetworkMonitor(requireContext()) }
     private val viewModel: CatalogViewModel by viewModels()
     private val mealsAdapter by lazy { MealsAdapter(::onMealItemClick, ::onFavoriteClick) }
-    private val favoriteMealsAdapter by lazy {MealsAdapter(::onMealItemClick, ::onFavoriteClick)}
+    private val favoriteMealsAdapter by lazy { MealsAdapter(::onMealItemClick, ::onFavoriteClick) }
     private val bannersAdapter by lazy { BannerAdapter() }
     private val shimmerFiltersAdapter by lazy { ShimmerFiltersAdapter() }
     private val shimmerDishesAdapter by lazy { ShimmerDishesAdapter() }
@@ -45,12 +46,17 @@ class CatalogFragment : Fragment(R.layout.fragment_catalog_new) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         initNetworkConnectionObserver()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentCatalogNewBinding.bind(view)
+
+        binding.seeAllMeals.setOnClickListener{
+            handleAllMealsTextViewClick()
+        }
 
         setupRecyclerViews()
         setupObservers()
@@ -66,6 +72,7 @@ class CatalogFragment : Fragment(R.layout.fragment_catalog_new) {
             }
         }
     }
+
 
     private suspend fun initCategoriesState() {
         viewModel.categoriesState.collect { state ->
@@ -84,15 +91,21 @@ class CatalogFragment : Fragment(R.layout.fragment_catalog_new) {
         }
     }
 
-    private suspend fun initFavoriteDishesState(){
-        viewModel.favoriteDishesState.collect{ state ->
-            when(state) {
-                is FavoriteDishesState.Loading -> {Unit}
+    private suspend fun initFavoriteDishesState() {
+        viewModel.favoriteDishesState.collect { state ->
+            when (state) {
+                is FavoriteDishesState.Loading -> {
+                    Unit
+                }
+
                 is FavoriteDishesState.Error -> {
                     Unit
                 }
+
                 is FavoriteDishesState.Success -> {
                     favoriteMealsAdapter.submitList(state.favoriteDishes)
+                    binding.favorites.visibility =
+                        if (state.favoriteDishes.isEmpty()) GONE else VISIBLE
                 }
             }
         }
@@ -169,8 +182,14 @@ class CatalogFragment : Fragment(R.layout.fragment_catalog_new) {
         findNavController().navigate(action)
     }
 
+    //TODO Изменить на настоящее значение
+    private fun handleAllMealsTextViewClick(){
+        val action = CatalogFragmentDirections.actionCatalogFragmentToAllMealsFragment(isFavorite = false)
+
+        findNavController().navigate(action)
+    }
+
     private fun onFavoriteClick(dishItem: DishItem){
-        Log.e("favorite button", "click")
         viewModel.handleFavoriteButtonClick(dishItem)
     }
 

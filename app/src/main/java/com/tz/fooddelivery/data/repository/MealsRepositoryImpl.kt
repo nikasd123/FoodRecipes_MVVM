@@ -40,6 +40,17 @@ class MealsRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getAllDishes(): Flow<Result<List<DishItem>, DataError>> = flow {
+        try {
+            val dishes = withContext(ioDispatcher){
+                dishesDao.getAllDishes()
+            }
+            emit(Result.Success(dishes.toDishItemsFromEntity()))
+        } catch (e: Exception){
+            emit(Result.Error(DataError.Local.DATABASE_ERROR))
+        }
+    }
+
     override suspend fun getDishesByCategory(category: String): Flow<Result<List<DishItem>, DataError>> = flow {
         try {
             val synchronizedDishes = withContext(ioDispatcher){
