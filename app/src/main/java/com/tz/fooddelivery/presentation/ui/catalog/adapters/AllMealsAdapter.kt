@@ -7,36 +7,41 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.tz.fooddelivery.databinding.DishesItemBinding
+import com.tz.fooddelivery.databinding.AllDishesItemBinding
 import com.tz.fooddelivery.domain.models.DishItem
 
-class MealsAdapter(
+class AllMealsAdapter(
     private val onItemClick: (DishItem) -> Unit,
     private val onFavoriteClick: (DishItem) -> Unit
-) : ListAdapter<DishItem, MealsAdapter.DishesViewHolder>(DIFF_CALLBACK) {
+) : ListAdapter<DishItem, AllMealsAdapter.AllDishesViewHolder>(DIFF_CALLBACK)
+{
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DishesViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): AllMealsAdapter.AllDishesViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = DishesItemBinding.inflate(layoutInflater, parent, false)
-        return DishesViewHolder(binding)
+        val binding = AllDishesItemBinding.inflate(layoutInflater, parent,false)
+        return AllDishesViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: DishesViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: AllDishesViewHolder, position: Int) {
         val item = getItem(position)
         holder.bind(item)
     }
 
-    inner class DishesViewHolder(private val binding: DishesItemBinding) : RecyclerView.ViewHolder(binding.root) {
+
+    inner class AllDishesViewHolder(private val binding: AllDishesItemBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(dishItem: DishItem) {
             binding.dishName.text = dishItem.title
-            binding.dishCookingTime.text = dishItem.area
+            binding.dishCookingTime.text = dishItem.id
 
             Glide.with(binding.image.context)
-                .load(dishItem.image)
+                .load(dishItem)
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(binding.image)
 
-            binding.image.setOnClickListener {
+            binding.image.setOnClickListener{
                 onItemClick(dishItem)
             }
 
@@ -50,7 +55,7 @@ class MealsAdapter(
     }
 
     companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<DishItem>() {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<DishItem>(){
             override fun areItemsTheSame(oldItem: DishItem, newItem: DishItem): Boolean {
                 return oldItem.id == newItem.id
             }
@@ -60,4 +65,5 @@ class MealsAdapter(
             }
         }
     }
+
 }

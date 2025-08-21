@@ -23,6 +23,10 @@
                 android:name="image_url"
                 app:argType="string"/>
         </action>
+        <action
+            android:id="@+id/action_catalogFragment_to_allMealsFragment"
+            app:destination="@id/allMealsFragment">
+        </action>
     </fragment>
     <fragment
         android:id="@+id/mealRecipeFragment"
@@ -40,5 +44,27 @@
         <action
             android:id="@+id/action_mealRecipeFragment_to_catalogFragment"
             app:destination="@id/catalogFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/allMealsFragment"
+        android:name="com.tz.fooddelivery.presentation.ui.catalog.all_meals.AllMealsFragment"
+        android:label="AllMealsFragment" >
+        <argument
+            android:name="isFavorite"
+            app:argType="boolean"
+            />
+        <action
+            android:id="@+id/action_allMealsFragment_to_mealRecipeFragment"
+            app:destination="@id/mealRecipeFragment">
+            <argument
+                android:name="mealId"
+                app:argType="string"/>
+            <argument
+                android:name="title"
+                app:argType="string"/>
+            <argument
+                android:name="image_url"
+                app:argType="string"/>
+        </action>
     </fragment>
 </navigation>

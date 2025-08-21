@@ -6,6 +6,7 @@ import com.tz.fooddelivery.domain.repository.CategoryRepository
 import com.tz.fooddelivery.domain.repository.MealRecipeRepository
 import com.tz.fooddelivery.domain.repository.MealsRepository
 import com.tz.fooddelivery.domain.repository.TranslationRepository
+import com.tz.fooddelivery.domain.use_cases.GetAllDishesUseCase
 import com.tz.fooddelivery.domain.use_cases.GetCategoriesUseCase
 import com.tz.fooddelivery.domain.use_cases.GetMealRecipeUseCase
 import com.tz.fooddelivery.domain.use_cases.GetMealsUseCase
@@ -42,4 +43,8 @@ class UseCaseModule {
     fun provideMealsLocalDataSource(@ApplicationContext context: Context): LocalDataSource {
         return LocalDataSource(context)
     }
+
+    @Provides
+    fun provideGetAllDishesUseCase(mealsRepository: MealsRepository) =
+        GetAllDishesUseCase(mealsRepository = mealsRepository)
 }

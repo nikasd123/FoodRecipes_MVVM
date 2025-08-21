@@ -115,26 +115,7 @@ class CatalogViewModel @Inject constructor(
                     when(result){
                         is Result.Success -> {
                             _favoriteDishesState.value = FavoriteDishesState.Success(result.data)
-
-                            val currentDishesState = _dishesState.value
-
-                            if (currentDishesState is DishesState.Success && result.data.isNotEmpty()) {
-
-                                val allDishes = currentDishesState.dishes
-                                val favoriteDishes = result.data
-
-                                val favoriteDishIds = favoriteDishes.map { it.id }.toSet()
-
-                                val updatedAllDishes = allDishes.map { dish ->
-                                    if (dish.id in favoriteDishIds) {
-                                        dish.copy(isFavorite = true)
-                                    } else {
-                                        dish.copy(isFavorite = false)
-                                    }
-                                }
-
-                                _dishesState.value = DishesState.Success(updatedAllDishes)
-                            }
+                            loadDishesByCategory(_selectedCategory.value ?: DefaultCategory)
                         }
                         is Result.Error -> {
                             _favoriteDishesState.value = FavoriteDishesState.Error(
@@ -171,7 +152,6 @@ class CatalogViewModel @Inject constructor(
                             )
                         }
                     }
-                    //handleDishResult(result, null)
                 }
         }
     }
@@ -200,7 +180,6 @@ class CatalogViewModel @Inject constructor(
                             )
                         }
                     }
-                    //handleDishResult(result, category)
                 }
         }
     }
