@@ -40,6 +40,34 @@ data class DishRecipeDto(
     @SerializedName("strIngredient26") val strIngredient26: String?,
     @SerializedName("strIngredient27") val strIngredient27: String?,
     @SerializedName("strIngredient28") val strIngredient28: String?,
+    @SerializedName("ruIngredient1") val ruIngredient1: String?,
+    @SerializedName("ruIngredient2") val ruIngredient2: String?,
+    @SerializedName("ruIngredient3") val ruIngredient3: String?,
+    @SerializedName("ruIngredient4") val ruIngredient4: String?,
+    @SerializedName("ruIngredient5") val ruIngredient5: String?,
+    @SerializedName("ruIngredient6") val ruIngredient6: String?,
+    @SerializedName("ruIngredient7") val ruIngredient7: String?,
+    @SerializedName("ruIngredient8") val ruIngredient8: String?,
+    @SerializedName("ruIngredient9") val ruIngredient9: String?,
+    @SerializedName("ruIngredient10") val ruIngredient10: String?,
+    @SerializedName("ruIngredient11") val ruIngredient11: String?,
+    @SerializedName("ruIngredient12") val ruIngredient12: String?,
+    @SerializedName("ruIngredient13") val ruIngredient13: String?,
+    @SerializedName("ruIngredient14") val ruIngredient14: String?,
+    @SerializedName("ruIngredient15") val ruIngredient15: String?,
+    @SerializedName("ruIngredient16") val ruIngredient16: String?,
+    @SerializedName("ruIngredient17") val ruIngredient17: String?,
+    @SerializedName("ruIngredient18") val ruIngredient18: String?,
+    @SerializedName("ruIngredient19") val ruIngredient19: String?,
+    @SerializedName("ruIngredient20") val ruIngredient20: String?,
+    @SerializedName("ruIngredient21") val ruIngredient21: String?,
+    @SerializedName("ruIngredient22") val ruIngredient22: String?,
+    @SerializedName("ruIngredient23") val ruIngredient23: String?,
+    @SerializedName("ruIngredient24") val ruIngredient24: String?,
+    @SerializedName("ruIngredient25") val ruIngredient25: String?,
+    @SerializedName("ruIngredient26") val ruIngredient26: String?,
+    @SerializedName("ruIngredient27") val ruIngredient27: String?,
+    @SerializedName("ruIngredient28") val ruIngredient28: String?,
     @SerializedName("strMeasure1") val strMeasure1: String?,
     @SerializedName("strMeasure2") val strMeasure2: String?,
     @SerializedName("strMeasure3") val strMeasure3: String?,
@@ -73,18 +101,21 @@ data class DishRecipeDto(
         val ingredients = mutableListOf<IngredientItem>()
         for (i in 1..20) {
             val ingredientField = this::class.java.getDeclaredField("strIngredient$i")
+            val ruIngredientField = this::class.java.getDeclaredField("ruIngredient$i")
             val measureField = this::class.java.getDeclaredField("strMeasure$i")
 
+            ruIngredientField.isAccessible = true
             ingredientField.isAccessible = true
             measureField.isAccessible = true
 
+            val ruIngredient = ruIngredientField.get(this) as? String
             val ingredient = ingredientField.get(this) as? String
             val measure = measureField.get(this) as? String
 
-            if (!ingredient.isNullOrBlank() && !measure.isNullOrBlank()) {
+            if (!ingredient.isNullOrBlank() && !measure.isNullOrBlank() && !ruIngredient.isNullOrBlank()) {
                 ingredients.add(
                     IngredientItem(
-                        translatedName = ingredient,
+                        translatedName = ruIngredient,
                         translatedMeasure = measure,
                         imageUrl = buildImageUrl(ingredient)
                     )
