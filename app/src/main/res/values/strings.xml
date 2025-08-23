@@ -19,6 +19,7 @@
     <string name="catalog_action_text">Что будете готовить сегодня?</string>
     <string name="catalog_fragment_greetings">Добрый день</string>
     <string name="catalog_recommendations_action_text">Вам понравилось</string>
+    <string name="search_field_hint">Поиск</string>
     <string-array name="cities">
         <item>Москва</item>
         <item>Санкт-Питербург</item>

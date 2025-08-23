@@ -34,10 +34,10 @@ class AllMealsAdapter(
     inner class AllDishesViewHolder(private val binding: AllDishesItemBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(dishItem: DishItem) {
             binding.dishName.text = dishItem.title
-            binding.dishCookingTime.text = dishItem.id
+            binding.dishArea.text = dishItem.id
 
             Glide.with(binding.image.context)
-                .load(dishItem)
+                .load(dishItem.image)
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(binding.image)
 
