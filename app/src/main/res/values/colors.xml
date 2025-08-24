@@ -17,5 +17,6 @@
     <color name="elements_pink">#FD3A69</color>
     <color name="background_pink">#D51818</color>
     <color name="transparent_pink">#33D51818</color>
+    <color name="background_white">#EFEFEF</color>
 
 </resources>
