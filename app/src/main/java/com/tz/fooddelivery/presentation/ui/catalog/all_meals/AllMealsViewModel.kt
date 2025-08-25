@@ -39,8 +39,8 @@ class AllMealsViewModel @Inject constructor(
     private val _favoriteDishesState = MutableStateFlow<FavoriteDishesState>(FavoriteDishesState.Loading)
     val favoriteDishesState: StateFlow<FavoriteDishesState> = _favoriteDishesState.asStateFlow()
 
-    private val _selectedCategory = MutableStateFlow<Category?>(null)
-    val selectedCategory: StateFlow<Category?> = _selectedCategory.asStateFlow()
+    private val _selectedCategory = MutableStateFlow<Category>(DefaultCategory)
+    val selectedCategory: StateFlow<Category> = _selectedCategory.asStateFlow()
 
     private val _categoriesState = MutableStateFlow<CategoriesState>(CategoriesState.Loading)
     val categoriesState: StateFlow<CategoriesState> = _categoriesState.asStateFlow()
@@ -199,10 +199,13 @@ class AllMealsViewModel @Inject constructor(
         }
     }
 
+    fun updateSearchQuery(query: String) {
+        _searchQuery.value = query
+        applyFilters()
+    }
+
     private fun applyFilters() {
-
         var filteredList = currentCategoryDishes
-
         val query = _searchQuery.value
 
         if (query.isNotBlank()) {
@@ -214,14 +217,9 @@ class AllMealsViewModel @Inject constructor(
         _dishesState.value = DishesState.Success(filteredList)
     }
 
-    fun updateSearchQuery(query: String) {
-        _searchQuery.value = query
-        applyFilters()
-    }
-
-    fun selectCategory(category: Category?) {
+    fun selectCategory(category: Category) {
         _selectedCategory.value = category
-        category?.let { loadDishesByCategory(it) } ?: loadDishes()
+        loadDishesByCategory(category)
     }
 
 }

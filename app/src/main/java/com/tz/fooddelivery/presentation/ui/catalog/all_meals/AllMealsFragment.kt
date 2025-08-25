@@ -45,6 +45,7 @@ class AllMealsFragment : Fragment(R.layout.fragment_all_meals) {
 
         setupRecyclerViews()
         setupObservers()
+        initSearchFieldListener()
     }
 
     private fun setupObservers(){
@@ -53,7 +54,6 @@ class AllMealsFragment : Fragment(R.layout.fragment_all_meals) {
                 launch { initCategoriesState() }
                 launch { initDishesState() }
                 launch { initSelectedCategory() }
-                launch { initSearchFieldListener() }
             }
         }
     }
