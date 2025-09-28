@@ -1,6 +1,5 @@
 package com.tz.fooddelivery.presentation.ui.catalog
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tz.fooddelivery.domain.common.NetworkError
@@ -17,7 +16,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -124,7 +122,7 @@ class CatalogViewModel @Inject constructor(
                                     }
                                 }
 
-                                _dishesState.value = DishesState.Success(updatedAllDishes)
+                                _dishesState.value = DishesState.Success(updatedAllDishes, null)
                             }
                         }
                         is Result.Error -> {
