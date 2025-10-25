@@ -28,14 +28,14 @@ class GetMealsUseCase @Inject constructor(
     private val translatedCache = ConcurrentHashMap<String, DishItem>()
 
     suspend fun getDishes(): Flow<Result<DishItem, NetworkError>> =
-        mealsRepository.getDishes().flatMapConcat { result ->
-            processRepositoryResult(result)
-        }.flowOn(translationDispatcher)
+        mealsRepository.getDishes()
+            .flatMapConcat { result -> processRepositoryResult(result) }
+            .flowOn(translationDispatcher)
 
     suspend fun getDishesByCategory(category: String): Flow<Result<DishItem, NetworkError>> =
-        mealsRepository.getDishesByCategory(category).flatMapConcat { result ->
-            processRepositoryResult(result)
-        }.flowOn(translationDispatcher)
+        mealsRepository.getDishesByCategory(category)
+            .flatMapConcat { result -> processRepositoryResult(result) }
+            .flowOn(translationDispatcher)
 
     private fun processRepositoryResult(result: Result<List<DishItem>, DataError>): Flow<Result<DishItem, NetworkError>> =
         flow {

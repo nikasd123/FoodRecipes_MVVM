@@ -6,6 +6,7 @@ import com.tz.fooddelivery.domain.common.NetworkError
 import com.tz.fooddelivery.domain.common.Result
 import com.tz.fooddelivery.domain.models.Category
 import com.tz.fooddelivery.domain.models.DishItem
+import com.tz.fooddelivery.domain.models.EmptyDishItem
 import com.tz.fooddelivery.domain.use_cases.GetCategoriesUseCase
 import com.tz.fooddelivery.domain.use_cases.GetFavoriteDishesUseCase
 import com.tz.fooddelivery.domain.use_cases.GetMealsUseCase
@@ -17,6 +18,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -38,6 +40,9 @@ class CatalogViewModel @Inject constructor(
 
     private val _selectedCategory = MutableStateFlow<Category?>(null)
     val selectedCategory: StateFlow<Category?> = _selectedCategory.asStateFlow()
+
+    private val _isDishFavorite = MutableStateFlow<DishItem>(EmptyDishItem)
+    val isDishFavorite = _isDishFavorite.asStateFlow()
 
     init {
         loadInitialData()
@@ -104,26 +109,6 @@ class CatalogViewModel @Inject constructor(
                     when(result){
                         is Result.Success -> {
                             _favoriteDishesState.value = FavoriteDishesState.Success(result.data)
-
-                            val currentDishesState = _dishesState.value
-
-                            if (currentDishesState is DishesState.Success && result.data.isNotEmpty()) {
-
-                                val allDishes = currentDishesState.dishes
-                                val favoriteDishes = result.data
-
-                                val favoriteDishIds = favoriteDishes.map { it.id }.toSet()
-
-                                val updatedAllDishes = allDishes.map { dish ->
-                                    if (dish.id in favoriteDishIds) {
-                                        dish.copy(isFavorite = true)
-                                    } else {
-                                        dish.copy(isFavorite = false)
-                                    }
-                                }
-
-                                _dishesState.value = DishesState.Success(updatedAllDishes, null)
-                            }
                         }
                         is Result.Error -> {
                             _favoriteDishesState.value = FavoriteDishesState.Error(
@@ -156,7 +141,7 @@ class CatalogViewModel @Inject constructor(
     private fun loadDishesByCategory(category: Category) {
         viewModelScope.launch {
             _dishesState.value = DishesState.Loading
-            getMealsUseCase.getDishesByCategory(category.originalName)
+            getMealsUseCase.getDishesByCategory(category.category.lowercase(Locale.ROOT))
                 .catch { e ->
                     _dishesState.value = DishesState.Error(
                         error = mapError(e),
@@ -197,15 +182,17 @@ class CatalogViewModel @Inject constructor(
     }
 
     fun handleFavoriteButtonClick(dishItem: DishItem) {
-
         viewModelScope.launch {
+            val isSuccess = setFavoriteDishUseCase.setFavoriteDish(dishId = dishItem.id)
 
-            val success = setFavoriteDishUseCase.setFavoriteDish(dishId = dishItem.id)
-
-            if(success){
+            if(isSuccess){
+                _isDishFavorite.emit(
+                    dishItem.copy(
+                        isFavorite = !dishItem.isFavorite
+                    )
+                )
                 loadFavoriteDishes()
             }
         }
-
     }
 }

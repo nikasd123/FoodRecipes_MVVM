@@ -15,6 +15,16 @@ class MealsAdapter(
     private val onFavoriteClick: (DishItem) -> Unit
 ) : ListAdapter<DishItem, MealsAdapter.DishesViewHolder>(DIFF_CALLBACK) {
 
+    internal fun updateDishInAdapter(updatedDish: DishItem) {
+        val currentList = currentList.toMutableList()
+        val index = currentList.indexOfFirst { it.id == updatedDish.id }
+
+        if (index != -1) {
+            currentList[index] = updatedDish
+            submitList(currentList)
+        }
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DishesViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = DishesItemBinding.inflate(layoutInflater, parent, false)

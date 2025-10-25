@@ -14,7 +14,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.tz.fooddelivery.R
 import com.tz.fooddelivery.databinding.FragmentCatalogNewBinding
 import com.tz.fooddelivery.domain.models.BannerItem
-import com.tz.fooddelivery.domain.models.Category
 import com.tz.fooddelivery.domain.models.DishItem
 import com.tz.fooddelivery.presentation.common.setupLinearRecyclerViewWithShimmer
 import com.tz.fooddelivery.presentation.common.showRecyclerView
@@ -64,15 +63,13 @@ class CatalogFragment : Fragment(R.layout.fragment_catalog_new) {
                 launch { initCategoriesState() }
                 launch { initSelectedCategory() }
                 launch { initFavoriteDishesState() }
+                launch { initLikedDishState() }
             }
         }
     }
 
     private suspend fun initCategoriesState() {
         viewModel.categoriesState.collect { state ->
-
-            val test: List<Category> = listOf(Category(id = "0", category = "Для вас", originalName = "", isActive = true))
-
             when (state) {
                 is CategoriesState.Loading -> showFiltersShimmer(true)
                 is CategoriesState.Error -> {
@@ -82,9 +79,15 @@ class CatalogFragment : Fragment(R.layout.fragment_catalog_new) {
 
                 is CategoriesState.Success -> {
                     showFiltersShimmer(false)
-                    filtersAdapter.submitList(test + state.categories)
+                    filtersAdapter.submitList(state.categories)
                 }
             }
+        }
+    }
+
+    private suspend fun initLikedDishState(){
+        viewModel.isDishFavorite.collect { item ->
+            mealsAdapter.updateDishInAdapter(item)
         }
     }
 

@@ -8,8 +8,10 @@ data class DishItem(
     val title: String,
     val category: String,
     val description: String,
-    val isFavorite: Boolean
+    val isFavorite: Boolean = false
 )
+
+internal val EmptyDishItem = DishItem("0", "", "", "", "")
 
 internal fun DishItem.toEntity(): DishEntity =
     DishEntity(

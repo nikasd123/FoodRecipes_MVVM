@@ -13,6 +13,7 @@ import com.tz.fooddelivery.domain.repository.MealsRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
@@ -24,20 +25,31 @@ class MealsRepositoryImpl @Inject constructor(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : MealsRepository {
 
+    private val favoritesUpdateFlow = MutableSharedFlow<Unit>(replay = 1)
+    private lateinit var cacheDishes: List<DishItem>
+
     override suspend fun getDishes(): Flow<Result<List<DishItem>, DataError>> =
         fetchData(
             getCache = {
-                dishesDao.getAllDishes().toDishItemsFromEntity()
+                cacheDishes = dishesDao.getAllDishes().toDishItemsFromEntity()
+                cacheDishes
             },
-            getNetwork = { mealsApi.getMeals().meals?.toDishItems() ?: emptyList() },
+            getNetwork = {
+                cacheDishes = mealsApi.getMeals().meals?.toDishItems() ?: emptyList()
+                cacheDishes
+            },
             saveCache = { networkData -> dishesDao.insertAll(networkData.toDishEntities()) }
         )
 
     override suspend fun getDishesByCategory(category: String): Flow<Result<List<DishItem>, DataError>> =
         fetchData(
-            getCache = { dishesDao.getDishesByCategory(category).toDishItemsFromEntity() },
+            getCache = {
+                cacheDishes = dishesDao.getDishesByCategory(category).toDishItemsFromEntity()
+                cacheDishes
+            },
             getNetwork = {
-                mealsApi.getMealsByCategory(category).meals?.toDishItems() ?: emptyList()
+                cacheDishes = mealsApi.getMealsByCategory(category).meals?.toDishItems() ?: emptyList()
+                cacheDishes
             },
             saveCache = { networkData ->
                 if (networkData.isNotEmpty()) {
@@ -70,17 +82,22 @@ class MealsRepositoryImpl @Inject constructor(
     override suspend fun setFavoriteDish(dishId: String): Boolean = withContext(ioDispatcher) {
         val response = dishesDao.toggleFavoriteDish(dishId)
 
-        return@withContext response == 1
+        return@withContext if (response == 1){
+            favoritesUpdateFlow.emit(Unit)
+            true
+        } else false
     }
 
     override suspend fun getFavoriteDishes(): Flow<Result<List<DishItem>, DataError>> = flow {
         try {
-            val dishes = withContext(ioDispatcher) {
+            val dishes = withContext(ioDispatcher){
                 dishesDao.getFavoriteDishes()
             }
             emit(Result.Success(dishes.toDishItemsFromEntity()))
-        } catch (e: Exception) {
+        } catch (e: Exception){
             emit(Result.Error(DataError.Local.DATABASE_ERROR))
         }
     }
+
+    override fun getDishUpdates(): Flow<Unit> = favoritesUpdateFlow
 }

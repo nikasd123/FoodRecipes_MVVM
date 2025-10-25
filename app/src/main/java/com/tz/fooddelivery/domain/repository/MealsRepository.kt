@@ -10,4 +10,5 @@ interface MealsRepository {
     suspend fun getDishesByCategory(category: String): Flow<Result<List<DishItem>, DataError>>
     suspend fun getFavoriteDishes(): Flow<Result<List<DishItem>, DataError>>
     suspend fun setFavoriteDish(dishId: String) : Boolean
+    fun getDishUpdates(): Flow<Unit>
 }
